@@ -2,6 +2,7 @@ Pod::Spec.new do |s|
   s.name = 'HSSectionsTableView'
   s.version = '1.0'
   s.summary = 'Simple solution for static or paginating table views'
+  s.module_name = 'SectionsTableView'
 
   s.homepage = 'https://github.com/horizontalsystems/ui-kit'
   s.license = { :type => 'Apache 2.0', :file => 'LICENSE' }

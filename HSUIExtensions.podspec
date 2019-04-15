@@ -2,6 +2,7 @@ Pod::Spec.new do |s|
   s.name = 'HSUIExtensions'
   s.version = '1.0'
   s.summary = 'Extensions and helpers'
+  s.module_name = 'UIExtensions'
 
   s.homepage = 'https://github.com/horizontalsystems/ui-kit'
   s.license = { :type => 'Apache 2.0', :file => 'LICENSE' }

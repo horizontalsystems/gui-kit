@@ -2,6 +2,7 @@ Pod::Spec.new do |s|
   s.name = 'HSHUD'
   s.version = '1.0'
   s.summary = 'Customizable HUD'
+  s.module_name = 'HUD'
 
   s.homepage = 'https://github.com/horizontalsystems/ui-kit'
   s.license = { :type => 'Apache 2.0', :file => 'LICENSE' }

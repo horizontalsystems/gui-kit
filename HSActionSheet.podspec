@@ -2,6 +2,7 @@ Pod::Spec.new do |s|
   s.name = 'HSActionSheet'
   s.version = '1.0'
   s.summary = 'Customisable replacement for UIAlertController'
+  s.module_name = 'ActionSheet'
 
   s.homepage = 'https://github.com/horizontalsystems/ui-kit'
   s.license = { :type => 'Apache 2.0', :file => 'LICENSE' }
