@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.homepage = 'https://github.com/horizontalsystems/ui-kit'
   s.license = { :type => 'Apache 2.0', :file => 'LICENSE' }
   s.author = { 'Horizontal Systems' => 'hsdao@protonmail.ch' }
-  s.source = { :git => 'https://github.com/horizontalsystems/ui-kit.git', :tag => "sections-table-view-#{spec.version}" }
+  s.source = { :git => 'https://github.com/horizontalsystems/ui-kit.git', :tag => "sections-table-view-#{s.version}" }
   s.swift_version = '5'
   s.ios.deployment_target = '12.2'
 
