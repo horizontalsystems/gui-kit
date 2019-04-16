@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:SectionsTableView/SectionsTableView.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:HUD/HUD.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ActionSheet/ActionSheet.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:UIExtensions/UIExtensions.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+</Workspace>

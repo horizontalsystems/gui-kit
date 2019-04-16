@@ -3,31 +3,31 @@ use_frameworks!
 
 inhibit_all_warnings!
 
-workspace 'HSUIKit'
+workspace 'GuiKit'
 
-project 'HSUIExtensions/HSUIExtensions'
-project 'HSActionSheet/HSActionSheet'
-project 'HSHUD/HSHUD'
-project 'HSSectionsTableView/HSSectionsTableView'
+project 'UIExtensions/UIExtensions'
+project 'ActionSheet/ActionSheet'
+project 'HUD/HUD'
+project 'SectionsTableView/SectionsTableView'
 
-target :HSUIExtensions do
-  project 'HSUIExtensions/HSUIExtensions'
+target :UIExtensions do
+  project 'UIExtensions/UIExtensions'
 end
 
-target :HSActionSheet do
-  project 'HSActionSheet/HSActionSheet'
+target :ActionSheet do
+  project 'ActionSheet/ActionSheet'
 
   pod 'SnapKit', '~> 4.0'
 end
 
-target :HSHUD do
-  project 'HSHUD/HSHUD'
+target :HUD do
+  project 'HUD/HUD'
 
   pod 'SnapKit', '~> 4.0'
 end
 
-target :HSSectionsTableView do
-  project 'HSSectionsTableView/HSSectionsTableView'
+target :SectionsTableView do
+  project 'SectionsTableView/SectionsTableView'
 
   pod 'SnapKit', '~> 4.0'
 end
