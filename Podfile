@@ -17,17 +17,17 @@ end
 target :ActionSheet do
   project 'ActionSheet/ActionSheet'
 
-  pod 'SnapKit', '~> 4.0'
+  pod 'SnapKit', '~> 5.0'
 end
 
 target :HUD do
   project 'HUD/HUD'
 
-  pod 'SnapKit', '~> 4.0'
+  pod 'SnapKit', '~> 5.0'
 end
 
 target :SectionsTableView do
   project 'SectionsTableView/SectionsTableView'
 
-  pod 'SnapKit', '~> 4.0'
+  pod 'SnapKit', '~> 5.0'
 end

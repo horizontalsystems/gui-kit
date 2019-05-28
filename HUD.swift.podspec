@@ -15,5 +15,5 @@ Pod::Spec.new do |s|
   s.resources = 'HUD/HUD/*.xcassets'
 
   s.dependency 'UIExtensions.swift'
-  s.dependency 'SnapKit', '~> 4.0'
+  s.dependency 'SnapKit', '~> 5.0'
 end

@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
   s.source_files = 'ActionSheet/ActionSheet/**/*.{swift}'
 
   s.dependency 'UIExtensions.swift'
-  s.dependency 'SnapKit', '~> 4.0'
+  s.dependency 'SnapKit', '~> 5.0'
 end
