@@ -74,23 +74,25 @@ open class ActionSheetController: UIViewController, UIScrollViewDelegate {
         self.cancelButtonTitle = customCancelButtonTitle ?? model.cancelButtonTitle
         super.init(nibName: nil, bundle: nil)
 
+        let dismissByFade = actionSheetThemeConfig.actionStyle == .alert
+
         model.reload = { [weak self] in
             self?.layoutContentView()
         }
         model.dismiss = { [weak self] successfulState in
-            self?.dismiss(state: successfulState)
+            self?.dismiss(state: successfulState, byFade: dismissByFade)
         }
-        commonInit()
+        commonInit(dismissByFade: dismissByFade)
     }
 
-    func commonInit() {
+    func commonInit(dismissByFade: Bool) {
 
-        actionSheetAnimation = ActionSheetAnimation(withController: self)
+        actionSheetAnimation = ActionSheetAnimation(withController: self, dismissByFade: dismissByFade)
 
         modalPresentationStyle = .custom
         modalTransitionStyle = .crossDissolve
 
-        initViews()
+        initViews(dismissByFade: dismissByFade)
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
         view.addGestureRecognizer(panGestureRecognizer!)
 
@@ -98,19 +100,19 @@ open class ActionSheetController: UIViewController, UIScrollViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-    func initViews() {
+    func initViews(dismissByFade: Bool) {
 
         // full screen view, witch moving to/from screen
         view.addSubview(backgroundView)
 
-        let height = view.frame.height
+        let height = actionSheetThemeConfig.actionStyle == .alert ? 0 : view.frame.height
         backgroundView.snp.makeConstraints { maker in
             maker.top.bottom.equalToSuperview().offset(height)
             maker.leading.trailing.equalToSuperview()
         }
         backgroundView.addSubview(marginView)
         backgroundView.handleTouch = { [weak self] in
-            self?.dismiss()
+            self?.dismiss(byFade: dismissByFade)
         }
 
         // view with margin contains content
@@ -148,7 +150,7 @@ open class ActionSheetController: UIViewController, UIScrollViewDelegate {
                 maker.edges.equalToSuperview()
             }
             dismissItemView?.item?.action = { [weak self] _ in
-                self?.dismiss()
+                self?.dismiss(byFade: dismissByFade)
             }
         }
 
@@ -308,7 +310,7 @@ open class ActionSheetController: UIViewController, UIScrollViewDelegate {
             if velocity.y < 100 {
                 moveMarginViewToPoint(originalCenter)
             } else {
-                dismiss()
+                dismiss(byFade: false)
             }
             break
         case .changed:
@@ -318,7 +320,7 @@ open class ActionSheetController: UIViewController, UIScrollViewDelegate {
             marginView.center = center
             break
         default:
-            dismiss()
+            dismiss(byFade: false)
             break
         }
     }
@@ -405,7 +407,8 @@ open class ActionSheetController: UIViewController, UIScrollViewDelegate {
         }
     }
 
-    open func dismiss(state: Bool = false) {
+    open func dismiss(state: Bool = false, byFade: Bool) {
+        actionSheetAnimation?.dismissByFade = byFade
         dismiss(animated: true, completion: { [weak self] in
             self?.onDismiss?(state)
         })
