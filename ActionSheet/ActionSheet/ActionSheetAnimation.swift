@@ -6,14 +6,16 @@ public class ActionSheetAnimation: NSObject, UIViewControllerAnimatedTransitioni
     var presentedAnimation = false
     public weak var controller: ActionSheetController?
 
+    var dismissByFade: Bool
     static let animateDuration: TimeInterval = 0.35
 
     public override init() {
         fatalError("Deprecated init!")
     }
 
-    public init(withController controller: ActionSheetController) {
+    public init(withController controller: ActionSheetController, dismissByFade: Bool) {
         self.controller = controller
+        self.dismissByFade = dismissByFade
 
         super.init()
         controller.transitioningDelegate = self
@@ -77,20 +79,31 @@ public class ActionSheetAnimation: NSObject, UIViewControllerAnimatedTransitioni
         toView.frame = container.bounds
         controller?.coverView?.addSubview(toView)
 
-        setVisibleViews(true)
-
+        let dismissByFade = self.dismissByFade
         ActionSheetAnimation.animation({ [weak self] in
             self?.controller?.coverView?.alpha = 1
+            if dismissByFade {
+                self?.controller?.backgroundView.alpha = 1
+                self?.controller?.contentView.alpha = 1
+            } else {
+                self?.setVisibleViews(true)
+            }
             self?.controller?.view.layoutIfNeeded()
         }, completion: completion)
     }
 
     func dismissAnimationForActionSheet(_ container: UIView, toView: UIView, fromView: UIView, completion: @escaping (Bool) -> Void) {
         container.addSubview(fromView)
-        setVisibleViews(false)
 
+        let dismissByFade = self.dismissByFade
         ActionSheetAnimation.animation({ [weak self] in
             self?.controller?.coverView?.alpha = 0
+            if dismissByFade {
+                self?.controller?.backgroundView.alpha = 0
+                self?.controller?.contentView.alpha = 0
+            } else {
+                self?.setVisibleViews(false)
+            }
             self?.controller?.view.layoutIfNeeded()
         }, completion: completion)
     }
