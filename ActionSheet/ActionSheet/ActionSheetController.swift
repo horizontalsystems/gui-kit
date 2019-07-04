@@ -91,13 +91,6 @@ open class ActionSheetController: UIViewController, UIScrollViewDelegate {
 
         modalPresentationStyle = .custom
         modalTransitionStyle = .crossDissolve
-
-        initViews(dismissByFade: dismissByFade)
-        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
-        view.addGestureRecognizer(panGestureRecognizer!)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     func initViews(dismissByFade: Bool) {
@@ -210,6 +203,14 @@ open class ActionSheetController: UIViewController, UIScrollViewDelegate {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
+
+        initViews(dismissByFade: actionSheetThemeConfig.actionStyle == .alert)
+        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        view.addGestureRecognizer(panGestureRecognizer!)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+
         model.viewDidLoad()
     }
 
