@@ -20,7 +20,7 @@ public class RespondView: UIView {
             return false
         }
 
-        let touchArea = self.frame.insetBy(dx: -RespondView.touchableAreaInset, dy: -RespondView.touchableAreaInset)
+        let touchArea = self.bounds.insetBy(dx: -RespondView.touchableAreaInset, dy: -RespondView.touchableAreaInset)
         return touchArea.contains(touch.location(in: self))
     }
 
