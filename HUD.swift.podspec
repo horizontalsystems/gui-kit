@@ -12,7 +12,8 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '11.0'
 
   s.source_files = 'HUD/HUD/**/*.{swift}'
-  s.resources = 'HUD/HUD/*.xcassets'
+  s.resource_bundle = { 'HUD' => 'HUD/HUD/*.xcassets' }
+  
 
   s.dependency 'UIExtensions.swift'
   s.dependency 'SnapKit', '~> 5.0'
