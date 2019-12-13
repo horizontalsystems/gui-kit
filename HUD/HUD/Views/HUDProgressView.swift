@@ -259,6 +259,10 @@ public class HUDProgressView: UIView, HUDAnimatedViewInterface, HUDTappableViewI
     }
 
     public func stopAnimating() {
+        guard isAnimating else {
+            return
+        }
+
         isAnimating = false
         guard let layer = _indefiniteAnimatedLayer else {
             pausedAnimating = false
