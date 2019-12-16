@@ -9,11 +9,10 @@ public protocol HUDStatusViewConfig {
 }
 
 public class HUDStatusModel: HUDStatusViewConfig {
-
-    public var successImage = UIImage(named: "success", in: Bundle(for: HUDStatusModel.self), compatibleWith: nil)
-    public var infoImage = UIImage(named: "info", in: Bundle(for: HUDStatusModel.self), compatibleWith: nil)
-    public var errorImage = UIImage(named: "error", in: Bundle(for: HUDStatusModel.self), compatibleWith: nil)
-    public var cancelImage = UIImage(named: "error", in: Bundle(for: HUDStatusModel.self), compatibleWith: nil)
+    public var successImage: UIImage?
+    public var infoImage: UIImage?
+    public var errorImage: UIImage?
+    public var cancelImage: UIImage?
 
     public var activityIndicatorStyle: UIActivityIndicatorView.Style = .whiteLarge
     public var activityIndicatorColor: UIColor = .gray
@@ -48,4 +47,15 @@ public class HUDStatusModel: HUDStatusViewConfig {
     public var imageTopPadding: CGFloat = HUDStatusViewTheme.imageTopPadding
     public var imageBottomPadding: CGFloat = HUDStatusViewTheme.imageBottomPadding
     public var titleBottomPadding: CGFloat = HUDStatusViewTheme.titleBottomPadding
+
+    init() {
+        if let url = Bundle(for: HUDStatusModel.self).url(forResource: "HUD", withExtension: "bundle") {
+            successImage = UIImage(named: "success", in: Bundle(url: url), compatibleWith: nil)
+            infoImage = UIImage(named: "info", in: Bundle(url: url), compatibleWith: nil)
+            errorImage = UIImage(named: "error", in: Bundle(url: url), compatibleWith: nil)
+            cancelImage = UIImage(named: "error", in: Bundle(url: url), compatibleWith: nil)
+        }
+
+    }
+
 }

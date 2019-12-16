@@ -1,0 +1,16 @@
+platform :ios, '11'
+use_modular_headers!
+
+target 'GuiKitExample' do
+  pod 'ActionSheet.swift', :path => '../'
+  pod 'HUD.swift', :path => '../'
+  pod 'SectionsTableView.swift', :path => '../'
+  pod 'UIExtensions.swift', :path => '../'
+end
+
+target 'GuiKitTests' do
+  pod 'ActionSheet.swift', :path => '../'
+  pod 'HUD.swift', :path => '../'
+  pod 'SectionsTableView.swift', :path => '../'
+  pod 'UIExtensions.swift', :path => '../'
+end
