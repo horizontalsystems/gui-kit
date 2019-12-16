@@ -90,9 +90,8 @@ public struct HUDConfig: HUDViewModel, HUDCoverModel, HUDContainerModel {
     public var borderColor: UIColor = .darkGray
 
     public var hapticType: HapticNotificationType? = .error
-    
+
     public init() {
-        
     }
 
 }

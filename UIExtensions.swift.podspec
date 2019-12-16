@@ -1,15 +1,17 @@
 Pod::Spec.new do |s|
-  s.name = 'UIExtensions.swift'
-  s.version = '1.0'
-  s.summary = 'Extensions and helpers'
-  s.module_name = 'UIExtensions'
+  s.name             = 'UIExtensions.swift'
+  s.module_name      = 'UIExtensions'
+  s.version          = '1.1'
+  s.summary          = 'Extensions and helpers.'
 
-  s.homepage = 'https://github.com/horizontalsystems/gui-kit'
-  s.license = { :type => 'Apache 2.0', :file => 'LICENSE' }
-  s.author = { 'Horizontal Systems' => 'hsdao@protonmail.ch' }
-  s.source = { :git => 'https://github.com/horizontalsystems/gui-kit.git', :tag => "ui-extensions-#{s.version}" }
-  s.swift_version = '5'
+  s.homepage         = 'https://github.com/horizontalsystems/gui-kit'
+  s.license          = { :type => 'MIT', :file => 'LICENSE' }
+  s.author           = { 'Horizontal Systems' => 'hsdao@protonmail.ch' }
+  s.source           = { git: 'https://github.com/horizontalsystems/gui-kit.git', tag: "#{s.version}" }
+  s.social_media_url = 'http://horizontalsystems.io/'
+
   s.ios.deployment_target = '11.0'
+  s.swift_version = '5'
 
-  s.source_files = 'UIExtensions/UIExtensions/**/*.{swift}'
+  s.source_files = 'UIExtensions/Classes/**/*'
 end
