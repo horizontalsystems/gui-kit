@@ -16,6 +16,7 @@ pod 'ActionSheet.swift'
 pod 'HUD.swift'
 pod 'SectionsTableView.swift'
 pod 'UIExtensions.swift'
+pod 'Chart.swift'
 ```
 
 ## License
