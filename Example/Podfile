@@ -6,6 +6,7 @@ target 'GuiKitExample' do
   pod 'HUD.swift', :path => '../'
   pod 'SectionsTableView.swift', :path => '../'
   pod 'UIExtensions.swift', :path => '../'
+  pod 'Chart.swift', :path => '../'
 end
 
 target 'GuiKitTests' do
@@ -13,4 +14,5 @@ target 'GuiKitTests' do
   pod 'HUD.swift', :path => '../'
   pod 'SectionsTableView.swift', :path => '../'
   pod 'UIExtensions.swift', :path => '../'
+  pod 'Chart.swift', :path => '../'
 end
