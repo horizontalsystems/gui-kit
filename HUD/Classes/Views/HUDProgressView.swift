@@ -82,7 +82,9 @@ public class HUDProgressView: UIView, HUDAnimatedViewInterface, HUDTappableViewI
     func addMaskLayer(animatedLayer: CAShapeLayer) {
         let maskLayer = CALayer(layer: layer)
 
-        maskLayer.contents = UIImage(named: "angle-mask", in: Bundle(for: HUDProgressView.self), compatibleWith: nil)?.cgImage
+        if let url = Bundle(for: HUDStatusModel.self).url(forResource: "HUD", withExtension: "bundle") {
+            maskLayer.contents = UIImage(named: "angle-mask", in: Bundle(url: url), compatibleWith: nil)?.cgImage
+        }
         maskLayer.frame = animatedLayer.bounds
         animatedLayer.mask = maskLayer
     }
