@@ -1,13 +1,13 @@
 Pod::Spec.new do |s|
   s.name             = 'HUD.swift'
   s.module_name      = 'HUD'
-  s.version          = '1.1'
+  s.version          = '1.2'
   s.summary          = 'Customizable HUD.'
 
   s.homepage         = 'https://github.com/horizontalsystems/gui-kit'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Horizontal Systems' => 'hsdao@protonmail.ch' }
-  s.source           = { git: 'https://github.com/horizontalsystems/gui-kit.git', tag: "#{s.version}" }
+  s.source           = { git: 'https://github.com/horizontalsystems/gui-kit.git', tag: "hud-#{s.version}" }
   s.social_media_url = 'http://horizontalsystems.io/'
 
   s.ios.deployment_target = '11.0'
