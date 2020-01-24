@@ -71,7 +71,7 @@ class ViewController: UIViewController {
 
         var chartPoint = [ChartPoint]()
         for index in 0..<pointCount {
-            chartPoint.append(ChartPoint(timestamp: startInterval + TimeInterval(index) * deltaInterval, value: randomValue(start: minValue, end: maxValue, powScale: powScale)))
+            chartPoint.append(ChartPoint(timestamp: startInterval + TimeInterval(index) * deltaInterval, value: randomValue(start: minValue, end: maxValue, powScale: powScale), volume: randomValue(start: minValue, end: maxValue, powScale: powScale)))
         }
 
 

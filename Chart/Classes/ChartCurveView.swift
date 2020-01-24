@@ -150,7 +150,7 @@ class ChartCurveView: UIView {
         guard let delegate = dataSource else {
             return []
         }
-        return delegate.chartData.map { pointConverter.convert(chartPoint: $0, viewBounds: bounds, chartFrame: delegate.chartFrame, retinaShift: retinaShift) }
+        return delegate.chartData.map { pointConverter.convert(timestamp: $0.timestamp, value: $0.value, viewBounds: bounds, chartFrame: delegate.chartFrame, retinaShift: retinaShift) }
     }
 
     private func indexes(count: Int, elementCount: Int) -> [Int] {

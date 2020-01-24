@@ -3,6 +3,7 @@ import UIKit
 public class ChartConfiguration {
     public var showGrid: Bool = true
     public var showLimitValues: Bool = true
+    public var showVolumeValues: Bool = true
 
     public var animationDuration: TimeInterval = 0.3
 
@@ -42,6 +43,10 @@ public class ChartConfiguration {
 
     public var limitTextFormatter: NumberFormatter?
     public var dateFormatter: DateFormatter?
+
+    public var volumeMaximumHeightRatio: CGFloat = 0.4
+    public var volumeBarColor: UIColor = UIColor.lightGray.withAlphaComponent(0.2)
+    public var volumeBarMargin: CGFloat = 1
 
     public var selectedCircleRadius: CGFloat = 5.5
     public var selectedIndicatorColor: UIColor = .white

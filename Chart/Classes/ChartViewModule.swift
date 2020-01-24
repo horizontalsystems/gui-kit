@@ -28,5 +28,5 @@ protocol ITimelineHelper {
 }
 
 protocol IPointConverter {
-    func convert(chartPoint: ChartPoint, viewBounds: CGRect, chartFrame: ChartFrame, retinaShift: Bool) -> CGPoint
+    func convert(timestamp: TimeInterval, value: Decimal, viewBounds: CGRect, chartFrame: ChartFrame, retinaShift: Bool) -> CGPoint
 }
