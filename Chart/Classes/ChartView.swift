@@ -17,6 +17,7 @@ public class ChartView: UIView {
 
     private let curveView: ChartCurveView
     private var gridViews = [IGridView]()
+    private var volumeView: ChartVolumeView?
     private var indicatorView: ChartIndicatorView?
 
     public init(configuration: ChartConfiguration, gridIntervalType: GridIntervalType, indicatorDelegate: IChartIndicatorDelegate? = nil) {
@@ -75,6 +76,20 @@ public class ChartView: UIView {
             gridViews.append(frameGridView)
         }
         addSubview(curveView)
+        if configuration.showVolumeValues {
+            let volumeView = ChartVolumeView(configuration: configuration, pointConverter: pointConverter)
+            addSubview(volumeView)
+
+            volumeView.snp.makeConstraints { maker in
+                maker.leading.equalTo(curveView.snp.leading)
+                maker.bottom.equalTo(curveView.snp.bottom)
+                maker.trailing.equalTo(curveView.snp.trailing)
+                maker.height.equalTo(curveView).multipliedBy(configuration.volumeMaximumHeightRatio)
+            }
+            volumeView.dataSource = self
+
+            self.volumeView = volumeView
+        }
         if configuration.showLimitValues {
             let limitGridView = LimitsGridView(configuration: configuration, pointConverter: pointConverter)
             limitGridView.dataSource = self
@@ -98,6 +113,7 @@ public class ChartView: UIView {
         updateInsets()
 
         curveView.refreshCurve(animated: animated)
+        volumeView?.refreshBars(animated: animated)
 
         indicatorView?.layoutSubviews()
         gridViews.forEach { $0.refreshGrid() }
@@ -165,7 +181,7 @@ extension ChartView: IChartDataSource {}
 extension ChartView: IChartIndicatorDelegate {
 
     public func didTap(chartPoint: ChartPoint) {
-        let correctedValuePoint = ChartPoint(timestamp: chartPoint.timestamp, value: chartPoint.value)
+        let correctedValuePoint = ChartPoint(timestamp: chartPoint.timestamp, value: chartPoint.value, volume: chartPoint.volume)
 
         indicatorDelegate?.didTap(chartPoint: correctedValuePoint)
         curveView.set(curveColor: configuration.selectedCurveColor, gradientColor: configuration.selectedGradientColor)

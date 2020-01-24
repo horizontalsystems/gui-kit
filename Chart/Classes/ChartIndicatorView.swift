@@ -95,7 +95,7 @@ class ChartIndicatorView: UIView {
         selectedPoint = point
         indicatorDelegate?.didTap(chartPoint: point)
 
-        let coordinates = pointConverter.convert(chartPoint: point, viewBounds: bounds, chartFrame: dataSource.chartFrame, retinaShift: true)
+        let coordinates = pointConverter.convert(timestamp: point.timestamp, value: point.value, viewBounds: bounds, chartFrame: dataSource.chartFrame, retinaShift: true)
         indicatorLayer.refresh(point: coordinates)
     }
 

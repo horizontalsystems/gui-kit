@@ -9,9 +9,9 @@ class LimitTextLayer: CATextLayer {
         self.sublayers?.removeAll()
 
         let frameBounds = bounds.inset(by: insets)
-        let maxPointOffsetY = pointConverter.convert(chartPoint: ChartPoint(timestamp: 0, value: chartFrame.maxValue),
+        let maxPointOffsetY = pointConverter.convert(timestamp: 0, value: chartFrame.maxValue,
                 viewBounds: frameBounds, chartFrame: chartFrame, retinaShift: false).y - configuration.limitTextFont.lineHeight - configuration.limitTextInMargin
-        let minPointOffsetY = pointConverter.convert(chartPoint: ChartPoint(timestamp: 0, value: chartFrame.minValue),
+        let minPointOffsetY = pointConverter.convert(timestamp: 0, value: chartFrame.minValue,
                 viewBounds: frameBounds, chartFrame: chartFrame, retinaShift: false).y + configuration.limitTextInMargin
 
         let formatter = configuration.limitTextFormatter ?? ValueScaleHelper.formatter

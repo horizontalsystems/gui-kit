@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = 'Chart.swift'
   s.module_name      = 'Chart'
-  s.version          = '1.1'
+  s.version          = '1.2'
   s.summary          = 'Chart'
 
   s.homepage         = 'https://github.com/horizontalsystems/gui-kit'
