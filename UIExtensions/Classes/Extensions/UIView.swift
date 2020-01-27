@@ -3,27 +3,59 @@ import UIKit
 extension UIView {
 
     public var width: CGFloat {
-        return frame.size.width
+        frame.size.width
     }
 
     public var height: CGFloat {
-        return frame.size.height
+        frame.size.height
     }
 
     public var x: CGFloat {
-        return frame.origin.x
+        frame.origin.x
     }
 
     public var y: CGFloat {
-        return frame.origin.y
+        frame.origin.y
     }
 
     public var bottom: CGFloat {
-        return frame.origin.y + frame.size.height
+        frame.origin.y + frame.size.height
     }
 
     public var size: CGSize {
-        return frame.size
+        frame.size
+    }
+
+    @IBInspectable
+    public var cornerRadius: CGFloat {
+        get {
+            layer.cornerRadius
+        }
+        set {
+            layer.cornerRadius = newValue
+            layer.masksToBounds = newValue != 0
+        }
+    }
+
+    @IBInspectable
+    public var borderWidth: CGFloat {
+        get {
+            layer.borderWidth
+        }
+        set {
+            layer.borderWidth = newValue
+        }
+    }
+
+    @IBInspectable
+    public var borderColor: UIColor? {
+        get {
+            guard let color = layer.borderColor else { return nil }
+            return UIColor(cgColor: color)
+        }
+        set {
+            layer.borderColor = newValue?.cgColor
+        }
     }
 
 }
