@@ -2,6 +2,13 @@ import UIKit
 
 extension UIImage {
 
+    public convenience init?(named: String, for class: AnyClass, resource: String) {
+        guard let url = Bundle(for: `class`).url(forResource: resource, withExtension: "bundle") else {
+            return nil
+        }
+        self.init(named: named, in: Bundle(url: url), compatibleWith: nil)
+    }
+
     public convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
         let rect = CGRect(origin: .zero, size: size)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
