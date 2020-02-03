@@ -1,17 +1,18 @@
 import UIKit
 
 extension String {
-    
+
     public func height(forContainerWidth containerWidth: CGFloat, font: UIFont) -> CGFloat {
-        return size(containerWidth: containerWidth, font: font).height
+        size(containerWidth: containerWidth, font: font).height
     }
-    
+
     public func size(containerWidth: CGFloat, font: UIFont) -> CGSize {
-        return (self as NSString).boundingRect(
-            with: CGSize(width: containerWidth, height: .greatestFiniteMagnitude),
-            options: [.usesFontLeading, .usesLineFragmentOrigin],
-            attributes: [NSAttributedString.Key.font: font],
-            context: nil).size
+        let size = (self as NSString).boundingRect(
+                with: CGSize(width: containerWidth, height: .greatestFiniteMagnitude),
+                options: [.usesFontLeading, .usesLineFragmentOrigin],
+                attributes: [.font: font],
+                context: nil).size
+        return CGSize(width: ceil(size.width), height: ceil(size.height))
     }
-    
+
 }
