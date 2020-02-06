@@ -18,4 +18,20 @@ extension UITableView {
         register(anyClass, forHeaderFooterViewReuseIdentifier: String(describing: anyClass))
     }
 
+    public func deselectCell(withCoordinator coordinator: UIViewControllerTransitionCoordinator?, animated: Bool) {
+        if let indexPath = indexPathForSelectedRow {
+            if let coordinator = coordinator {
+                coordinator.animate(alongsideTransition: { [weak self] context in
+                    self?.deselectRow(at: indexPath, animated: animated)
+                }, completion: { [weak self] context in
+                    if context.isCancelled {
+                        self?.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                    }
+                })
+            } else {
+                deselectRow(at: indexPath, animated: animated)
+            }
+        }
+    }
+
 }
