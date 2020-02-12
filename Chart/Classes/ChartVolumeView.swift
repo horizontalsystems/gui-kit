@@ -1,11 +1,5 @@
 import UIKit
 
-private struct VolumeBar {
-    let start: TimeInterval
-    let end: TimeInterval
-    let avgVolume: Decimal
-}
-
 class ChartVolumeView: UIView {
     private let configuration: ChartConfiguration
     public weak var dataSource: IChartDataSource?
@@ -58,39 +52,11 @@ class ChartVolumeView: UIView {
         guard !bounds.isEmpty, let dataSource = dataSource, !dataSource.chartData.isEmpty else {
             return
         }
-        let lastTimestamp = dataSource.chartData.last?.timestamp ?? dataSource.chartFrame.right
         barsLayer.sublayers?.removeAll()
 
-        let chunks: [VolumeBar] = stride(from: 0, to: dataSource.chartData.count, by: 2).compactMap { index in
-            let lastIndex = min(index + 2, dataSource.chartData.count - 1)               // get maximum 3 items to calculate bar
-
-            let bars: [(timestamp: TimeInterval, volume: Decimal)] = Array(dataSource.chartData[index...lastIndex]).compactMap {    // remove points without volume (current time point)
-                guard let volume = $0.volume else {
-                    return nil
-                }
-                return (timestamp: $0.timestamp, volume: volume)
-            }
-
-            guard bars.count > 1 else {                                     // 1 point. Point already used in previous bar
-                return nil
-            }
-
-            if bars.count == 3 {                                            // 3 points. Show standard bar
-                let startTimestamp = bars[0].timestamp
-                let endTimestamp = bars[2].timestamp
-
-                let avgVolume = (bars[1].volume + bars[2].volume) / 2
-                return VolumeBar(start: startTimestamp, end: endTimestamp, avgVolume: avgVolume)
-            } else {                                                        // 2 points. Show bar from firstTimestamp to end of view
-                let startTimestamp = bars[0].timestamp
-                let endTimestamp = lastTimestamp
-
-                let avgVolume = bars[1].volume
-                return VolumeBar(start: startTimestamp, end: endTimestamp, avgVolume: avgVolume)
-            }
-        }
-
-        let maxVolume: Decimal = chunks.map { $0.avgVolume }.max() ?? 0     // get maximum volume to calculate converting Y delta
+        var chunks = [ChartPoint]()
+        let chartData = dataSource.chartData
+        let maxVolume: Decimal = chartData.compactMap { $0.volume }.max() ?? 0     // get maximum volume to calculate converting Y delta
         guard !maxVolume.isZero else {
             return
         }
@@ -101,16 +67,17 @@ class ChartVolumeView: UIView {
         let startPath = UIBezierPath()                                      // path with 0 bars to animate from new volumes to current
         let completeBarsPath = UIBezierPath()                               // calculated path for bars
 
-        for (index, chunk) in chunks.enumerated() {
-            let leftMargin = index != 0 ? configuration.volumeBarMargin : 0                                 // margin for left bar X. For first bar it's no margin
-            let rightMargin = (index != chunks.count - 1) ? configuration.volumeBarMargin : 0               // margin for right bar X. For last bar it's no margin
+        for (index, point) in chartData.enumerated() {
+            guard let volume = point.volume else {
+                continue
+            }
 
-            let y = ceil(bounds.maxY - chunk.avgVolume.cgFloatValue * deltaY)                               // volume converted to Y coordinate
+            let y = ceil(bounds.maxY - volume.cgFloatValue * deltaY)                                // volume converted to Y coordinate
 
-            let startX = ceil(CGFloat(chunk.start - dataSource.chartFrame.left) * deltaX + leftMargin)      // start timestamp converted to X coordinate
-            let endX = ceil(CGFloat(chunk.end - dataSource.chartFrame.left) * deltaX - rightMargin)         // finish timestamp converted to X coordinate
+            let endX = CGFloat(point.timestamp - dataSource.chartFrame.left) * deltaX               // start timestamp converted to X coordinate
+            let startX = endX - 2                                                                   // finish timestamp converted to X coordinate
 
-            let topLeft = CGPoint(x: startX, y: y)                                                          // points
+            let topLeft = CGPoint(x: startX, y: y)
             let bottomLeft = CGPoint(x: startX, y: bounds.maxY)
             let bottomRight = CGPoint(x: endX, y: bounds.maxY)
 
