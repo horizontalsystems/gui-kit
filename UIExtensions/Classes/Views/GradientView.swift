@@ -3,13 +3,14 @@ import UIKit
 public class GradientView: UIView {
     private let gradientLayer = CAGradientLayer()
 
-    public init(gradientHeight: CGFloat, viewHeight: CGFloat, fromColor: UIColor, toColor: UIColor) {
+    private let gradientHeight: CGFloat
+
+    public init(gradientHeight: CGFloat, fromColor: UIColor, toColor: UIColor) {
+        self.gradientHeight = gradientHeight
         super.init(frame: .zero)
-        let endPosition: CGFloat = gradientHeight / viewHeight
         gradientLayer.colors = [fromColor.cgColor, toColor.cgColor]
         gradientLayer.locations = [0, 1]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 0.5, y: endPosition)
         layer.addSublayer(gradientLayer)
     }
 
@@ -20,6 +21,8 @@ public class GradientView: UIView {
     override public func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer.frame = bounds
+        let endPosition: CGFloat = gradientHeight / bounds.height
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: endPosition)
     }
 
 }
