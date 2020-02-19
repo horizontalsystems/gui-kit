@@ -1,16 +1,16 @@
 import UIKit
 
-protocol HUDFeedbackGenerator {
+public protocol HUDFeedbackGenerator {
     func notification(_ notification: HapticNotificationType)
 }
 
-class HapticGenerator: HUDFeedbackGenerator {
-    static let instance = HapticGenerator()
+public class HapticGenerator: HUDFeedbackGenerator {
+    static public let instance = HapticGenerator()
     let notificationGenerator = UINotificationFeedbackGenerator()
     var impactStyle: UIImpactFeedbackGenerator.FeedbackStyle = .light
     var impactGenerator = UIImpactFeedbackGenerator(style: .light)
 
-    func notification(_ notification: HapticNotificationType) {
+    public func notification(_ notification: HapticNotificationType) {
         switch notification {
             case .error: notificationGenerator.notificationOccurred(.error)
             case .success: notificationGenerator.notificationOccurred(.success)
