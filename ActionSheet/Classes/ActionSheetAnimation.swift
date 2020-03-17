@@ -51,12 +51,16 @@ public class ActionSheetAnimation: NSObject, UIViewControllerAnimatedTransitioni
         }
 
         if presentedAnimation == true {
+            from.beginAppearanceTransition(false, animated: true)
             presentAnimationForActionSheet(container, toView: to.view, fromView: from.view) { _ in
                 self.controller?.showedController = true
+                from.endAppearanceTransition()
                 transitionContext.completeTransition(true)
             }
         } else {
+            to.beginAppearanceTransition(true, animated: true)
             dismissAnimationForActionSheet(container, toView: to.view, fromView: from.view) { _ in
+                to.endAppearanceTransition()
                 transitionContext.completeTransition(true)
             }
         }
