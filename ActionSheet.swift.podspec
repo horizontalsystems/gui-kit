@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = 'ActionSheet.swift'
   s.module_name      = 'ActionSheet'
-  s.version          = '1.1'
+  s.version          = '1.2'
   s.summary          = 'Customisable replacement for UIAlertController.'
 
   s.homepage         = 'https://github.com/horizontalsystems/gui-kit'
