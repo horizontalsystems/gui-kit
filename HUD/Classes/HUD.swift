@@ -55,6 +55,7 @@ public class HUD {
         }
 
         if view != nil {
+            view?.set(config: config)
             view?.containerView.setContent(content: content, size: size, exact: config.exactSize)
             view?.adjustPlace()
         }  else {

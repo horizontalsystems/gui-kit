@@ -35,7 +35,7 @@ class HUDViewPresenter: HUDViewPresenterInterface, HUDViewInteractorDelegate, Co
         if case .banner(let bannerStyle) = config.style {
             style = bannerStyle
         }
-        let correctedOffset = containerView.outScreenOffset(for: view?.safeCorrectedOffset(for: config.hudInset, style: style, relativeWindow: config.userInteractionEnabled) ?? .zero, style: style)
+        let correctedOffset = containerView.outScreenOffset(for: config.absoluteInsetsValue ? config.hudInset : view?.safeCorrectedOffset(for: config.hudInset, style: style, relativeWindow: config.userInteractionEnabled) ?? .zero, style: style)
         containerView.show(animated: true, appearStyle: config.appearStyle, offset: correctedOffset, completion: completion)
     }
 
@@ -54,7 +54,7 @@ class HUDViewPresenter: HUDViewPresenterInterface, HUDViewInteractorDelegate, Co
         if case .banner(let bannerStyle) = config.style {
             style = bannerStyle
         }
-        let correctedOffset = containerView.outScreenOffset(for: view?.safeCorrectedOffset(for: config.hudInset, style: style, relativeWindow: config.userInteractionEnabled) ?? .zero, style: style)
+        let correctedOffset = containerView.outScreenOffset(for: config.absoluteInsetsValue ? config.hudInset : view?.safeCorrectedOffset(for: config.hudInset, style: style, relativeWindow: config.userInteractionEnabled) ?? .zero, style: style)
         containerView.hide(animated: animated, appearStyle: config.appearStyle, offset: correctedOffset, completion: { [weak self] in
             self?.completeDismiss(completion: completion)
         })

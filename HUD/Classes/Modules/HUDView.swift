@@ -3,9 +3,9 @@ import SnapKit
 
 class HUDView: UIViewController, HUDViewInterface {
     let presenter: HUDViewPresenterInterface
-    let config: HUDViewModel
+    var config: HUDViewModel
     var window: UIWindow?
-    var holderView: UIView? { return config.userInteractionEnabled ? window : containerView }
+    var holderView: UIView? { config.userInteractionEnabled ? window : containerView }
 
     let coverView: UIView?
     let containerView: HUDContainerView
@@ -25,9 +25,8 @@ class HUDView: UIViewController, HUDViewInterface {
         self.config = config
         self.coverView = coverView
         self.containerView = containerView
-        super.init(nibName: nil, bundle: Bundle(for: HUDView.self))
 
-        presenter.view = self
+        super.init(nibName: nil, bundle: Bundle(for: HUDView.self))
 
         if let coverView = coverView {
             view.addSubview(coverView)
@@ -42,14 +41,14 @@ class HUDView: UIViewController, HUDViewInterface {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        presenter.view = self
+
         window = HUDWindow(frame: UIScreen.main.bounds, rootController: self)
         coverView?.frame = view.bounds
         coverView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
         presenter.viewDidLoad()
-        DispatchQueue.main.async {
-            self.place(holderView: self.holderView)
-        }
+        place(holderView: self.holderView)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -62,6 +61,10 @@ class HUDView: UIViewController, HUDViewInterface {
         }, completion: { context in
             self.window?.clipsToBounds = false
         })
+    }
+
+    func set(config: HUDConfig) {
+        self.config = config
     }
 
     func adjustPlace() {
@@ -88,7 +91,8 @@ class HUDView: UIViewController, HUDViewInterface {
         let screenCenter = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)
         let contentCenter = CGPoint(x: containerView.frame.size.width / 2, y: containerView.frame.size.height / 2)
 
-        let centerOffset = safeCorrectedOffset(for: config.hudInset, style: style, relativeWindow: false)
+
+        let centerOffset = config.absoluteInsetsValue ? config.hudInset : safeCorrectedOffset(for: config.hudInset, style: style, relativeWindow: false)
 
         let viewCenter: CGPoint
         switch style {
