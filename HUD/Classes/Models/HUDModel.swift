@@ -43,6 +43,7 @@ public protocol HUDViewModel {
     var style: HUDStyle { get set }
     var appearStyle: HUDAppearStyle { get set }
     var hudInset: CGPoint { get set }
+    var absoluteInsetsValue: Bool { get set }
 
     var finishAdjustSize: CGFloat { get set }
     var exactSize: Bool { get set }
@@ -65,6 +66,7 @@ public struct HUDConfig: HUDViewModel, HUDCoverModel, HUDContainerModel {
     public var preferredSize: CGSize = HUDTheme.preferredSize
     public var allowedMaximumSize: CGSize = HUDTheme.allowedSizeInPercentOfScreen // maximum HUD size limitation in percent by screen size
     public var hudInset: CGPoint = CGPoint(x: 0, y: 0)
+    public var absoluteInsetsValue = false
 
     public var coverInAnimationDuration: TimeInterval = HUDTheme.coverAppearDuration
     public var coverOutAnimationDuration: TimeInterval = HUDTheme.coverDisappearDuration
