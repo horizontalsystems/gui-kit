@@ -54,11 +54,17 @@ public class HUD {
             size.height = min(max(size.height, config.preferredSize.height), UIScreen.main.bounds.height * config.allowedMaximumSize.height)
         }
 
-        if view != nil {
-            view?.set(config: config)
-            view?.containerView.setContent(content: content, size: size, exact: config.exactSize)
-            view?.adjustPlace()
-        }  else {
+        if let view = view {                                                             // when user want to change already showing hud, we must try to move/show smoothly
+            if view.config.userInteractionEnabled == config.userInteractionEnabled {     // if type of hud (with cover, iteraction and other) same, just change config, position and content
+                view.set(config: config)
+                view.containerView.setContent(content: content, size: size, exact: config.exactSize)
+                view.adjustPlace()
+            } else {                                                                    // if type changed (with/without cover ex.) must reset and create again
+                view.window = nil
+                self.view = nil
+            }
+        }
+        if view == nil {                                                                // if it's no view, create new and show
             var coverView: HUDCoverView?
             if !config.userInteractionEnabled {
                 coverView = _coverView ?? defaultCoverView(onTap: {[weak self] in
@@ -97,9 +103,16 @@ extension HUD: HUDViewRouterInterface {
 
         let interactor: HUDViewInteractorInterface = HUDViewInteractor()
         let presenter: HUDViewPresenterInterface & HUDViewInteractorDelegate = HUDViewPresenter(interactor: interactor, router: router, coverView: coverView, containerView: containerView, config: config)
-        presenter.feedbackGenerator = HapticGenerator.instance
-        interactor.delegate = presenter
         let view = HUDView(presenter: presenter, config: config, coverView: coverView, containerView: containerView)
+
+        presenter.feedbackGenerator = HapticGenerator.instance
+        presenter.view = view
+        interactor.delegate = presenter
+
+        let window = HUDWindow(frame: UIScreen.main.bounds, rootController: view)
+        view.window = window
+
+        view.place()
 
         return view
     }
@@ -111,8 +124,9 @@ extension HUD: HUDViewRouterInterface {
     }
 
     public func hide() {
-        view?.presenter.dismiss(animated: animated, completion: { [weak view] in
+        view?.presenter.dismiss(animated: animated, completion: { [weak view, weak self] in
             view?.dismissCompletion?()
+            self?.view = nil
         })
     }
 
