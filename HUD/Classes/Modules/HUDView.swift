@@ -27,11 +27,6 @@ class HUDView: UIViewController, HUDViewInterface {
         self.containerView = containerView
 
         super.init(nibName: nil, bundle: Bundle(for: HUDView.self))
-
-        if let coverView = coverView {
-            view.addSubview(coverView)
-        }
-        view.addSubview(containerView)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -41,13 +36,18 @@ class HUDView: UIViewController, HUDViewInterface {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        presenter.view = self
+        if let coverView = coverView {
+            view.addSubview(coverView)
+        }
+        view.addSubview(containerView)
 
-        window = HUDWindow(frame: UIScreen.main.bounds, rootController: self)
         coverView?.frame = view.bounds
         coverView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
         presenter.viewDidLoad()
+    }
+
+    func place() {
         place(holderView: self.holderView)
     }
 

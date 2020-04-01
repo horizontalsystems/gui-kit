@@ -54,7 +54,6 @@ public protocol HUDViewModel {
     var animationCurve: UIView.AnimationOptions { get set }
 }
 
-
 public struct HUDConfig: HUDViewModel, HUDCoverModel, HUDContainerModel {
     public var style: HUDStyle = .banner(.top)
 
