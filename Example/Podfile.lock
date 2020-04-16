@@ -1,5 +1,5 @@
 PODS:
-  - ActionSheet.swift (1.1):
+  - ActionSheet.swift (1.2):
     - SnapKit (~> 5.0)
     - UIExtensions.swift (~> 1.1)
   - Chart.swift (1.2):
@@ -37,7 +37,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ActionSheet.swift: 5352dbbab9b2cf408341e85c15642a52495c7fd6
+  ActionSheet.swift: 4583c1353a908e7c15a31af7f087a2be1465c6f8
   Chart.swift: 2634973317e2637347d160b99992b7b21cbf7644
   HUD.swift: 0b9d074f07f601891878f87ff10ad867eed3182b
   SectionsTableView.swift: 91f2235b63405f938621b7df040149d7c65b355d
