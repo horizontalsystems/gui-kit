@@ -25,11 +25,24 @@ class ViewController: UIViewController {
         hudButton.setTitle("Show HUD", for: .normal)
         hudButton.addTarget(self, action: #selector(showHud), for: .touchUpInside)
 
+        let actionSheetButton = UIButton()
+        view.addSubview(actionSheetButton)
+
+        actionSheetButton.snp.makeConstraints { maker in
+            maker.top.equalTo(hudButton.snp.bottom).offset(20)
+            maker.centerX.equalToSuperview()
+            maker.height.equalTo(30)
+        }
+
+        actionSheetButton.setTitleColor(.black, for: .normal)
+        actionSheetButton.setTitle("Show ActionSheet", for: .normal)
+        actionSheetButton.addTarget(self, action: #selector(showActionSheet), for: .touchUpInside)
+
         let chartButton = UIButton()
         view.addSubview(chartButton)
 
         chartButton.snp.makeConstraints { maker in
-            maker.top.equalToSuperview().offset(100)
+            maker.top.equalTo(actionSheetButton.snp.bottom).offset(20)
             maker.centerX.equalToSuperview()
             maker.height.equalTo(30)
         }
@@ -55,6 +68,17 @@ class ViewController: UIViewController {
     
     @objc func showHud() {
         show(title: "Hello World")
+    }
+
+    @objc func showActionSheet() {
+        let content = ContentViewController()
+
+        let isAlert = Int.random(in: 0...1) == 0
+        if isAlert {
+            present(content.toAlert, animated: true)
+        } else {
+            present(content.toBottomSheet, animated: true)
+        }
     }
 
     @objc func showChart() {
