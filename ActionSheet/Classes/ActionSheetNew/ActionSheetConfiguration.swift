@@ -2,7 +2,7 @@ import Foundation
 
 public struct ActionSheetConfiguration {
     public var style: ActionStyleNew
-    public var tapCoverToDismiss: Bool
+    public var tapToDismiss: Bool = true
 
     public var coverBackgroundColor: UIColor = UIColor(white: 0, alpha: 0.5)
 
@@ -17,10 +17,8 @@ public struct ActionSheetConfiguration {
 
         switch style {
         case .alert:
-            tapCoverToDismiss = true
             sideMargin = 52
         case .sheet:
-            tapCoverToDismiss = false
             sideMargin = 10
         }
     }

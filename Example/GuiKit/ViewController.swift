@@ -25,24 +25,40 @@ class ViewController: UIViewController {
         hudButton.setTitle("Show HUD", for: .normal)
         hudButton.addTarget(self, action: #selector(showHud), for: .touchUpInside)
 
-        let actionSheetButton = UIButton()
-        view.addSubview(actionSheetButton)
+        let bottomSheetButton = UIButton()
+        view.addSubview(bottomSheetButton)
 
-        actionSheetButton.snp.makeConstraints { maker in
+        let alertButton = UIButton()
+        view.addSubview(alertButton)
+
+        bottomSheetButton.snp.makeConstraints { maker in
             maker.top.equalTo(hudButton.snp.bottom).offset(20)
-            maker.centerX.equalToSuperview()
+            maker.leading.equalToSuperview().offset(32)
+            maker.trailing.equalTo(alertButton.snp.leading).offset(16)
             maker.height.equalTo(30)
         }
 
-        actionSheetButton.setTitleColor(.black, for: .normal)
-        actionSheetButton.setTitle("Show ActionSheet", for: .normal)
-        actionSheetButton.addTarget(self, action: #selector(showActionSheet), for: .touchUpInside)
+        bottomSheetButton.setTitleColor(.black, for: .normal)
+        bottomSheetButton.setTitle("Sheet", for: .normal)
+        bottomSheetButton.addTarget(self, action: #selector(showBottomSheet), for: .touchUpInside)
+
+
+        alertButton.snp.makeConstraints { maker in
+            maker.top.equalTo(hudButton.snp.bottom).offset(20)
+            maker.trailing.equalToSuperview().inset(32)
+            maker.height.equalTo(30)
+            maker.width.equalTo(bottomSheetButton.snp.width)
+        }
+
+        alertButton.setTitleColor(.black, for: .normal)
+        alertButton.setTitle("Alert", for: .normal)
+        alertButton.addTarget(self, action: #selector(showAlert), for: .touchUpInside)
 
         let chartButton = UIButton()
         view.addSubview(chartButton)
 
         chartButton.snp.makeConstraints { maker in
-            maker.top.equalTo(actionSheetButton.snp.bottom).offset(20)
+            maker.top.equalTo(bottomSheetButton.snp.bottom).offset(20)
             maker.centerX.equalToSuperview()
             maker.height.equalTo(30)
         }
@@ -70,15 +86,12 @@ class ViewController: UIViewController {
         show(title: "Hello World")
     }
 
-    @objc func showActionSheet() {
-        let content = ContentViewController()
+    @objc func showBottomSheet() {
+        present(SectionsViewController().toBottomSheet, animated: true)
+    }
 
-        let isAlert = Int.random(in: 0...1) == 0
-        if isAlert {
-            present(content.toAlert, animated: true)
-        } else {
-            present(content.toBottomSheet, animated: true)
-        }
+    @objc func showAlert() {
+        present(SectionsViewController().toAlert, animated: true)
     }
 
     @objc func showChart() {

@@ -1,16 +1,19 @@
 import UIKit
+import SnapKit
 
 class ActionSheetPresentationController: UIPresentationController {
-    private let coverView = UIView()
-    private let coverColor: UIColor
-    private let style: ActionStyleNew
+    private let coverButton = UIButton()
+    private let configuration: ActionSheetConfiguration
     private var driver: TransitionDriver?
 
-    init(driver: TransitionDriver?, presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, coverColor: UIColor, style: ActionStyleNew) {
+    init(driver: TransitionDriver?, presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, configuration: ActionSheetConfiguration) {
         self.driver = driver
-        self.coverColor = coverColor
-        self.style = style
+        self.configuration = configuration
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
+
+        if configuration.tapToDismiss {
+            coverButton.addTarget(self, action: #selector(didTapCover), for: .touchUpInside)
+        }
     }
 
     override func presentationTransitionWillBegin() {
@@ -19,14 +22,14 @@ class ActionSheetPresentationController: UIPresentationController {
         guard let presentedView = presentedView else {
             return
         }
-        containerView?.addSubview(coverView)
+        containerView?.addSubview(coverButton)
         containerView?.addSubview(presentedView)
 
-        coverView.snp.makeConstraints { maker in
+        coverButton.snp.makeConstraints { maker in
             maker.edges.equalToSuperview()
         }
 
-        switch style {
+        switch configuration.style {
         case .alert:
             presentedView.alpha = 0
             presentedView.snp.makeConstraints { maker in
@@ -40,10 +43,10 @@ class ActionSheetPresentationController: UIPresentationController {
             containerView?.layoutIfNeeded()
         }
 
-        coverView.backgroundColor = coverColor
-        coverView.alpha = 0
+        coverButton.backgroundColor = configuration.coverBackgroundColor
+        coverButton.alpha = 0
         alongsideTransition { [weak self] in
-            self?.coverView.alpha = 1
+            self?.coverButton.alpha = 1
         }
     }
 
@@ -53,15 +56,16 @@ class ActionSheetPresentationController: UIPresentationController {
         if completed {
             driver?.direction = .dismiss
         } else {
-            self.coverView.removeFromSuperview()
+            self.coverButton.removeFromSuperview()
         }
     }
 
     override func dismissalTransitionWillBegin() {
         super.dismissalTransitionWillBegin()
-        
+
+        print("dismissalTransitionWillBegin at: \(Thread.current)")
         alongsideTransition { [weak self] in
-            self?.coverView.alpha = 0
+            self?.coverButton.alpha = 0
         }
     }
     
@@ -69,7 +73,7 @@ class ActionSheetPresentationController: UIPresentationController {
         super.dismissalTransitionDidEnd(completed)
         
         if completed {
-            self.coverView.removeFromSuperview()
+            self.coverButton.removeFromSuperview()
         }
     }
     
@@ -82,6 +86,10 @@ class ActionSheetPresentationController: UIPresentationController {
         coordinator.animate(alongsideTransition: { (_) in
             action()
         }, completion: nil)
+    }
+
+    @objc private func didTapCover() {
+        presentedViewController.dismiss(animated: true)
     }
 
 }
