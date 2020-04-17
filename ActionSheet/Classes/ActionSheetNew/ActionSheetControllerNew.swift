@@ -33,7 +33,7 @@ public class ActionSheetControllerNew: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        if configuration.style == .alert {
+        if configuration.tapToDismiss {
             let dismissAreaButton = UIButton()
             view.addSubview(dismissAreaButton)
             dismissAreaButton.snp.makeConstraints { maker in
@@ -44,7 +44,7 @@ public class ActionSheetControllerNew: UIViewController {
 
         // add and setup content as child view controller
         addChildController(content)
-        viewDelegate?.parentView = self
+        viewDelegate?.actionSheetView = self
     }
 
     public override func viewWillDisappear(_ animated: Bool) {
@@ -61,7 +61,7 @@ public class ActionSheetControllerNew: UIViewController {
     }
 
     @objc private func didTapDismissArea() {
-        self.dismiss(animated: true)
+        dismiss(animated: true)
     }
 
     deinit {
@@ -112,7 +112,9 @@ extension ActionSheetControllerNew {
 extension ActionSheetControllerNew: ActionSheetView {
 
     public func dismissView(animated: Bool) {
-        self.dismiss(animated: animated)
+        DispatchQueue.main.async {
+            self.dismiss(animated: animated)
+        }
     }
 
 //    public func didChangeHeight() {

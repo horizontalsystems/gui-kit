@@ -4,13 +4,13 @@ public protocol ActionSheetView: class {
 }
 
 public protocol ActionSheetViewDelegate: class {
-    var parentView: ActionSheetView? { get set }
+    var actionSheetView: ActionSheetView? { get set }
     var height: CGFloat? { get }
 }
 
 extension ActionSheetViewDelegate {
 
-    public var parentView: ActionSheetView? {
+    public var actionSheetView: ActionSheetView? {
         get { nil }
         set { ()  }
     }

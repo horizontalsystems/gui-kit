@@ -1,9 +1,10 @@
 import UIKit
 import SnapKit
 import ActionSheet
+import SectionsTableView
 
 class ContentViewController: UIViewController {
-    weak var parentView: ActionSheetView?
+    weak var actionSheetView: ActionSheetView?
 
     private let closeButton = UIButton()
 
@@ -60,7 +61,7 @@ class ContentViewController: UIViewController {
     }
 
     @objc func close() {
-        parentView?.dismissView(animated: true)
+        dismiss(animated: true)
     }
 
     deinit {

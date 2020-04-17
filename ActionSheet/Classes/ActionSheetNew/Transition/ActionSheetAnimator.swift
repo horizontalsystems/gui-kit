@@ -16,7 +16,7 @@ public class ActionSheetAnimator: NSObject, UIViewControllerTransitioningDelegat
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         driver?.add(to: presented)
         return ActionSheetPresentationController(driver: driver, presentedViewController: presented,
-                                                                presenting: presenting ?? source, coverColor: configuration.coverBackgroundColor, style: configuration.style)
+                                                                presenting: presenting ?? source, configuration: configuration)
     }
     
     // Animation
