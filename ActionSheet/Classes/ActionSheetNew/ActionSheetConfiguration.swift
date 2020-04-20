@@ -7,7 +7,7 @@ public struct ActionSheetConfiguration {
     public var coverBackgroundColor: UIColor = UIColor(white: 0, alpha: 0.5)
 
     public var animationDuration: TimeInterval = 0.3
-    public var animationCurve: UIView.AnimationCurve = .easeOut
+    public var animationCurve: UIView.AnimationCurve = .easeInOut
 
     public var sideMargin: CGFloat
     public var cornerRadius: CGFloat = 16
