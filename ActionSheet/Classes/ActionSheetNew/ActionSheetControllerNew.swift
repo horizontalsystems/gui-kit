@@ -49,12 +49,13 @@ public class ActionSheetControllerNew: UIViewController {
 
     public override func viewWillDisappear(_ animated: Bool) {
         content.willMove(toParent: nil)
-        content.removeFromParent()
 
         super.viewWillDisappear(animated)
     }
 
     public override func viewDidDisappear(_ animated: Bool) {
+        content.viewDidDisappear(animated)
+        content.removeFromParent()
         content.view.removeFromSuperview()
 
         super.viewDidDisappear(animated)
