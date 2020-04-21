@@ -63,7 +63,6 @@ class ActionSheetPresentationController: UIPresentationController {
     override func dismissalTransitionWillBegin() {
         super.dismissalTransitionWillBegin()
 
-        print("dismissalTransitionWillBegin at: \(Thread.current)")
         alongsideTransition { [weak self] in
             self?.coverButton.alpha = 0
         }

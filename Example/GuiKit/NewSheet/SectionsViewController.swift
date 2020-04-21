@@ -28,7 +28,7 @@ class SectionsViewController: UIViewController, SectionsDataSource {
         titleLabel.textColor = .white
         titleLabel.font = .boldSystemFont(ofSize: 17)
         titleLabel.textAlignment = .center
-        titleLabel.text = "Swap Here in Title"
+        titleLabel.text = "Swipe Here in Title"
 
         tableView.snp.makeConstraints { maker in
             maker.top.equalTo(titleLabel.snp.bottom).offset(8)
@@ -71,8 +71,6 @@ class SectionsViewController: UIViewController, SectionsDataSource {
     }
 
     private func onRowTap() {
-        print("tap dismiss child at: \(Thread.current)")
-
         // to dismiss child with tableView must do it using async.
         DispatchQueue.main.async {
             self.dismiss(animated: true)
