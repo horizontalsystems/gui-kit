@@ -43,7 +43,7 @@ public class ActionSheetControllerNew: UIViewController {
         }
 
         // add and setup content as child view controller
-        addChildController(content)
+        addChildController()
         viewDelegate?.actionSheetView = self
     }
 
@@ -54,10 +54,7 @@ public class ActionSheetControllerNew: UIViewController {
     }
 
     public override func viewDidDisappear(_ animated: Bool) {
-        content.viewDidDisappear(animated)
-        content.removeFromParent()
-        content.view.removeFromSuperview()
-
+        removeChildController(animated)
         super.viewDidDisappear(animated)
     }
 
@@ -74,19 +71,24 @@ public class ActionSheetControllerNew: UIViewController {
 // Child management
 extension ActionSheetControllerNew {
 
-    private func addChildController(_ controller: UIViewController) {
-        addChild(controller)
-        view.addSubview(controller.view)
+    private func addChildController() {
+        addChild(content)
+        view.addSubview(content.view)
         setContentViewPosition(animation: false)
-        controller.view.clipsToBounds = true
-        controller.view.cornerRadius = configuration.cornerRadius
+        content.view.clipsToBounds = true
+        content.view.cornerRadius = configuration.cornerRadius
+        content.view.layoutIfNeeded()
 
-        controller.didMove(toParent: self)
+        content.didMove(toParent: self)
+    }
+
+    private func removeChildController(_ animated: Bool) {
+        content.viewDidDisappear(animated)
+        content.removeFromParent()
+        content.view.removeFromSuperview()
     }
 
     func setContentViewPosition(animation: Bool) {
-        view.translatesAutoresizingMaskIntoConstraints = false
-
         content.view.snp.remakeConstraints { maker in
             maker.leading.trailing.equalToSuperview().inset(configuration.sideMargin)
             if configuration.style == .sheet {      // content controller from bottom of superview
