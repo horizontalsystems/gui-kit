@@ -5,7 +5,6 @@ public class ActionSheetControllerNew: UIViewController {
     private let content: UIViewController
     private var viewDelegate: ActionSheetViewDelegate?
 
-    private var dismissAreaButton: UIButton?
     private let configuration: ActionSheetConfiguration
 
     private var animator: ActionSheetAnimator?
@@ -34,12 +33,14 @@ public class ActionSheetControllerNew: UIViewController {
         super.viewDidLoad()
 
         if configuration.tapToDismiss {
-            let dismissAreaButton = UIButton()
-            view.addSubview(dismissAreaButton)
-            dismissAreaButton.snp.makeConstraints { maker in
+            let tapView = ActionSheetTapView()
+            view.addSubview(tapView)
+            tapView.snp.makeConstraints { maker in
                 maker.edges.equalToSuperview()
             }
-            dismissAreaButton.addTarget(self, action: #selector(didTapDismissArea), for: .touchUpInside)
+            tapView.handleTap = { [weak self] in
+                self?.dismiss(animated: true)
+            }
         }
 
         // add and setup content as child view controller
@@ -56,10 +57,6 @@ public class ActionSheetControllerNew: UIViewController {
     public override func viewDidDisappear(_ animated: Bool) {
         removeChildController(animated)
         super.viewDidDisappear(animated)
-    }
-
-    @objc private func didTapDismissArea() {
-        dismiss(animated: true)
     }
 
     deinit {
