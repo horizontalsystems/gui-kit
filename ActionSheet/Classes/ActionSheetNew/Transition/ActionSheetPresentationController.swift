@@ -1,8 +1,9 @@
 import UIKit
+import UIExtensions
 import SnapKit
 
 class ActionSheetPresentationController: UIPresentationController {
-    private let coverButton = UIButton()
+    private let tapView = ActionSheetTapView()
     private let configuration: ActionSheetConfiguration
     private var driver: TransitionDriver?
 
@@ -12,7 +13,9 @@ class ActionSheetPresentationController: UIPresentationController {
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
 
         if configuration.tapToDismiss {
-            coverButton.addTarget(self, action: #selector(didTapCover), for: .touchUpInside)
+            tapView.handleTap = { [weak presentedViewController] in
+                presentedViewController?.dismiss(animated: true)
+            }
         }
     }
 
@@ -22,10 +25,10 @@ class ActionSheetPresentationController: UIPresentationController {
         guard let presentedView = presentedView else {
             return
         }
-        containerView?.addSubview(coverButton)
+        containerView?.addSubview(tapView)
         containerView?.addSubview(presentedView)
 
-        coverButton.snp.makeConstraints { maker in
+        tapView.snp.makeConstraints { maker in
             maker.edges.equalToSuperview()
         }
 
@@ -43,10 +46,10 @@ class ActionSheetPresentationController: UIPresentationController {
             containerView?.layoutIfNeeded()
         }
 
-        coverButton.backgroundColor = configuration.coverBackgroundColor
-        coverButton.alpha = 0
+        tapView.backgroundColor = configuration.coverBackgroundColor
+        tapView.alpha = 0
         alongsideTransition { [weak self] in
-            self?.coverButton.alpha = 1
+            self?.tapView.alpha = 1
         }
     }
 
@@ -56,7 +59,7 @@ class ActionSheetPresentationController: UIPresentationController {
         if completed {
             driver?.direction = .dismiss
         } else {
-            self.coverButton.removeFromSuperview()
+            self.tapView.removeFromSuperview()
         }
     }
 
@@ -64,7 +67,7 @@ class ActionSheetPresentationController: UIPresentationController {
         super.dismissalTransitionWillBegin()
 
         alongsideTransition { [weak self] in
-            self?.coverButton.alpha = 0
+            self?.tapView.alpha = 0
         }
     }
     
@@ -72,7 +75,7 @@ class ActionSheetPresentationController: UIPresentationController {
         super.dismissalTransitionDidEnd(completed)
         
         if completed {
-            self.coverButton.removeFromSuperview()
+            self.tapView.removeFromSuperview()
         }
     }
     
@@ -85,10 +88,6 @@ class ActionSheetPresentationController: UIPresentationController {
         coordinator.animate(alongsideTransition: { (_) in
             action()
         }, completion: nil)
-    }
-
-    @objc private func didTapCover() {
-        presentedViewController.dismiss(animated: true)
     }
 
 }
