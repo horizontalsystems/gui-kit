@@ -96,5 +96,43 @@ extension UIView {
 
         CATransaction.commit()
     }
+    
+    // drawing on context methods
+    public func createRoundedRectPath(for rect: CGRect, radius: CGFloat) -> CGMutablePath {
+        let path = CGMutablePath()
+
+        let midTopPoint = CGPoint(x: rect.midX, y: rect.minY)
+        path.move(to: midTopPoint)
+
+        let topRightPoint = CGPoint(x: rect.maxX, y: rect.minY)
+        let bottomRightPoint = CGPoint(x: rect.maxX, y: rect.maxY)
+        let bottomLeftPoint = CGPoint(x: rect.minX, y: rect.maxY)
+        let topLeftPoint = CGPoint(x: rect.minX, y: rect.minY)
+
+        path.addArc(tangent1End: topRightPoint, tangent2End: bottomRightPoint, radius: radius)
+        path.addArc(tangent1End: bottomRightPoint, tangent2End: bottomLeftPoint, radius: radius)
+        path.addArc(tangent1End: bottomLeftPoint, tangent2End: topLeftPoint, radius: radius)
+        path.addArc(tangent1End: topLeftPoint, tangent2End: topRightPoint, radius: radius)
+
+        path.closeSubpath()
+
+        return path
+    }
+
+    public func drawGradient(context: CGContext, rect: CGRect, colors: [CGColor], locations: [CGFloat]) {
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let colors: CFArray = colors as CFArray
+        guard let gradient = CGGradient(colorsSpace: colorSpace, colors: colors, locations: locations) else {
+            return
+        }
+        let startPoint = CGPoint(x: rect.midX, y: rect.minY)
+        let endPoint = CGPoint(x: rect.midX, y: rect.maxY)
+
+        context.saveGState()
+        context.addRect(rect)
+        context.clip()
+        context.drawLinearGradient(gradient, start: startPoint, end: endPoint, options: [])
+        context.restoreGState()
+    }
 
 }
