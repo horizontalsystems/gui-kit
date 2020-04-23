@@ -1,41 +1,22 @@
 import UIKit
 
-class AlphaDismissAnimation: NSObject {
-    private let duration: TimeInterval
+class AlphaDismissAnimation: BaseAnimation {
     private let animationCurve: UIView.AnimationCurve
 
     init(duration: TimeInterval, animationCurve: UIView.AnimationCurve) {
-        self.duration = duration
         self.animationCurve = animationCurve
+        super.init(duration: duration)
     }
 
-    private func animator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
-        let from = transitionContext.view(forKey: .from)
-
+    override func animator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
         let animator = UIViewPropertyAnimator(duration: duration, curve: animationCurve) {
-                from?.alpha = 0
+            transitionContext.view(forKey: .from)?.alpha = 0
         }
-        
+
         animator.addCompletion { (position) in
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
         return animator
-    }
-
-}
-
-extension AlphaDismissAnimation: UIViewControllerAnimatedTransitioning {
-
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        duration
-    }
-    
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        animator(using: transitionContext).startAnimation()
-    }
-    
-    func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
-        self.animator(using: transitionContext)
     }
 
 }

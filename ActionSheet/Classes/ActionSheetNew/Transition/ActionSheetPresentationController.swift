@@ -48,6 +48,7 @@ class ActionSheetPresentationController: UIPresentationController {
 
         tapView.backgroundColor = configuration.coverBackgroundColor
         tapView.alpha = 0
+
         alongsideTransition { [weak self] in
             self?.tapView.alpha = 1
         }
@@ -73,7 +74,7 @@ class ActionSheetPresentationController: UIPresentationController {
     
     override func dismissalTransitionDidEnd(_ completed: Bool) {
         super.dismissalTransitionDidEnd(completed)
-        
+
         if completed {
             self.tapView.removeFromSuperview()
         }
@@ -84,7 +85,7 @@ class ActionSheetPresentationController: UIPresentationController {
             action()
             return
         }
-            
+
         coordinator.animate(alongsideTransition: { (_) in
             action()
         }, completion: nil)

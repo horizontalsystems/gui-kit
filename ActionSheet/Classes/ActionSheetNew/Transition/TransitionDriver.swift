@@ -1,14 +1,13 @@
 import UIKit
 
-enum TransitionDirection: Int { case present, dismiss }
-
 class TransitionDriver: UIPercentDrivenInteractiveTransition {
     private weak var presentedController: UIViewController?
-    private var panRecognizer: UIPanGestureRecognizer?
+    weak var interactiveTransitionDelegate: InteractiveTransitionDelegate?
+
+    var panRecognizer: UIPanGestureRecognizer?
 
     var direction: TransitionDirection = .present
     var speedMultiplier: CGFloat = 1
-
     func add(to controller: UIViewController) {
         presentedController = controller
         
@@ -29,6 +28,17 @@ class TransitionDriver: UIPercentDrivenInteractiveTransition {
         
         set { }
     }
+
+    var interactiveTransitionStarted: Bool {
+        guard let recognizer = panRecognizer else {
+            return false
+        }
+        switch recognizer.state {
+        case .began, .changed: return true
+        default: return false
+        }
+    }
+
 
     @objc private func handle(_ recognizer: UIPanGestureRecognizer) {
         switch direction {
@@ -51,22 +61,26 @@ extension TransitionDriver {                    // Gesture Handling
         switch recognizer.state {
         case .began:
             pause()
+            interactiveTransitionDelegate?.start(direction: .present)
         case .changed:
             let increment = -recognizer.incrementToBottom(maxTranslation: maxTranslation)
             update(percentComplete + increment)
-            
+            interactiveTransitionDelegate?.move(direction: .present, percent: percentComplete + increment)
         case .ended, .cancelled:
             speedMultiplier = recognizer.swipeMultiplier(maxTranslation: maxTranslation)
             if speedMultiplier < 0.5 {
                 speedMultiplier = 1
                 cancel()
+                interactiveTransitionDelegate?.end(direction: .present, cancelled: true)
             } else {
                 finish()
+                interactiveTransitionDelegate?.end(direction: .present, cancelled: false)
             }
             
         case .failed:
             cancel()
-            
+            interactiveTransitionDelegate?.fail(direction: .present)
+
         default:
             break
         }
@@ -76,28 +90,31 @@ extension TransitionDriver {                    // Gesture Handling
         switch recognizer.state {
         case .began:
             pause() // Pause allows to detect isRunning
-            
             if !isRunning {
                 speedMultiplier = recognizer.swipeMultiplier(maxTranslation: maxTranslation)
                 presentedController?.dismiss(animated: true) // Start the new one
+                interactiveTransitionDelegate?.start(direction: .dismiss)
             }
         
         case .changed:
-            update(percentComplete + recognizer.incrementToBottom(maxTranslation: maxTranslation))
-            
+            let newValue = percentComplete + recognizer.incrementToBottom(maxTranslation: maxTranslation)
+            update(newValue)
+            interactiveTransitionDelegate?.move(direction: .dismiss, percent: newValue)
         case .ended, .cancelled:
             speedMultiplier = recognizer.swipeMultiplier(maxTranslation: maxTranslation)
             if speedMultiplier < 0.5 {
                 finish()
+                interactiveTransitionDelegate?.end(direction: .dismiss, cancelled: false)
             } else {
                 speedMultiplier = 1
                 cancel()
+                interactiveTransitionDelegate?.end(direction: .dismiss, cancelled: true)
             }
 
         case .failed:
             speedMultiplier = 1
             cancel()
-            
+            interactiveTransitionDelegate?.fail(direction: .dismiss)
         default:
             break
         }
