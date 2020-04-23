@@ -23,8 +23,4 @@ extension BaseAnimation: UIViewControllerAnimatedTransitioning  {
         animator(using: transitionContext).startAnimation()
     }
 
-    func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
-        animator(using: transitionContext)
-    }
-
 }

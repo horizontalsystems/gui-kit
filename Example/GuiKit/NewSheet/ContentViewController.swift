@@ -12,7 +12,7 @@ class ContentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor.black
+        view.backgroundColor = UIColor.darkGray
         let label = UILabel()
         view.addSubview(label)
         label.snp.makeConstraints { maker in
