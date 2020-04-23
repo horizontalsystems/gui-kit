@@ -1,42 +1,23 @@
 import UIKit
 import SnapKit
 
-class AlphaPresentAnimation: NSObject {
-    private let duration: TimeInterval
-    private let animationCurve: UIView.AnimationCurve
+class AlphaPresentAnimation: BaseAnimation {
+    private let animationCurve: UIView.AnimationOptions
 
-    init(duration: TimeInterval, animationCurve: UIView.AnimationCurve) {
-        self.duration = duration
+    init(duration: TimeInterval, animationCurve: UIView.AnimationOptions) {
         self.animationCurve = animationCurve
+        super.init(duration: duration)
     }
 
-    private func animator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
-        let to = transitionContext.view(forKey: .to)
-
-        let animator = UIViewPropertyAnimator(duration: duration, curve: animationCurve) {
-                to?.alpha = 1
-        }
-        
-        animator.addCompletion { (position) in
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-        }
-        return animator
-    }
-
-}
-
-extension AlphaPresentAnimation: UIViewControllerAnimatedTransitioning {
-
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        duration
-    }
-    
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        animator(using: transitionContext).startAnimation()
-    }
-    
-    func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
-        animator(using: transitionContext)
+    override func animator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: duration,
+                delay: 0,
+                options: animationCurve,
+                animations: {
+                    transitionContext.view(forKey: .to)?.alpha = 1
+                }, completion: { position in
+                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+        })
     }
 
 }

@@ -4,10 +4,12 @@ import SnapKit
 public class ActionSheetControllerNew: UIViewController {
     private let content: UIViewController
     private var viewDelegate: ActionSheetViewDelegate?
+    weak var interactiveTransitionDelegate: InteractiveTransitionDelegate?
 
     private let configuration: ActionSheetConfiguration
 
     private var animator: ActionSheetAnimator?
+    private var ignoreByInteractivePresentingBreak = false
 
     public required init?(coder aDecoder: NSCoder) {
         fatalError()
@@ -25,8 +27,16 @@ public class ActionSheetControllerNew: UIViewController {
         let animator = ActionSheetAnimator(configuration: configuration)
         self.animator = animator
         transitioningDelegate = animator
+        animator.interactiveTransitionDelegate = self
 
+        if let interactiveTransitionDelegate = content as? InteractiveTransitionDelegate {
+            self.interactiveTransitionDelegate = interactiveTransitionDelegate
+        }
         modalPresentationStyle = .custom
+    }
+
+    public override var shouldAutomaticallyForwardAppearanceMethods: Bool {
+        false
     }
 
     public override func viewDidLoad() {
@@ -48,16 +58,39 @@ public class ActionSheetControllerNew: UIViewController {
         viewDelegate?.actionSheetView = self
     }
 
-    public override func viewWillDisappear(_ animated: Bool) {
-        content.willMove(toParent: nil)
+    // lifecycle
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !ignoreByInteractivePresentingBreak {
+            content.beginAppearanceTransition(true, animated: animated)
+        }
+    }
 
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !ignoreByInteractivePresentingBreak {
+            content.endAppearanceTransition()
+        }
+        ignoreByInteractivePresentingBreak = false
+    }
+
+    public override func viewWillDisappear(_ animated: Bool) {
+        let interactiveTransitionStarted = animator?.interactiveTransitionStarted ?? false
+
+        if !(configuration.ignoreInteractiveFalseMoving && interactiveTransitionStarted) {
+//            content.willMove(toParent: nil)
+            content.beginAppearanceTransition(false, animated: animated)
+        }
         super.viewWillDisappear(animated)
     }
 
     public override func viewDidDisappear(_ animated: Bool) {
         removeChildController(animated)
+
+        content.endAppearanceTransition()
         super.viewDidDisappear(animated)
     }
+
 
     deinit {
 //        print("deinit \(self)")
@@ -76,11 +109,11 @@ extension ActionSheetControllerNew {
         content.view.cornerRadius = configuration.cornerRadius
         content.view.layoutIfNeeded()
 
-        content.didMove(toParent: self)
+//        content.didMove(toParent: self)
     }
 
     private func removeChildController(_ animated: Bool) {
-        content.viewDidDisappear(animated)
+//        content.viewDidDisappear(animated)
         content.removeFromParent()
         content.view.removeFromSuperview()
     }
@@ -98,9 +131,9 @@ extension ActionSheetControllerNew {
                 maker.height.equalTo(height)
             }
         }
-        if animation {
-            UIView.animate(withDuration: configuration.animationDuration) { () -> Void in
-                self.view.layoutIfNeeded()
+        if animation, let superview = view.superview {
+            UIView.animate(withDuration: configuration.presentAnimationDuration) { () -> Void in
+                superview.layoutIfNeeded()
             }
         } else {
             view.layoutIfNeeded()
@@ -117,9 +150,38 @@ extension ActionSheetControllerNew: ActionSheetView {
         }
     }
 
-//    public func didChangeHeight() {
-//        setContentViewPosition(animation: true)
-//    }
+    public func didChangeHeight() {
+        setContentViewPosition(animation: true)
+    }
+
+}
+
+extension ActionSheetControllerNew: InteractiveTransitionDelegate {
+
+    public func start(direction: TransitionDirection) {
+        interactiveTransitionDelegate?.start(direction: direction)
+    }
+
+    public func move(direction: TransitionDirection, percent: CGFloat) {
+        interactiveTransitionDelegate?.move(direction: direction, percent: percent)
+    }
+
+    public func end(direction: TransitionDirection, cancelled: Bool) {
+        interactiveTransitionDelegate?.end(direction: direction, cancelled: cancelled)
+        guard configuration.ignoreInteractiveFalseMoving else {
+            return
+        }
+        if cancelled {
+            ignoreByInteractivePresentingBreak = true
+        } else {
+//            content.willMove(toParent: nil)
+            content.beginAppearanceTransition(false, animated: true)
+        }
+    }
+
+    public func fail(direction: TransitionDirection) {
+        interactiveTransitionDelegate?.fail(direction: direction)
+    }
 
 }
 

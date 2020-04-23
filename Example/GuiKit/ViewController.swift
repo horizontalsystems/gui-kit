@@ -87,11 +87,11 @@ class ViewController: UIViewController {
     }
 
     @objc func showBottomSheet() {
-        present(SectionsViewController().toBottomSheet, animated: true)
+        present(ContentViewController().toBottomSheet, animated: true)
     }
 
     @objc func showAlert() {
-        present(SectionsViewController().toAlert, animated: true)
+        present(ContentViewController().toAlert, animated: true)
     }
 
     @objc func showChart() {
