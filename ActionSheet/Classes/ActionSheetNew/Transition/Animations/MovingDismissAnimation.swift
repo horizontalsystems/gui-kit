@@ -24,3 +24,11 @@ class MovingDismissAnimation: BaseAnimation {
     }
 
 }
+
+extension MovingDismissAnimation {
+
+    func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
+        animator(using: transitionContext)
+    }
+
+}
