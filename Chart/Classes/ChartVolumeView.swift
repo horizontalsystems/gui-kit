@@ -48,7 +48,6 @@ class ChartVolumeView: UIView {
 
     func refreshBars(animated: Bool) {
         self.animated = animated
-
         guard !bounds.isEmpty, let dataSource = dataSource, !dataSource.chartData.isEmpty else {
             return
         }
@@ -67,39 +66,22 @@ class ChartVolumeView: UIView {
         let startPath = UIBezierPath()                                      // path with 0 bars to animate from new volumes to current
         let completeBarsPath = UIBezierPath()                               // calculated path for bars
 
-        for (index, point) in chartData.enumerated() {
+        for point in chartData {
             guard let volume = point.volume else {
                 continue
             }
 
             let y = ceil(bounds.maxY - volume.cgFloatValue * deltaY)                                // volume converted to Y coordinate
+            let startX = CGFloat(point.timestamp - dataSource.chartFrame.left) * deltaX - configuration.volumeBarWidth  // finish timestamp converted to X coordinate
 
-            let endX = CGFloat(point.timestamp - dataSource.chartFrame.left) * deltaX               // start timestamp converted to X coordinate
-            let startX = endX - 2                                                                   // finish timestamp converted to X coordinate
-
-            let topLeft = CGPoint(x: startX, y: y)
-            let bottomLeft = CGPoint(x: startX, y: bounds.maxY)
-            let bottomRight = CGPoint(x: endX, y: bounds.maxY)
-
-            completeBarsPath.move(to: topLeft)
-            completeBarsPath.addLine(to: CGPoint(x: endX, y: y))
-            completeBarsPath.addLine(to: bottomRight)
-            completeBarsPath.addLine(to: bottomLeft)
-            completeBarsPath.addLine(to: topLeft)
+            completeBarsPath.append(UIBezierPath(rect: CGRect(x: startX, y: y, width: configuration.volumeBarWidth, height: bounds.maxY - y)))
 
             if animated, lastBarsPath == nil {
-                startPath.move(to: bottomLeft)
-                startPath.addLine(to: bottomRight)
-                startPath.addLine(to: bottomRight)
-                startPath.addLine(to: bottomLeft)
-                startPath.addLine(to: bottomLeft)
+                startPath.append(UIBezierPath(rect: CGRect(x: startX, y: bounds.maxY, width: configuration.volumeBarWidth, height: bounds.maxY)))
             }
         }
-        completeBarsPath.close()
-        completeBarsPath.fill()
 
         guard animated else {                                       // if not animated just set path and draw
-            barsLayer.path = completeBarsPath.cgPath
             barsLayer.removeAllAnimations()
 
             lastBarsPath = completeBarsPath
@@ -108,9 +90,6 @@ class ChartVolumeView: UIView {
         // animate
 
         CATransaction.begin()                                       // make animations from zero path if no lastPath or from lastPath if exist
-
-        startPath.fill()
-        startPath.close()
 
         let barsAnimation = animation(startPath: (lastBarsPath ?? startPath).cgPath, finishPath: completeBarsPath.cgPath)
         barsLayer.add(barsAnimation, forKey: "barsAnimation")

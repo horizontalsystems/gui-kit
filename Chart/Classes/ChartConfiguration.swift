@@ -46,7 +46,7 @@ public class ChartConfiguration {
 
     public var volumeMaximumHeightRatio: CGFloat = 0.4
     public var volumeBarColor: UIColor = UIColor.lightGray.withAlphaComponent(0.2)
-    public var volumeBarMargin: CGFloat = 1
+    public var volumeBarWidth: CGFloat = 2
 
     public var selectedCircleRadius: CGFloat = 5.5
     public var selectedIndicatorColor: UIColor = .white
