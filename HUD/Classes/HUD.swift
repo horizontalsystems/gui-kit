@@ -45,19 +45,12 @@ public class HUD {
     public func showHUD(_ content: UIView & HUDContentViewInterface, animated: Bool = true, showCompletion: (() -> ())? = nil, dismissCompletion: (() -> ())? = nil, onTapCoverView: ((HUD) -> ())? = nil, onTapHUD: ((HUD) -> ())? = nil) {
         self.animated = animated
 
-        var size: CGSize
-        if config.exactSize {
-            size = config.preferredSize
-        } else {
-            size = content.frame.size
-            size.width = min(max(size.width, config.preferredSize.width), UIScreen.main.bounds.width * config.allowedMaximumSize.width)
-            size.height = min(max(size.height, config.preferredSize.height), UIScreen.main.bounds.height * config.allowedMaximumSize.height)
-        }
+        let maxSize = CGSize(width: UIScreen.main.bounds.width * config.allowedMaximumSize.width, height: UIScreen.main.bounds.height * config.allowedMaximumSize.height)
 
         if let view = view {                                                             // when user want to change already showing hud, we must try to move/show smoothly
-            if view.config.userInteractionEnabled == config.userInteractionEnabled {     // if type of hud (with cover, iteraction and other) same, just change config, position and content
+            if view.config.userInteractionEnabled == config.userInteractionEnabled {     // if type of hud (with cover, interaction and other) same, just change config, position and content
                 view.set(config: config)
-                view.containerView.setContent(content: content, size: size, exact: config.exactSize)
+                view.containerView.setContent(content: content, preferredSize: config.preferredSize, maxSize: maxSize, exact: config.exactSize)
                 view.adjustPlace()
             } else {                                                                    // if type changed (with/without cover ex.) must reset and create again
                 view.window = nil
@@ -80,8 +73,7 @@ public class HUD {
                 }
             }
             containerView.isHidden = true
-
-            containerView.setContent(content: content, size: size, exact: config.exactSize)
+            containerView.setContent(content: content, preferredSize: config.preferredSize, maxSize: maxSize, exact: config.exactSize)
 
             view = HUD.create(config: config, router: self, coverView: coverView, containerView: containerView)
             view?.keyboardNotificationHandler = keyboardNotificationHandler
