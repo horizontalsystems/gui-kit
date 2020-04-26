@@ -79,14 +79,6 @@ public class HUDStatusView: UIView, HUDContentViewInterface, HUDTappableViewInte
         layoutIfNeeded()
     }
 
-    public func updateConstraints(forSize size: CGSize) {
-        snp.remakeConstraints { maker in
-            maker.width.equalTo(size.width)
-            maker.height.equalTo(size.height)
-        }
-        layoutIfNeeded()
-    }
-
     public func isTappable() -> Bool {
         if let imageView = imageView as? HUDTappableViewInterface {
             return imageView.isTappable()

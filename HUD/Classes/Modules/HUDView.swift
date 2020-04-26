@@ -74,8 +74,9 @@ class HUDView: UIViewController, HUDViewInterface {
     }
 
     func place(holderView: UIView?) {
-        let size = CGSize(width: containerView.frame.size.width, height: containerView.frame.size.height)
-        holderView?.frame.size = size
+        view.layoutIfNeeded()
+
+        holderView?.frame.size = containerView.frame.size
         switch config.style {
             case .center: adjustViewCenter(for: holderView)
             case let .banner(style): adjustViewCenter(for: holderView, style: style)

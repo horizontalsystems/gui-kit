@@ -12,8 +12,6 @@ public protocol HUDAnimatedViewInterface {
 }
 
 public protocol HUDContentViewInterface: class {
-    func updateConstraints(forSize size: CGSize)
-
     var actions: [HUDTimeAction] { get set }
 }
 
@@ -79,7 +77,7 @@ open class HUDContainerView: CustomIntensityVisualEffectView, HUDContainerInterf
 //        layer.shadowOpacity = 0.3
     }
 
-    public func setContent(content: HUDContentViewInterface, size: CGSize, exact: Bool) {
+    public func setContent(content: HUDContentViewInterface, preferredSize: CGSize, maxSize: CGSize, exact: Bool) {
         guard let newContent = content as? UIView else {
             return
         }
@@ -90,11 +88,11 @@ open class HUDContainerView: CustomIntensityVisualEffectView, HUDContainerInterf
 
         newContent.snp.remakeConstraints { maker in
             maker.edges.equalToSuperview()
-            maker.width.equalTo(size.width)
             if exact {
-                maker.height.equalTo(size.height)
+                maker.size.equalTo(preferredSize)
             } else {
-                maker.height.greaterThanOrEqualTo(size.height)
+                maker.size.greaterThanOrEqualTo(preferredSize)
+                maker.size.lessThanOrEqualTo(maxSize)
             }
         }
         layoutIfNeeded()
