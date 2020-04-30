@@ -46,8 +46,6 @@ class SectionsViewController: UIViewController, SectionsDataSource {
         tableView.snp.updateConstraints { maker in
             maker.height.equalTo(tableView.contentSize.height)
         }
-
-        view.layoutIfNeeded()
     }
 
     func buildSections() -> [SectionProtocol] {
