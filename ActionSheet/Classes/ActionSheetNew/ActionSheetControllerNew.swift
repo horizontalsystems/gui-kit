@@ -78,21 +78,19 @@ public class ActionSheetControllerNew: UIViewController {
         let interactiveTransitionStarted = animator?.interactiveTransitionStarted ?? false
 
         if !(configuration.ignoreInteractiveFalseMoving && interactiveTransitionStarted) {
-//            content.willMove(toParent: nil)
             content.beginAppearanceTransition(false, animated: animated)
         }
         super.viewWillDisappear(animated)
     }
 
     public override func viewDidDisappear(_ animated: Bool) {
-        removeChildController(animated)
-
         content.endAppearanceTransition()
         super.viewDidDisappear(animated)
     }
 
 
     deinit {
+        removeChildController()
 //        print("deinit \(self)")
     }
 
@@ -107,13 +105,9 @@ extension ActionSheetControllerNew {
         setContentViewPosition(animation: false)
         content.view.clipsToBounds = true
         content.view.cornerRadius = configuration.cornerRadius
-        content.view.layoutIfNeeded()
-
-//        content.didMove(toParent: self)
     }
 
-    private func removeChildController(_ animated: Bool) {
-//        content.viewDidDisappear(animated)
+    private func removeChildController() {
         content.removeFromParent()
         content.view.removeFromSuperview()
     }
@@ -131,12 +125,14 @@ extension ActionSheetControllerNew {
                 maker.height.equalTo(height)
             }
         }
-        if animation, let superview = view.superview {
-            UIView.animate(withDuration: configuration.presentAnimationDuration) { () -> Void in
-                superview.layoutIfNeeded()
+        if let superview = view.superview {
+            if animation {
+                UIView.animate(withDuration: configuration.presentAnimationDuration) { () -> Void in
+                    superview.layoutIfNeeded()
+                }
+            } else {
+                view.layoutIfNeeded()
             }
-        } else {
-            view.layoutIfNeeded()
         }
     }
 
@@ -174,7 +170,6 @@ extension ActionSheetControllerNew: InteractiveTransitionDelegate {
         if cancelled {
             ignoreByInteractivePresentingBreak = true
         } else {
-//            content.willMove(toParent: nil)
             content.beginAppearanceTransition(false, animated: true)
         }
     }

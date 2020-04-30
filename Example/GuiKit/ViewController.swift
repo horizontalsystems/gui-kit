@@ -87,7 +87,7 @@ class ViewController: UIViewController {
     }
 
     @objc func showBottomSheet() {
-        present(ContentViewController().toBottomSheet, animated: true)
+        present(SectionsViewController().toBottomSheet, animated: true)
     }
 
     @objc func showAlert() {
