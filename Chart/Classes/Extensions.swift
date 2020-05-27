@@ -30,7 +30,7 @@ extension Date {
 
 extension Decimal {
 
-    var integerDigitCount: Int {
+    public var integerDigitCount: Int {
         var value = abs(self)
         var count = 1
         while value >= 10 {
@@ -40,7 +40,7 @@ extension Decimal {
         return count
     }
 
-    var cgFloatValue: CGFloat {
+    public var cgFloatValue: CGFloat {
         CGFloat(truncating: self as NSNumber)
     }
 
@@ -48,7 +48,7 @@ extension Decimal {
 
 extension CGFloat {
 
-    var decimalValue: Decimal {
+    public var decimalValue: Decimal {
         (self as NSNumber).decimalValue
     }
 

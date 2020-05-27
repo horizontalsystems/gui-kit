@@ -7,7 +7,7 @@ import SnapKit
 import Chart
 
 class ViewController: UIViewController {
-    private var chartView: ChartView?
+    private var chartView = RateChartView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,18 +68,15 @@ class ViewController: UIViewController {
         chartButton.addTarget(self, action: #selector(showChart), for: .touchUpInside)
 
         let configuration = ChartConfiguration()
-        let chartView = ChartView(configuration: configuration, gridIntervalType: .day(2))
+        chartView.apply(configuration: configuration)
         view.addSubview(chartView)
 
         chartView.snp.makeConstraints { maker in
             maker.top.equalToSuperview().offset(200)
             maker.leading.trailing.equalToSuperview().inset(32)
-            maker.height.equalTo(200)
         }
 
         chartView.backgroundColor = .gray
-
-        self.chartView = chartView
     }
     
     @objc func showHud() {
@@ -106,13 +103,18 @@ class ViewController: UIViewController {
         let startInterval = endInterval - TimeInterval(sevenDays)
         let deltaInterval = TimeInterval(sevenDays / pointCount)
 
-        var chartPoint = [ChartPoint]()
+        var items = [ChartItem]()
         for index in 0..<pointCount {
-            chartPoint.append(ChartPoint(timestamp: startInterval + TimeInterval(index) * deltaInterval, value: randomValue(start: minValue, end: maxValue, powScale: powScale), volume: randomValue(start: minValue, end: maxValue, powScale: powScale)))
+            let chartItem = ChartItem(timestamp: startInterval + TimeInterval(index) * deltaInterval)
+            chartItem.add(name: .rate, value: randomValue(start: minValue, end: maxValue, powScale: powScale))
+            chartItem.add(name: .volume, value: randomValue(start: minValue, end: maxValue, powScale: powScale))
+
+            items.append(chartItem)
         }
 
+        let data = ChartData(items: items, startTimestamp: startInterval, endTimestamp: endInterval)
+        chartView.set(chartData: data, animated: true)
 
-        chartView?.set(gridIntervalType: .day(2), data: chartPoint, animated: true)
     }
 
     private func randomValue(start: Int, end: Int, powScale: Decimal) -> Decimal {
