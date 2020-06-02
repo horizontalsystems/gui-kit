@@ -28,13 +28,13 @@ class ChartEma {
         emaLong.padding = configuration.curvePadding
         emaLong.animationDuration = configuration.animationDuration
 
-        shortText.textColor = configuration.emaShortColor.withAlphaComponent(0.5)
+        shortText.textColor = configuration.emaShortColor
         shortText.font = configuration.emaTextFont
         shortText.insets = configuration.emaShortInsets
         shortText.size = configuration.emaShortSize
         shortText.set(text: configuration.emaShortText)
 
-        longText.textColor = configuration.emaLongColor.withAlphaComponent(0.5)
+        longText.textColor = configuration.emaLongColor
         longText.font = configuration.emaTextFont
         longText.insets = configuration.emaLongInsets
         longText.size = configuration.emaLongSize

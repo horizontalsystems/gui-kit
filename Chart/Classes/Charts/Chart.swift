@@ -16,7 +16,7 @@ class Chart: UIView {
     }
 
     private func commonInit() {
-        clipsToBounds = false
+        clipsToBounds = true
     }
 
     func add(_ object: IChartObject) {
