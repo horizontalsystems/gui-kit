@@ -142,6 +142,10 @@ public class RateChartView: UIView {
         chartRsi.set(hidden: hidden)
     }
 
+    public func set(highLimitText: String?, lowLimitText: String?) {
+        mainChart.set(highLimitText: highLimitText, lowLimitText: lowLimitText)
+    }
+
 }
 
 extension RateChartView: ITouchAreaDelegate {
