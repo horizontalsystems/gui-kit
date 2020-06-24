@@ -23,6 +23,10 @@ class ChartIndicators {
     }
 
     static func ema(period: Int, values: [Decimal]) -> [Decimal] {
+        guard values.count >= period else {
+            return []
+        }
+
         let a = 2 / (1 + Decimal(period))
 
         var result = [Decimal]()
