@@ -63,7 +63,6 @@ public class ChartConfiguration {
     public var macdHistogramInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
     public var macdLinesInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
 
-    public var macdSelectedColor: UIColor = UIColor.white.withAlphaComponent(0.5)
     public var macdSignalColor: UIColor = .blue
     public var macdColor: UIColor = .orange
     public var macdPositiveColor: UIColor = UIColor.green.withAlphaComponent(0.5)
