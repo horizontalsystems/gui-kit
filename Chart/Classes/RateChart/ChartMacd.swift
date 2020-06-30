@@ -86,8 +86,8 @@ class ChartMacd {
             return
         }
 
-        macdHistogram.negativeBarFillColor = selected ? configuration.macdSelectedColor : configuration.macdNegativeColor
-        macdHistogram.positiveBarFillColor = selected ? configuration.macdSelectedColor : configuration.macdPositiveColor
+        macdHistogram.negativeBarFillColor = configuration.macdNegativeColor
+        macdHistogram.positiveBarFillColor = configuration.macdPositiveColor
     }
 
 }
