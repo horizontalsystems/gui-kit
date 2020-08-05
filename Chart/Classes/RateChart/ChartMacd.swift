@@ -26,10 +26,12 @@ class ChartMacd {
         macdHistogram.animationDuration = configuration.animationDuration
 
         macdSignal.strokeColor = configuration.macdSignalColor
+        macdSignal.lineWidth = configuration.macdSignalLineWidth
         macdSignal.padding = configuration.macdLinesInsets
         macdSignal.animationDuration = configuration.animationDuration
 
         macd.strokeColor = configuration.macdColor
+        macd.lineWidth = configuration.macdLineWidth
         macd.padding = configuration.macdLinesInsets
         macd.animationDuration = configuration.animationDuration
 

@@ -19,6 +19,7 @@ class ChartRsi {
         self.configuration = configuration
 
         rsi.strokeColor = configuration.rsiLineColor
+        rsi.lineWidth = configuration.rsiLineWidth
         rsi.animationStyle = .strokeEnd
         rsi.padding = configuration.rsiPadding
         rsi.animationDuration = configuration.animationDuration

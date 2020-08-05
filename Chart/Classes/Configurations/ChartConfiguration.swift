@@ -49,11 +49,13 @@ public class ChartConfiguration {
     public var touchLineColor: UIColor = UIColor.white
 
     public var emaShortColor: UIColor = UIColor.blue
+    public var emaShortLineWidth: CGFloat = 1
     public var emaShortInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 23)
     public var emaShortSize: CGSize? = CGSize(width: 15, height: 14)
     public var emaShortText: String = "25"
 
     public var emaLongColor: UIColor = UIColor.orange
+    public var emaLongLineWidth: CGFloat = 1
     public var emaLongInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 4)
     public var emaLongSize: CGSize? = CGSize(width: 15, height: 14)
     public var emaLongText: String = "50"
@@ -63,8 +65,11 @@ public class ChartConfiguration {
     public var macdHistogramInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
     public var macdLinesInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
 
+    public var macdSelectedColor: UIColor = UIColor.white.withAlphaComponent(0.5)
     public var macdSignalColor: UIColor = .blue
+    public var macdSignalLineWidth: CGFloat = 1
     public var macdColor: UIColor = .orange
+    public var macdLineWidth: CGFloat = 1
     public var macdPositiveColor: UIColor = UIColor.green.withAlphaComponent(0.5)
     public var macdNegativeColor: UIColor = UIColor.red.withAlphaComponent(0.5)
 
@@ -84,6 +89,7 @@ public class ChartConfiguration {
     public var macdSignalText: String = "9"
 
     public var rsiLineColor: UIColor = .blue
+    public var rsiLineWidth: CGFloat = 1
 
     public var rsiPadding: UIEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
     public var rsiTopLimitValue: CGFloat = 0.7
