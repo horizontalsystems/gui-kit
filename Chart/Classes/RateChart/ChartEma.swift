@@ -19,11 +19,13 @@ class ChartEma {
         self.configuration = configuration
 
         emaShort.strokeColor = configuration.emaShortColor
+        emaShort.lineWidth = configuration.emaShortLineWidth
         emaShort.animationStyle = .strokeEnd
         emaShort.padding = configuration.curvePadding
         emaShort.animationDuration = configuration.animationDuration
 
         emaLong.strokeColor = configuration.emaLongColor
+        emaLong.lineWidth = configuration.emaLongLineWidth
         emaLong.animationStyle = .strokeEnd
         emaLong.padding = configuration.curvePadding
         emaLong.animationDuration = configuration.animationDuration
