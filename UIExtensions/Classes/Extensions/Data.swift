@@ -3,6 +3,8 @@ import Foundation
 extension Data {
 
     public init?(hex: String) {
+        let hex = hex.stripHexPrefix()
+
         let len = hex.count / 2
         var data = Data(capacity: len)
         for i in 0..<len {
