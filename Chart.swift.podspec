@@ -16,5 +16,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Chart/Classes/**/*'
 
   s.dependency 'SnapKit', '~> 5.0'
-  s.dependency 'UIExtensions.swift', '~> 1.1'
+  s.dependency 'UIExtensions.swift', '~> 1.1.1'
 end
