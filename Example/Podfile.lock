@@ -12,7 +12,7 @@ PODS:
     - SnapKit (~> 5.0)
     - UIExtensions.swift (~> 1.1)
   - SnapKit (5.0.1)
-  - UIExtensions.swift (1.1)
+  - UIExtensions.swift (1.2)
 
 DEPENDENCIES:
   - ActionSheet.swift (from `../`)
@@ -43,7 +43,7 @@ SPEC CHECKSUMS:
   HUD.swift: 0b9d074f07f601891878f87ff10ad867eed3182b
   SectionsTableView.swift: 91f2235b63405f938621b7df040149d7c65b355d
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  UIExtensions.swift: b3852a339a81c730d98b3342ae0275e807703782
+  UIExtensions.swift: ffdfa47515a1d3f1c9952d1ee7818dec94393224
 
 PODFILE CHECKSUM: 54627f378cb91a74cd7799b04e39088d51e93fc3
 
