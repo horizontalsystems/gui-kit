@@ -16,6 +16,6 @@ Pod::Spec.new do |s|
   s.source_files = 'HUD/Classes/**/*'
   s.resource_bundle = { 'HUD' => 'HUD/Assets/*.xcassets' }
 
-  s.dependency 'UIExtensions.swift', '~> 1.1'
+  s.dependency 'UIExtensions.swift', '~> 1.1.1'
   s.dependency 'SnapKit', '~> 5.0'
 end
