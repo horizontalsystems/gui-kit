@@ -1,6 +1,6 @@
 import UIKit
 
-public class GradientView: UIView {
+open class GradientView: UIView {
     private let gradientLayer = CAGradientLayer()
 
     private let gradientHeight: CGFloat
@@ -14,7 +14,7 @@ public class GradientView: UIView {
         layer.addSublayer(gradientLayer)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
