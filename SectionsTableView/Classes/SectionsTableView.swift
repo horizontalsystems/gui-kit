@@ -185,11 +185,17 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
 
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         triggerBottomReachedIfRequired(indexPath: indexPath)
-        let section = sections[indexPath.section]
-        return tableView.dequeueReusableCell(withIdentifier: section.rows[indexPath.row].reuseIdentifier) ?? {
-                print("Can't dequeue cell, did you forget to register cell?")
-                return UITableViewCell(style: .default, reuseIdentifier: "")
-            }()
+
+        let row = sections[indexPath.section].rows[indexPath.row]
+        switch row.rowType {
+        case .dynamic(let reuseIdentifier):
+            return tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) ?? {
+                    print("Can't dequeue cell, did you forget to register cell?")
+                    return UITableViewCell(style: .default, reuseIdentifier: "")
+                }()
+        case .static(let cell):
+            return cell
+        }
     }
 
     open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -350,6 +356,11 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
 
 }
 
+public enum RowType {
+    case dynamic(reuseIdentifier: String)
+    case `static`(cell: UITableViewCell)
+}
+
 public protocol RowProtocol {
     var id: String { get }
     var hash: String? { get }
@@ -358,7 +369,7 @@ public protocol RowProtocol {
     var autoDeselect: Bool { get }
     var rowActions: [RowAction] { get }
     var deleteRowAction: DeleteRowAction? { get }
-    var reuseIdentifier: String { get }
+    var rowType: RowType { get }
     var dynamicHeight: ((CGFloat) -> CGFloat)? { get }
     func bindCell(cell: UITableViewCell, animated: Bool)
     func onSelect(cell: UITableViewCell)
@@ -486,7 +497,7 @@ public struct Row<T: UITableViewCell>: RowProtocol {
     public var autoDeselect: Bool
     public var rowActions: [RowAction]
     public var deleteRowAction: DeleteRowAction?
-    public let reuseIdentifier: String
+    public let rowType: RowType
     public var dynamicHeight: ((CGFloat) -> CGFloat)?
     var bind: ((T, Bool) -> ())?
     var action: ((T) -> ())?
@@ -499,7 +510,7 @@ public struct Row<T: UITableViewCell>: RowProtocol {
         self.autoDeselect = autoDeselect
         self.rowActions = rowActions
         self.deleteRowAction = deleteRowAction
-        self.reuseIdentifier = String(describing: T.self)
+        rowType = .dynamic(reuseIdentifier: String(describing: T.self))
         self.dynamicHeight = dynamicHeight
         self.bind = bind
         self.action = action
@@ -527,6 +538,39 @@ public struct Row<T: UITableViewCell>: RowProtocol {
                 cell.backgroundColor = backgroundColor
             }
         })
+    }
+
+}
+
+public struct StaticRow: RowProtocol {
+    public let id: String
+    public var hash: String?
+    public let height: CGFloat
+    public let separatorInset: UIEdgeInsets?
+    public var autoDeselect: Bool
+    public var rowActions: [RowAction]
+    public var deleteRowAction: DeleteRowAction?
+    public let rowType: RowType
+    public var dynamicHeight: ((CGFloat) -> CGFloat)?
+    var action: (() -> ())?
+
+    public init(cell: UITableViewCell, id: String, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, rowActions: [RowAction] = [], deleteRowAction: DeleteRowAction? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, action: (() -> ())? = nil) {
+        self.id = id
+        self.height = height ?? 44
+        self.separatorInset = separatorInset
+        self.autoDeselect = autoDeselect
+        self.rowActions = rowActions
+        self.deleteRowAction = deleteRowAction
+        rowType = .static(cell: cell)
+        self.dynamicHeight = dynamicHeight
+        self.action = action
+    }
+
+    public func bindCell(cell: UITableViewCell, animated: Bool) {
+    }
+
+    public func onSelect(cell: UITableViewCell) {
+        action?()
     }
 
 }
