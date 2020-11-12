@@ -180,7 +180,8 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
 
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let row = sections[indexPath.section].rows[indexPath.row]
-        return (row.dynamicHeight?(width)).map { $0 + 1 / UIScreen.main.scale } ?? row.height // adding separator height
+        let separatorHeight = tableView.separatorStyle == .none ? 0 : 1 / UIScreen.main.scale
+        return (row.dynamicHeight?(width)).map { $0 + separatorHeight } ?? row.height
     }
 
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
