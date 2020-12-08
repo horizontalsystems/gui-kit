@@ -20,7 +20,7 @@ class ViewController: UIViewController {
             maker.centerX.equalToSuperview()
             maker.height.equalTo(30)
         }
-        
+
         hudButton.setTitleColor(.black, for: .normal)
         hudButton.setTitle("Show HUD", for: .normal)
         hudButton.addTarget(self, action: #selector(showHud), for: .touchUpInside)
@@ -78,7 +78,7 @@ class ViewController: UIViewController {
 
         chartView.backgroundColor = .gray
     }
-    
+
     @objc func showHud() {
         show(title: "Hello World")
     }
