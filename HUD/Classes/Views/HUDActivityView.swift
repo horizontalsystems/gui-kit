@@ -19,6 +19,12 @@ public class HUDActivityView: UIView, HUDAnimatedViewInterface, HUDTappableViewI
 
     public var actions: [HUDTimeAction] = []
 
+    public var edgeInsets = UIEdgeInsets.zero {
+        didSet {
+            layoutAnimatedLayer()
+        }
+    }
+
     override open var frame: CGRect {
         didSet {
             if !frame.equalTo(oldValue) {
@@ -42,7 +48,7 @@ public class HUDActivityView: UIView, HUDAnimatedViewInterface, HUDTappableViewI
 
         let animatedLayer = CAShapeLayer(layer: layer)
         animatedLayer.contentsScale = UIScreen.main.scale
-        animatedLayer.frame = CGRect(origin: .zero, size: CGSize(width: centerPoint * 2, height: centerPoint * 2))
+        animatedLayer.frame = CGRect(origin: CGPoint(x: edgeInsets.left, y: edgeInsets.top), size: CGSize(width: centerPoint * 2, height: centerPoint * 2))
         animatedLayer.fillColor = nil
         animatedLayer.strokeColor = strokeColor.cgColor
         animatedLayer.lineWidth = dashStrokeWidth
