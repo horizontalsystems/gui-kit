@@ -391,6 +391,7 @@ public enum ViewState<T: UITableViewHeaderFooterView>: Equatable {
     case margin(height: CGFloat)
     case marginColor(height: CGFloat, color: UIColor?)
     case cellType(hash: String, binder: ((T) -> ())?, dynamicHeight: (CGFloat) -> CGFloat)
+    case `static`(view: T, height: CGFloat)
     case text(text: String, topMargin: CGFloat, bottomMargin: CGFloat)
     case spinner
 
@@ -404,6 +405,7 @@ public enum ViewState<T: UITableViewHeaderFooterView>: Equatable {
             return textA == textB && topMarginA == topMarginB && bottomMarginA == bottomMarginB
         case (.spinner, .spinner):
             return true
+        case (.static(let viewA, _), .static(let viewB, _)): return viewA == viewB
         default:
             return false
         }
@@ -458,6 +460,10 @@ public struct Section<H: UITableViewHeaderFooterView, F: UITableViewHeaderFooter
             return SectionLabelView.height(forContainerWidth: containerWidth, text: text, additionalMargins: topMargin + bottomMargin)
         }
 
+        if case let .static(_, height) = viewState {
+            return height
+        }
+
         if case .spinner = viewState {
             return 50
         }
@@ -483,6 +489,10 @@ public struct Section<H: UITableViewHeaderFooterView, F: UITableViewHeaderFooter
 
         if case let .marginColor(_, color) = viewState, let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: SectionColorHeader.self)) as? SectionColorHeader {
             view.backgroundView?.backgroundColor = color
+            return view
+        }
+
+        if case let .static(view: view, _) = viewState {
             return view
         }
 
