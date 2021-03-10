@@ -9,6 +9,10 @@ struct MacdData {
 class ChartIndicators {
 
     static func ma(period: Int, values: [Decimal]) -> [Decimal] {
+        guard values.count >= period else {
+            return []
+        }
+
         var result = [Decimal]()
 
         var prev = values[0..<period].reduce(0, +) / Decimal(period)
