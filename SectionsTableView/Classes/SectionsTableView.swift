@@ -242,7 +242,12 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
 
     @available(iOS 11, *)
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let row = sections[indexPath.section].rows[indexPath.row]
+        guard sections.count > indexPath.section else { return nil }
+        let section = sections[indexPath.section]
+
+        guard section.rows.count > indexPath.row else { return nil }
+        let row = section.rows[indexPath.row]
+
         let cell = cellForRow(at: indexPath)
 
         if !row.rowActions.isEmpty {
