@@ -55,7 +55,7 @@ public class RateChartView: UIView {
         mainChart.apply(configuration: configuration)
 
         indicatorChart.snp.makeConstraints { maker in
-            maker.top.equalTo(mainChart.snp.bottom).offset(1 / UIScreen.main.scale)
+            maker.bottom.equalTo(mainChart.snp.bottom)
             maker.leading.trailing.equalToSuperview()
             maker.height.equalTo(configuration.indicatorHeight)
         }
@@ -140,6 +140,10 @@ public class RateChartView: UIView {
 
     public func setRsi(hidden: Bool) {
         chartRsi.set(hidden: hidden)
+    }
+
+    public func setLimits(hidden: Bool) {
+        mainChart.setLimits(hidden: hidden)
     }
 
     public func set(highLimitText: String?, lowLimitText: String?) {

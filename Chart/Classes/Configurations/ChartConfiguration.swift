@@ -5,7 +5,7 @@ public class ChartConfiguration {
 
     public var mainHeight: CGFloat = 160
     public var indicatorHeight: CGFloat = 56
-    public var timelineHeight: CGFloat = 18
+    public var timelineHeight: CGFloat = 21
 
     public var animationDuration: TimeInterval = 0.35
     public var timingFunction: CAMediaTimingFunctionName = .easeInEaseOut
@@ -94,6 +94,11 @@ public class ChartConfiguration {
     public var rsiPadding: UIEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
     public var rsiTopLimitValue: CGFloat = 0.7
     public var rsiBottomLimitValue: CGFloat = 0.3
+
+    public var rsiHighTextInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: -1, bottom: -1, right: 4)
+    public var rsiLowTextInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 4)
+
+    public var rsiTextSize: CGSize = CGSize(width: 15, height: 14)
 
     public init() {
     }
