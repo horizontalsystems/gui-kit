@@ -32,13 +32,13 @@ class ChartRsi {
 
         rsiTopValue.textColor = configuration.limitTextColor
         rsiTopValue.font = configuration.limitTextFont
-        rsiTopValue.insets = configuration.highLimitTextInsets
-        rsiTopValue.size = configuration.highLimitTextSize
+        rsiTopValue.insets = configuration.rsiHighTextInsets
+        rsiTopValue.size = configuration.rsiTextSize
 
         rsiBottomValue.textColor = configuration.limitTextColor
         rsiBottomValue.font = configuration.limitTextFont
-        rsiBottomValue.insets = configuration.lowLimitTextInsets
-        rsiBottomValue.size = configuration.lowLimitTextSize
+        rsiBottomValue.insets = configuration.rsiLowTextInsets
+        rsiBottomValue.size = configuration.rsiTextSize
 
         rsiTopValue.set(text: "\(configuration.rsiTopLimitValue * 100)")
         rsiBottomValue.set(text: "\(configuration.rsiBottomLimitValue * 100)")
