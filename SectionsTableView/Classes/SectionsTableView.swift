@@ -558,7 +558,7 @@ public struct Row<T: UITableViewCell>: RowProtocol {
 
 }
 
-public struct StaticRow: RowProtocol {
+public class StaticRow: RowProtocol {
     public let id: String
     public var hash: String?
     public let height: CGFloat
@@ -568,9 +568,12 @@ public struct StaticRow: RowProtocol {
     public var deleteRowAction: DeleteRowAction?
     public let rowType: RowType
     public var dynamicHeight: ((CGFloat) -> CGFloat)?
-    var action: (() -> ())?
+    public var onReady: (() -> ())?
+    private var action: (() -> ())?
 
-    public init(cell: UITableViewCell, id: String, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, rowActions: [RowAction] = [], deleteRowAction: DeleteRowAction? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, action: (() -> ())? = nil) {
+    private var readyReported = false
+
+    public init(cell: UITableViewCell, id: String, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, rowActions: [RowAction] = [], deleteRowAction: DeleteRowAction? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, action: (() -> ())? = nil, onReady: (() -> ())? = nil) {
         self.id = id
         self.height = height ?? 44
         self.separatorInset = separatorInset
@@ -583,6 +586,14 @@ public struct StaticRow: RowProtocol {
     }
 
     public func bindCell(cell: UITableViewCell, animated: Bool) {
+        guard !readyReported else {
+            return
+        }
+
+        readyReported = true
+
+        cell.layoutIfNeeded()
+        onReady?()
     }
 
     public func onSelect(cell: UITableViewCell) {
