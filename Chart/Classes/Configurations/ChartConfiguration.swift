@@ -28,9 +28,9 @@ public class ChartConfiguration {
 
     public var limitTextColor: UIColor = UIColor.white.withAlphaComponent(0.5)
     public var limitTextFont: UIFont = .systemFont(ofSize: 12)
-    public var highLimitTextInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: -1, right: 28)
+    public var highLimitTextInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 16, bottom: -1, right: 32)
     public var highLimitTextSize: CGSize = CGSize(width: 0, height: 14)
-    public var lowLimitTextInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: 4, bottom: 4, right: 100)
+    public var lowLimitTextInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: 16, bottom: 4, right: 32)
     public var lowLimitTextSize: CGSize = CGSize(width: 0, height: 14)
 
     public var verticalLinesWidth: CGFloat = oneDp
@@ -50,13 +50,13 @@ public class ChartConfiguration {
 
     public var emaShortColor: UIColor = UIColor.blue
     public var emaShortLineWidth: CGFloat = 1
-    public var emaShortInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 23)
+    public var emaShortInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 35)
     public var emaShortSize: CGSize? = CGSize(width: 15, height: 14)
     public var emaShortText: String = "25"
 
     public var emaLongColor: UIColor = UIColor.orange
     public var emaLongLineWidth: CGFloat = 1
-    public var emaLongInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 4)
+    public var emaLongInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 16)
     public var emaLongSize: CGSize? = CGSize(width: 15, height: 14)
     public var emaLongText: String = "50"
 
@@ -76,15 +76,15 @@ public class ChartConfiguration {
     public var macdTextColor: UIColor = .gray
     public var macdTextFont: UIFont = .systemFont(ofSize: 12)
 
-    public var macdLongInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 33)
+    public var macdLongInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 45)
     public var macdLongSize: CGSize? = CGSize(width: 15, height: 14)
     public var macdLongText: String = "26"
 
-    public var macdShortInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 16)
+    public var macdShortInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 28)
     public var macdShortSize: CGSize? = CGSize(width: 13, height: 14)
     public var macdShortText: String = "12"
 
-    public var macdSignalInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 4)
+    public var macdSignalInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 16)
     public var macdSignalSize: CGSize? = CGSize(width: 8, height: 14)
     public var macdSignalText: String = "9"
 
@@ -95,8 +95,8 @@ public class ChartConfiguration {
     public var rsiTopLimitValue: CGFloat = 0.7
     public var rsiBottomLimitValue: CGFloat = 0.3
 
-    public var rsiHighTextInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: -1, bottom: -1, right: 4)
-    public var rsiLowTextInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 4)
+    public var rsiHighTextInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: -1, bottom: -1, right: 16)
+    public var rsiLowTextInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 16)
 
     public var rsiTextSize: CGSize = CGSize(width: 15, height: 14)
 
