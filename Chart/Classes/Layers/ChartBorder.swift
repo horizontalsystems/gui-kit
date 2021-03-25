@@ -48,7 +48,7 @@ class ChartBorder: IChartObject {
 
     func path() -> CGPath {
         let offset: CGFloat = LayerFrameHelper.offset(lineWidth: lineWidth)
-        let size = CGSize(width: borderLayer.bounds.width - 2 * offset, height: borderLayer.bounds.height)
+        let size = CGSize(width: borderLayer.bounds.width - 2 * offset, height: borderLayer.bounds.height - 1 / UIScreen.main.scale)
         return UIBezierPath(roundedRect: CGRect(origin: CGPoint(x: offset, y: offset), size: size), cornerRadius: 0).cgPath
     }
 

@@ -11,7 +11,7 @@ public class ChartConfiguration {
     public var timingFunction: CAMediaTimingFunctionName = .easeInEaseOut
 
     public var borderWidth: CGFloat = oneDp
-    public var borderColor: UIColor = UIColor.white.withAlphaComponent(0.5)
+    public var borderColor: UIColor = UIColor.clear.withAlphaComponent(0.5)
 
     public var backgroundColor: UIColor = .clear
 
