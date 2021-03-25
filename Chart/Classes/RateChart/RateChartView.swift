@@ -121,7 +121,6 @@ public class RateChartView: UIView {
         }
 
         mainChart.setVerticalLines(points: positions)
-        indicatorChart.setVerticalLines(points: positions)
 
         timelineChart.set(texts: timeline.map { $0.text }, positions: positions)
     }
