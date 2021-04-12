@@ -9,7 +9,11 @@ class MainChart: Chart {
     private let highLimitText = ChartText()
     private let lowLimitText = ChartText()
 
+    private var configuration: ChartConfiguration?
+
     init(configuration: ChartConfiguration? = nil) {
+        self.configuration = configuration
+
         super.init(frame: .zero)
 
         add(border)
@@ -30,8 +34,9 @@ class MainChart: Chart {
     }
 
     @discardableResult func apply(configuration: ChartConfiguration) -> Self {
+        self.configuration = configuration
+
         border.lineWidth = configuration.borderWidth
-        border.strokeColor = configuration.borderColor
 
         curve.padding = configuration.curvePadding
         curve.animationDuration = configuration.animationDuration
@@ -43,27 +48,43 @@ class MainChart: Chart {
         horizontalLines.gridType = .horizontal
         horizontalLines.lineWidth = configuration.limitLinesWidth
         horizontalLines.lineDashPattern = configuration.limitLinesDashPattern
-        horizontalLines.strokeColor = configuration.limitLinesColor
         horizontalLines.padding = configuration.limitLinesPadding
         horizontalLines.set(points: [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
 
         verticalLines.gridType = .vertical
         verticalLines.lineDirection = .top
         verticalLines.lineWidth = configuration.verticalLinesWidth
-        verticalLines.strokeColor = configuration.verticalLinesColor
         verticalLines.invisibleIndent = configuration.verticalInvisibleIndent
 
-        highLimitText.textColor = configuration.limitTextColor
         highLimitText.font = configuration.limitTextFont
         highLimitText.insets = configuration.highLimitTextInsets
         highLimitText.size = configuration.highLimitTextSize
 
-        lowLimitText.textColor = configuration.limitTextColor
         lowLimitText.font = configuration.limitTextFont
         lowLimitText.insets = configuration.lowLimitTextInsets
         lowLimitText.size = configuration.lowLimitTextSize
 
+        updateUI()
+
         return self
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        updateUI()
+    }
+
+    private func updateUI() {
+        guard let configuration = configuration else {
+            return
+        }
+
+        border.strokeColor = configuration.borderColor
+        horizontalLines.strokeColor = configuration.limitLinesColor
+        verticalLines.strokeColor = configuration.verticalLinesColor
+        highLimitText.textColor = configuration.limitTextColor
+        lowLimitText.textColor = configuration.limitTextColor
     }
 
     func set(points: [CGPoint], animated: Bool = false) {
