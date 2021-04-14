@@ -583,6 +583,7 @@ public class StaticRow: RowProtocol {
         rowType = .static(cell: cell)
         self.dynamicHeight = dynamicHeight
         self.action = action
+        self.onReady = onReady
     }
 
     public func bindCell(cell: UITableViewCell, animated: Bool) {
