@@ -17,4 +17,6 @@ Pod::Spec.new do |s|
 
   s.dependency 'UIExtensions.swift', '~> 1.1.1'
   s.dependency 'SnapKit', '~> 5.0'
+  s.dependency 'RxSwift', '~> 5.0'
+  s.dependency 'RxCocoa', '~> 5.0'
 end
