@@ -36,33 +36,39 @@ class MainChart: Chart {
     @discardableResult func apply(configuration: ChartConfiguration) -> Self {
         self.configuration = configuration
 
-        border.lineWidth = configuration.borderWidth
+        if configuration.showBorders {
+            border.lineWidth = configuration.borderWidth
+        }
 
         curve.padding = configuration.curvePadding
         curve.animationDuration = configuration.animationDuration
 
-        gradient.gradientAlphaPositions = configuration.gradientAlphaPositions
         gradient.padding = configuration.curvePadding
         gradient.animationDuration = configuration.animationDuration
 
-        horizontalLines.gridType = .horizontal
-        horizontalLines.lineWidth = configuration.limitLinesWidth
-        horizontalLines.lineDashPattern = configuration.limitLinesDashPattern
-        horizontalLines.padding = configuration.limitLinesPadding
-        horizontalLines.set(points: [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
+        if configuration.showLimits {
+            horizontalLines.gridType = .horizontal
+            horizontalLines.lineWidth = configuration.limitLinesWidth
+            horizontalLines.lineDashPattern = configuration.limitLinesDashPattern
+            horizontalLines.padding = configuration.limitLinesPadding
+            horizontalLines.set(points: [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 1)])
 
-        verticalLines.gridType = .vertical
-        verticalLines.lineDirection = .top
-        verticalLines.lineWidth = configuration.verticalLinesWidth
-        verticalLines.invisibleIndent = configuration.verticalInvisibleIndent
+            highLimitText.font = configuration.limitTextFont
+            highLimitText.insets = configuration.highLimitTextInsets
+            highLimitText.size = configuration.highLimitTextSize
 
-        highLimitText.font = configuration.limitTextFont
-        highLimitText.insets = configuration.highLimitTextInsets
-        highLimitText.size = configuration.highLimitTextSize
+            lowLimitText.font = configuration.limitTextFont
+            lowLimitText.insets = configuration.lowLimitTextInsets
+            lowLimitText.size = configuration.lowLimitTextSize
+        }
 
-        lowLimitText.font = configuration.limitTextFont
-        lowLimitText.insets = configuration.lowLimitTextInsets
-        lowLimitText.size = configuration.lowLimitTextSize
+        if configuration.showVericalLines {
+            verticalLines.gridType = .vertical
+            verticalLines.lineDirection = .top
+            verticalLines.lineWidth = configuration.verticalLinesWidth
+            verticalLines.invisibleIndent = configuration.verticalInvisibleIndent
+        }
+
 
         updateUI()
 
@@ -80,7 +86,10 @@ class MainChart: Chart {
             return
         }
 
-        border.strokeColor = configuration.borderColor
+        if configuration.showBorders {
+            border.strokeColor = configuration.borderColor
+        }
+
         horizontalLines.strokeColor = configuration.limitLinesColor
         verticalLines.strokeColor = configuration.verticalLinesColor
         highLimitText.textColor = configuration.limitTextColor
@@ -97,9 +106,13 @@ class MainChart: Chart {
         self.lowLimitText.set(text: lowLimitText)
     }
 
-    func setLine(color: UIColor) {
-        curve.strokeColor = color
-        gradient.gradientColor = color
+    func setLine(colorType: ChartColorType) {
+        guard let configuration = configuration else {
+            return
+        }
+
+        curve.strokeColor = colorType.curveColor(configuration: configuration)
+        gradient.gradientColors = zip(colorType.gradientColors(configuration: configuration), configuration.gradientAlphas).map { $0.withAlphaComponent($1) }
     }
 
     func setGradient(hidden: Bool) {
@@ -118,6 +131,29 @@ class MainChart: Chart {
 
     func setVerticalLines(hidden: Bool) {
         verticalLines.layer.isHidden = hidden
+    }
+
+}
+
+public enum ChartColorType {
+    case up, down, neutral, pressed
+
+    func curveColor(configuration: ChartConfiguration) -> UIColor {
+        switch self {
+        case .up: return configuration.trendUpColor
+        case .down: return configuration.trendDownColor
+        case .pressed: return configuration.pressedColor
+        case .neutral: return configuration.outdatedColor
+        }
+    }
+
+    func gradientColors(configuration: ChartConfiguration) -> [UIColor] {
+        switch self {
+        case .up: return configuration.trendUpGradient
+        case .down: return configuration.trendDownGradient
+        case .pressed: return configuration.pressedGradient
+        case .neutral: return configuration.neutralGradient
+        }
     }
 
 }

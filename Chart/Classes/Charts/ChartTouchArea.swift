@@ -13,6 +13,7 @@ class ChartTouchArea: Chart {
     private var last: Int?
 
     weak var delegate: ITouchAreaDelegate?
+    private var configuration: ChartConfiguration?
 
     init(configuration: ChartConfiguration? = nil) {
         super.init(frame: .zero)
@@ -30,10 +31,15 @@ class ChartTouchArea: Chart {
     }
 
     @discardableResult func apply(configuration: ChartConfiguration) -> Self {
-        verticalLine.lineWidth = configuration.touchLineWidth
-        verticalLine.strokeColor = configuration.touchLineColor
-        verticalLine.gridType = .vertical
-        verticalLine.retinaCorrected = false
+        self.configuration = configuration
+
+        if configuration.isInteractive {
+            verticalLine.lineWidth = configuration.touchLineWidth
+            verticalLine.gridType = .vertical
+            verticalLine.retinaCorrected = false
+
+            updateUI()
+        }
 
         return self
     }
@@ -109,6 +115,15 @@ class ChartTouchArea: Chart {
         delegate?.touchUp()
     }
 
+    private func updateUI() {
+        verticalLine.strokeColor = configuration?.touchLineColor
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        updateUI()
+    }
 }
 
 extension ChartTouchArea: UIGestureRecognizerDelegate {
