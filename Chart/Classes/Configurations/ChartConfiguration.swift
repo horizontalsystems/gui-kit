@@ -3,6 +3,12 @@ import UIKit
 public class ChartConfiguration {
     private static let oneDp = 1 / UIScreen.main.scale
 
+    public var showBorders = true
+    public var showIndicators = true
+    public var showLimits = true
+    public var showVericalLines = true
+    public var isInteractive = true
+
     public var mainHeight: CGFloat = 160
     public var indicatorHeight: CGFloat = 56
     public var timelineHeight: CGFloat = 21
@@ -18,8 +24,17 @@ public class ChartConfiguration {
     public var curveWidth: CGFloat = oneDp
     public var curvePadding: UIEdgeInsets = UIEdgeInsets(top: 18, left: 0, bottom: 18, right: 0)
 
-    public var selectedColor: UIColor = UIColor.white
-    public var gradientAlphaPositions: [CGFloat] = [0.5, 0.05]
+    public var trendUpColor = UIColor.green
+    public var trendDownColor = UIColor.red
+    public var pressedColor: UIColor = UIColor.white
+    public var outdatedColor: UIColor = UIColor.white
+
+    public var trendUpGradient = [UIColor.green, UIColor.green]
+    public var trendDownGradient = [UIColor.red, UIColor.red]
+    public var pressedGradient = [UIColor.lightGray, UIColor.lightGray]
+    public var neutralGradient = [UIColor.gray, UIColor.gray]
+
+    public var gradientAlphas: [CGFloat] = [0.05, 0.5]
 
     public var limitLinesWidth: CGFloat = oneDp
     public var limitLinesDashPattern: [NSNumber]? = [2, 2]

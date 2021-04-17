@@ -20,7 +20,7 @@ public class RateChartView: UIView {
     private let chartMacd = ChartMacd()
     private let chartRsi = ChartRsi()
 
-    private var lineColor: UIColor = .clear
+    private var colorType: ChartColorType = .neutral
     private var configuration: ChartConfiguration?
 
     public weak var delegate: IChartViewTouchDelegate?
@@ -73,15 +73,20 @@ public class RateChartView: UIView {
             maker.bottom.equalTo(indicatorChart.snp.bottom)
         }
         chartTouchArea.apply(configuration: configuration)
-        chartTouchArea.delegate = self
+        if configuration.isInteractive {
+            chartTouchArea.delegate = self
+        }
 
-        chartEma.add(to: mainChart).apply(configuration: configuration)
-        chartMacd.add(to: indicatorChart).apply(configuration: configuration)
-        chartRsi.add(to: indicatorChart).apply(configuration: configuration)
+        if configuration.showIndicators {
+            chartEma.add(to: mainChart).apply(configuration: configuration)
+            chartMacd.add(to: indicatorChart).apply(configuration: configuration)
+            chartRsi.add(to: indicatorChart).apply(configuration: configuration)
 
-        chartEma.set(hidden: true)
-        chartMacd.set(hidden: true)
-        chartRsi.set(hidden: true)
+            chartEma.set(hidden: true)
+            chartMacd.set(hidden: true)
+            chartRsi.set(hidden: true)
+        }
+
 
         layoutIfNeeded()
 
@@ -109,9 +114,12 @@ public class RateChartView: UIView {
         chartRsi.set(points: converted[.rsi], animated: true)
     }
 
-    public func setCurve(color: UIColor) {
-        lineColor = color
-        mainChart.setLine(color: color)
+    public func setCurve(colorType: ChartColorType) {
+        guard let configuration = configuration else {
+            return
+        }
+        self.colorType = colorType
+        mainChart.setLine(colorType: colorType)
     }
 
     public func set(timeline: [ChartTimelineItem], start: TimeInterval, end: TimeInterval) {
@@ -158,7 +166,7 @@ extension RateChartView: ITouchAreaDelegate {
             return
         }
 
-        mainChart.setLine(color: configuration.selectedColor)
+        mainChart.setLine(colorType: .pressed)
 
         chartEma.set(selected: true)
         chartMacd.set(selected: true)
@@ -179,7 +187,7 @@ extension RateChartView: ITouchAreaDelegate {
     }
 
     func touchUp() {
-        mainChart.setLine(color: lineColor)
+        mainChart.setLine(colorType: colorType)
 
         chartEma.set(selected: false)
         chartMacd.set(selected: false)

@@ -22,9 +22,9 @@ class ChartGridLines: ChartPointsObject {
         }
     }
 
-    public var strokeColor: UIColor = .clear {
+    public var strokeColor: UIColor? = .clear {
         didSet {
-            linesLayer.strokeColor = strokeColor.cgColor
+            linesLayer.strokeColor = strokeColor?.cgColor
         }
     }
 
