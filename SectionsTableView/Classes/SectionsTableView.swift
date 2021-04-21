@@ -214,32 +214,6 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
         return !row.rowActions.isEmpty || row.deleteRowAction != nil
     }
 
-    open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let row = sections[indexPath.section].rows[indexPath.row]
-        let cell = tableView.cellForRow(at: indexPath)
-
-        if !row.rowActions.isEmpty {
-            return row.rowActions.map { rowAction in
-                let action = UITableViewRowAction(style: .normal, title: "          ") { [weak self] _, _ in
-                    self?.setEditing(false, animated: true)
-                    rowAction.action(cell)
-                }
-                action.backgroundColor = UIColor(patternImage: patternImage(rowAction: rowAction, rowHeight: row.height))
-                return action
-            }
-        }
-
-        if let deleteRowAction = row.deleteRowAction {
-            return [
-                UITableViewRowAction(style: .destructive, title: deleteRowAction.title) { _, _ in
-                    deleteRowAction.action()
-                }
-            ]
-        }
-
-        return nil
-    }
-
     @available(iOS 11, *)
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard sections.count > indexPath.section else { return nil }

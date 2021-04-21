@@ -115,7 +115,7 @@ public class RateChartView: UIView {
     }
 
     public func setCurve(colorType: ChartColorType) {
-        guard let configuration = configuration else {
+        guard configuration != nil else {
             return
         }
         self.colorType = colorType
@@ -162,7 +162,7 @@ public class RateChartView: UIView {
 extension RateChartView: ITouchAreaDelegate {
 
     func touchDown() {
-        guard let configuration = configuration else {
+        guard configuration != nil else {
             return
         }
 
