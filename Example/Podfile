@@ -1,4 +1,4 @@
-platform :ios, '11'
+platform :ios, '13'
 use_modular_headers!
 
 target 'GuiKitExample' do
@@ -7,6 +7,7 @@ target 'GuiKitExample' do
   pod 'SectionsTableView.swift', :path => '../'
   pod 'UIExtensions.swift', :path => '../'
   pod 'Chart.swift', :path => '../'
+  pod 'ThemeKit.swift', :path => '../../component-kit-ios/'
 end
 
 target 'GuiKitTests' do

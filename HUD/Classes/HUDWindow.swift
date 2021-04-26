@@ -1,7 +1,8 @@
 import UIKit
 import SnapKit
+import ThemeKit
 
-class HUDWindow: UIWindow {
+class HUDWindow: ThemeWindow {
     override var frame: CGRect {
         didSet { // IMPORTANT. When window is square safeAreaInsets in willTransition controller rotate not changing!
             if abs(frame.height - frame.width) < 1 / UIScreen.main.scale {
@@ -16,7 +17,7 @@ class HUDWindow: UIWindow {
         isHidden = false
         windowLevel = level
 //        layer.cornerRadius = cornerRadius
-//        backgroundColor = UIColor.green.withAlphaComponent(0.2)
+        backgroundColor = .clear
         rootViewController = rootController
     }
 
