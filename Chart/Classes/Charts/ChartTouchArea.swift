@@ -9,6 +9,7 @@ protocol ITouchAreaDelegate: class {
 class ChartTouchArea: Chart {
     private var gestureRecognizer: UILongPressGestureRecognizer?
     private var verticalLine = ChartGridLines()
+    private var pointCircle = ChartCircle()
     private var points = [CGPoint]()
     private var last: Int?
 
@@ -20,6 +21,7 @@ class ChartTouchArea: Chart {
 
         createPanGestureRecognizer()
         add(verticalLine)
+        add(pointCircle)
 
         if let configuration = configuration {
             apply(configuration: configuration)
@@ -37,6 +39,9 @@ class ChartTouchArea: Chart {
             verticalLine.lineWidth = configuration.touchLineWidth
             verticalLine.gridType = .vertical
             verticalLine.retinaCorrected = false
+
+            pointCircle.radius = configuration.touchCircleRadius
+            pointCircle.insets = configuration.curvePadding
 
             updateUI()
         }
@@ -105,6 +110,7 @@ class ChartTouchArea: Chart {
         last = index
 
         verticalLine.set(points: [CGPoint(x: points[index].x, y: 1)], animated: false)
+        pointCircle.set(points: [points[index]], animated: false)
         delegate?.select(at: index)
     }
 
@@ -112,11 +118,13 @@ class ChartTouchArea: Chart {
         last = nil
 
         verticalLine.set(points: [])
+        pointCircle.set(points: [])
         delegate?.touchUp()
     }
 
     private func updateUI() {
         verticalLine.strokeColor = configuration?.touchLineColor
+        pointCircle.backgroundColor = configuration?.touchCircleColor
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

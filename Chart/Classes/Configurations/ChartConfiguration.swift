@@ -61,7 +61,9 @@ public class ChartConfiguration {
     public var timelineInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 0, right: 0)
 
     public var touchLineWidth: CGFloat = oneDp
+    public var touchCircleRadius: CGFloat = 3.5
     public var touchLineColor: UIColor = UIColor.white
+    public var touchCircleColor: UIColor = UIColor.white
 
     public var emaShortColor: UIColor = UIColor.blue
     public var emaShortLineWidth: CGFloat = 1
