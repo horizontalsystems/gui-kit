@@ -31,7 +31,7 @@ DEPENDENCIES:
   - Chart.swift (from `../`)
   - HUD.swift (from `../`)
   - SectionsTableView.swift (from `../`)
-  - ThemeKit.swift (from `../../component-kit-ios/`)
+  - ThemeKit.swift (from `https://github.com/horizontalsystems/component-kit-ios/`)
   - UIExtensions.swift (from `../`)
 
 SPEC REPOS:
@@ -51,9 +51,14 @@ EXTERNAL SOURCES:
   SectionsTableView.swift:
     :path: "../"
   ThemeKit.swift:
-    :path: "../../component-kit-ios/"
+    :git: https://github.com/horizontalsystems/component-kit-ios/
   UIExtensions.swift:
     :path: "../"
+
+CHECKOUT OPTIONS:
+  ThemeKit.swift:
+    :commit: 7f7864bef293be2b39b001abd69001fe0d536b72
+    :git: https://github.com/horizontalsystems/component-kit-ios/
 
 SPEC CHECKSUMS:
   ActionSheet.swift: fcfca3360d0855247bdb0fcdac27f4a7a4d7d593
@@ -67,6 +72,6 @@ SPEC CHECKSUMS:
   ThemeKit.swift: 2a118eb5bdd9c49bdd41daa3f7ca2033628f98be
   UIExtensions.swift: 3ed084c0343ddd0f86c7c558d37759e1fd7d5778
 
-PODFILE CHECKSUM: ba9c1ac841aa099eab62c097c2a4702ceace176f
+PODFILE CHECKSUM: 7d2391d4e59a916ec05f8bffd87168c10de9c77c
 
 COCOAPODS: 1.10.1

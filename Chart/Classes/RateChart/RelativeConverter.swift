@@ -69,6 +69,9 @@ class RelativeConverter {
 
     static private func relative(chartData: ChartData, ranges: [ChartIndicatorName: ChartRange]) -> [ChartIndicatorName: [CGPoint]] {
         let timestampDelta = chartData.endWindow - chartData.startWindow
+        guard !timestampDelta.isZero else {
+            return [:]
+        }
         var relativeData = [ChartIndicatorName: [CGPoint]]()
 
         for item in chartData.items {
@@ -81,7 +84,8 @@ class RelativeConverter {
                 }
 
                 let delta = range.max - range.min
-                let point = CGPoint(x: x, y: ((value - range.min) / delta).cgFloatValue)
+                let y = delta == 0 ? 0.5 : ((value - range.min) / delta).cgFloatValue
+                let point = CGPoint(x: x, y: y)
 
                 guard relativeData[key] != nil else {
                     var points = [CGPoint]()
