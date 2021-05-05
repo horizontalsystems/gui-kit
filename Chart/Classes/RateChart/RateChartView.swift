@@ -124,6 +124,9 @@ public class RateChartView: UIView {
 
     public func set(timeline: [ChartTimelineItem], start: TimeInterval, end: TimeInterval) {
         let delta = end - start
+        guard !delta.isZero else {
+            return
+        }
         let positions = timeline.map {
             CGPoint(x: CGFloat(($0.timestamp - start) / delta), y: 0)
         }

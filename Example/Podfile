@@ -7,7 +7,7 @@ target 'GuiKitExample' do
   pod 'SectionsTableView.swift', :path => '../'
   pod 'UIExtensions.swift', :path => '../'
   pod 'Chart.swift', :path => '../'
-  pod 'ThemeKit.swift', :path => '../../component-kit-ios/'
+  pod 'ThemeKit.swift', git: 'https://github.com/horizontalsystems/component-kit-ios/'
 end
 
 target 'GuiKitTests' do

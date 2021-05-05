@@ -9,7 +9,7 @@ struct MacdData {
 class ChartIndicators {
 
     static func ma(period: Int, values: [Decimal]) -> [Decimal] {
-        guard values.count >= period else {
+        guard values.count >= period, period > 0 else {
             return []
         }
 
@@ -47,6 +47,9 @@ class ChartIndicators {
     }
 
     static func rsi(period: Int, values: [Decimal]) -> [Decimal] {
+        guard period != 0 else {
+            return []
+        }
         let decPeriod = Decimal(period)
 
         var upMove = [Decimal]()
