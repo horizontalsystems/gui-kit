@@ -19,6 +19,7 @@ public class ActionSheetControllerNew: UIViewController {
     private var ignoreByInteractivePresentingBreak = false
 
     private var keyboardAccessoryView = UIView()
+    private var savedConstraints: [NSLayoutConstraint]?
 
     public required init?(coder aDecoder: NSCoder) {
         fatalError()
@@ -26,6 +27,7 @@ public class ActionSheetControllerNew: UIViewController {
 
     public init(content: UIViewController, configuration: ActionSheetConfiguration) {
         self.content = content
+
         if let viewDelegate = content as? ActionSheetViewDelegate {
             self.viewDelegate = viewDelegate
         }
@@ -74,7 +76,12 @@ public class ActionSheetControllerNew: UIViewController {
 
     // lifecycle
     public override func viewWillAppear(_ animated: Bool) {
+        if let savedConstraints = savedConstraints {
+            view.superview?.addConstraints(savedConstraints)
+        }
+
         super.viewWillAppear(animated)
+
         if !ignoreByInteractivePresentingBreak {
             content.beginAppearanceTransition(true, animated: animated)
         }
@@ -100,6 +107,8 @@ public class ActionSheetControllerNew: UIViewController {
     }
 
     public override func viewWillDisappear(_ animated: Bool) {
+        savedConstraints = view.superview?.constraints
+
         let interactiveTransitionStarted = animator?.interactiveTransitionStarted ?? false
 
         if !(configuration.ignoreInteractiveFalseMoving && interactiveTransitionStarted) {
