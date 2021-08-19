@@ -230,10 +230,16 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
                     rowAction.action(cell)
                     handler(true)
                 }
-                action.backgroundColor = UIColor(patternImage: patternImage(rowAction: rowAction, rowHeight: row.height))
+                switch rowAction.pattern {
+                case let .text(title, color, icon):
+                    action.backgroundColor =  UIColor(patternImage: patternImage(title: title, color: color, icon: icon, rowHeight: row.height))
+                case let .icon(image: image, background: backgroundColor):
+                    action.image = image
+                    action.backgroundColor = backgroundColor
+                }
                 return action
             })
-            config.performsFirstActionWithFullSwipe = false
+            config.performsFirstActionWithFullSwipe = row.performsFirstActionWithFullSwipe
             return config
         }
 
@@ -300,7 +306,7 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
         }
     }
 
-    private func patternImage(rowAction: RowAction, rowHeight: CGFloat) -> UIImage {
+    private func patternImage(title: String, color: UIColor, icon: UIImage?, rowHeight: CGFloat) -> UIImage {
         let containerSize = CGSize(width: 75, height: 74)
         let iconOffset: CGFloat = 14
         let iconSize = CGSize(width: 24, height: 24)
@@ -311,17 +317,17 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        let attributedText = NSAttributedString(string: rowAction.title, attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle, NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
+        let attributedText = NSAttributedString(string: title ?? "", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle, NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
         let textSize = attributedText.boundingRect(with: CGSize(width: textContainerSize.width, height: .greatestFiniteMagnitude), options: [.usesFontLeading, .usesLineFragmentOrigin], context: nil).size
 
         var patternImage: UIImage?
 
         UIGraphicsBeginImageContextWithOptions(CGSize(width: containerSize.width * 2, height: rowHeight), false, UIScreen.main.scale)
         if let context = UIGraphicsGetCurrentContext() {
-            context.setFillColor(rowAction.color.cgColor)
+            context.setFillColor(color.cgColor)
             context.fill(CGRect(x: 0, y: 0, width: containerSize.width * 2, height: rowHeight))
 
-            if let icon = rowAction.icon {
+            if let icon = icon {
                 icon.draw(in: CGRect(x: (containerSize.width - icon.size.width) / 2, y: offsetY + iconOffset + (iconSize.height - icon.size.height) / 2, width: icon.size.width, height: icon.size.height))
             }
 
@@ -348,6 +354,7 @@ public protocol RowProtocol {
     var separatorInset: UIEdgeInsets? { get }
     var autoDeselect: Bool { get }
     var rowActions: [RowAction] { get }
+    var performsFirstActionWithFullSwipe: Bool { get }
     var deleteRowAction: DeleteRowAction? { get }
     var rowType: RowType { get }
     var dynamicHeight: ((CGFloat) -> CGFloat)? { get }
@@ -485,6 +492,7 @@ public struct Row<T: UITableViewCell>: RowProtocol {
     public let height: CGFloat
     public let separatorInset: UIEdgeInsets?
     public var autoDeselect: Bool
+    public var performsFirstActionWithFullSwipe: Bool
     public var rowActions: [RowAction]
     public var deleteRowAction: DeleteRowAction?
     public let rowType: RowType
@@ -492,12 +500,13 @@ public struct Row<T: UITableViewCell>: RowProtocol {
     var bind: ((T, Bool) -> ())?
     var action: ((T) -> ())?
 
-    public init(id: String, hash: String? = nil, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, rowActions: [RowAction] = [], deleteRowAction: DeleteRowAction? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, bind: ((T, Bool) -> ())? = nil, action: ((T) -> ())? = nil) {
+    public init(id: String, hash: String? = nil, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, performsFirstActionWithFullSwipe: Bool = true, rowActions: [RowAction] = [], deleteRowAction: DeleteRowAction? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, bind: ((T, Bool) -> ())? = nil, action: ((T) -> ())? = nil) {
         self.id = id
         self.hash = hash
         self.height = height ?? 44
         self.separatorInset = separatorInset
         self.autoDeselect = autoDeselect
+        self.performsFirstActionWithFullSwipe = performsFirstActionWithFullSwipe
         self.rowActions = rowActions
         self.deleteRowAction = deleteRowAction
         rowType = .dynamic(reuseIdentifier: String(describing: T.self))
@@ -538,6 +547,7 @@ public class StaticRow: RowProtocol {
     public let height: CGFloat
     public let separatorInset: UIEdgeInsets?
     public var autoDeselect: Bool
+    public var performsFirstActionWithFullSwipe: Bool
     public var rowActions: [RowAction]
     public var deleteRowAction: DeleteRowAction?
     public let rowType: RowType
@@ -547,11 +557,12 @@ public class StaticRow: RowProtocol {
 
     private var readyReported = false
 
-    public init(cell: UITableViewCell, id: String, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, rowActions: [RowAction] = [], deleteRowAction: DeleteRowAction? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, action: (() -> ())? = nil, onReady: (() -> ())? = nil) {
+    public init(cell: UITableViewCell, id: String, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, performsFirstActionWithFullSwipe: Bool = true, rowActions: [RowAction] = [], deleteRowAction: DeleteRowAction? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, action: (() -> ())? = nil, onReady: (() -> ())? = nil) {
         self.id = id
         self.height = height ?? 44
         self.separatorInset = separatorInset
         self.autoDeselect = autoDeselect
+        self.performsFirstActionWithFullSwipe = performsFirstActionWithFullSwipe
         self.rowActions = rowActions
         self.deleteRowAction = deleteRowAction
         rowType = .static(cell: cell)
@@ -578,16 +589,17 @@ public class StaticRow: RowProtocol {
 }
 
 public struct RowAction {
-    let icon: UIImage?
-    let title: String
-    let color: UIColor
+    let pattern: Pattern
     var action: (UITableViewCell?) -> ()
 
-    public init(icon: UIImage?, title: String, color: UIColor, action: @escaping (UITableViewCell?) -> ()) {
-        self.icon = icon
-        self.title = title
-        self.color = color
+    public init(pattern: Pattern, action: @escaping (UITableViewCell?) -> ()) {
+        self.pattern = pattern
         self.action = action
+    }
+
+    public enum Pattern {
+        case text(title: String, color: UIColor, icon: UIImage?)
+        case icon(image: UIImage?, background: UIColor)
     }
 
 }
