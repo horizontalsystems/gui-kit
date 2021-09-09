@@ -34,16 +34,4 @@ extension UIImage {
         self.init(cgImage: cgImage)
     }
 
-    @available(*, deprecated, message: "this method does not work with UIColor traits, use only with single colors")
-    public func tinted(with color: UIColor) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-
-        defer { UIGraphicsEndImageContext() }
-
-        color.set()
-        withRenderingMode(.alwaysTemplate).draw(in: CGRect(origin: .zero, size: size))
-
-        return UIGraphicsGetImageFromCurrentImageContext()
-    }
-
 }
