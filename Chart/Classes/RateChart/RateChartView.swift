@@ -13,12 +13,10 @@ public class RateChartView: UIView {
     private let timelineChart = TimelineChart()
     private let chartTouchArea = ChartTouchArea()
 
-    private let emaShort = ChartLine()
-    private let emaLong = ChartLine()
-
     private let chartEma = ChartEma()
     private let chartMacd = ChartMacd()
     private let chartRsi = ChartRsi()
+    private let chartDominance = ChartDominance()
 
     private var colorType: ChartColorType = .neutral
     private var configuration: ChartConfiguration?
@@ -87,6 +85,10 @@ public class RateChartView: UIView {
             chartRsi.set(hidden: true)
         }
 
+        if configuration.showDominance {
+            chartDominance.add(to: mainChart).apply(configuration: configuration)
+        }
+
 
         layoutIfNeeded()
 
@@ -112,6 +114,11 @@ public class RateChartView: UIView {
         chartEma.set(short: converted[.emaShort], long: converted[.emaLong], animated: animated)
         chartMacd.set(macd: converted[.macd], macdHistogram: converted[.macdHistogram], macdSignal: converted[.macdSignal], animated: animated)
         chartRsi.set(points: converted[.rsi], animated: true)
+
+        chartDominance.set(values: converted[.dominance], diff: converted[.dominanceDiff], animated: animated)
+        if let lastDominance = chartData.items.last?.indicators[.dominance], let lastDominanceDiff = chartData.items.last?.indicators[.dominanceDiff] {
+            chartDominance.setLast(value: lastDominance, diff: lastDominanceDiff)
+        }
     }
 
     public func setCurve(colorType: ChartColorType) {
@@ -152,6 +159,14 @@ public class RateChartView: UIView {
         chartRsi.set(hidden: hidden)
     }
 
+    public func setDominance(hidden: Bool) {
+        chartDominance.set(hidden: hidden)
+    }
+
+    public func setDominanceLast(value: Decimal?, diff: Decimal?) {
+        chartDominance.setLast(value: value, diff: diff)
+    }
+
     public func setLimits(hidden: Bool) {
         mainChart.setLimits(hidden: hidden)
     }
@@ -174,6 +189,7 @@ extension RateChartView: ITouchAreaDelegate {
         chartEma.set(selected: true)
         chartMacd.set(selected: true)
         chartRsi.set(selected: true)
+        chartDominance.set(selected: true)
 
         delegate?.touchDown()
     }
@@ -195,6 +211,7 @@ extension RateChartView: ITouchAreaDelegate {
         chartEma.set(selected: false)
         chartMacd.set(selected: false)
         chartRsi.set(selected: false)
+        chartDominance.set(selected: false)
 
         delegate?.touchUp()
     }
