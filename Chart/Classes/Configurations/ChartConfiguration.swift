@@ -5,6 +5,7 @@ public class ChartConfiguration {
 
     public var showBorders = true
     public var showIndicators = true
+    public var showDominance = false
     public var showLimits = true
     public var showVericalLines = true
     public var isInteractive = true
@@ -78,6 +79,21 @@ public class ChartConfiguration {
     public var emaLongText: String = "50"
 
     public var emaTextFont: UIFont = .systemFont(ofSize: 12)
+
+    public var dominanceLineColor = UIColor.orange
+    public var dominanceLineWidth: CGFloat = 1
+
+    public var dominanceTextFont: UIFont = .systemFont(ofSize: 12)
+    public var dominanceTextColor = UIColor.orange
+    public var dominanceInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 72)
+    public var dominanceSize: CGSize? = CGSize(width: 180, height: 14)
+    public var dominanceTextPrefix: String = "BTC Dominance"
+
+    public var dominanceDiffPositiveColor: UIColor = UIColor.green
+    public var dominanceDiffNegativeColor: UIColor = UIColor.red
+    public var dominanceDiffTextFont: UIFont = .systemFont(ofSize: 12)
+    public var dominanceDiffInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: -1, bottom: 4, right: 16)
+    public var dominanceDiffSize: CGSize? = CGSize(width: 52, height: 14)
 
     public var macdHistogramInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
     public var macdLinesInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)

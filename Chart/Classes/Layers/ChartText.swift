@@ -35,6 +35,12 @@ class ChartText: IChartObject {
         }
     }
 
+    public var textAlignment: CATextLayerAlignmentMode = .natural {
+        didSet {
+            textLayer.alignmentMode = textAlignment
+        }
+    }
+
     public func set(text: String?) {
         textLayer.string = text
     }
