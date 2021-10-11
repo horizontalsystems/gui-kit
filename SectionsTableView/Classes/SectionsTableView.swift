@@ -162,7 +162,7 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
             }
             if !deleteRowsIndexPaths.isEmpty {
 //                LogHelper.instance.log(self, "Delete Rows: \(deleteRowsIndexPaths.map { "\($0.section):\($0.row)" }.joined(separator: ", "))")
-                deleteRows(at: deleteRowsIndexPaths, with: .top)
+                deleteRows(at: deleteRowsIndexPaths, with: .none)
                 deleteRowsIndexPaths.forEach { triggerBottomReachedIfRequired(indexPath: $0) }
             }
             endUpdates()
@@ -209,11 +209,6 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
         sectionDataSource?.unbind(cell: cell)
     }
 
-    open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        let row = sections[indexPath.section].rows[indexPath.row]
-        return !row.rowActions.isEmpty || row.deleteRowAction != nil
-    }
-
     @available(iOS 11, *)
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard sections.count > indexPath.section else { return nil }
@@ -222,37 +217,30 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
         guard section.rows.count > indexPath.row else { return nil }
         let row = section.rows[indexPath.row]
 
+        guard let provider = row.rowActionProvider else {
+            return nil
+        }
+
         let cell = cellForRow(at: indexPath)
 
-        if !row.rowActions.isEmpty {
-            let config = UISwipeActionsConfiguration(actions: row.rowActions.map { rowAction in
-                let action = UIContextualAction(style: .normal, title: nil) { _, _, handler in
-                    rowAction.action(cell)
-                    handler(true)
-                }
-                switch rowAction.pattern {
-                case let .text(title, color, icon):
-                    action.backgroundColor =  UIColor(patternImage: patternImage(title: title, color: color, icon: icon, rowHeight: row.height))
-                case let .icon(image: image, background: backgroundColor):
-                    action.image = image
-                    action.backgroundColor = backgroundColor
-                }
-                return action
-            })
-            config.performsFirstActionWithFullSwipe = row.performsFirstActionWithFullSwipe
-            return config
-        }
+        let config = UISwipeActionsConfiguration(actions: provider().map { rowAction in
+            let action = UIContextualAction(style: .normal, title: nil) { _, _, handler in
+                rowAction.action(cell)
+                handler(true)
+            }
+            switch rowAction.pattern {
+            case let .text(title, color, icon):
+                action.backgroundColor =  UIColor(patternImage: patternImage(title: title, color: color, icon: icon, rowHeight: row.height))
+            case let .icon(image: image, background: backgroundColor):
+                action.image = image
+                action.backgroundColor = backgroundColor
+            }
+            return action
+        })
 
-        if let deleteRowAction = row.deleteRowAction {
-            return UISwipeActionsConfiguration(actions: [
-                UIContextualAction(style: .destructive, title: deleteRowAction.title) { _, _, handler in
-                    deleteRowAction.action()
-                    handler(true)
-                }
-            ])
-        }
+        config.performsFirstActionWithFullSwipe = true
 
-        return nil
+        return config
     }
 
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -353,9 +341,7 @@ public protocol RowProtocol {
     var height: CGFloat { get }
     var separatorInset: UIEdgeInsets? { get }
     var autoDeselect: Bool { get }
-    var rowActions: [RowAction] { get }
-    var performsFirstActionWithFullSwipe: Bool { get }
-    var deleteRowAction: DeleteRowAction? { get }
+    var rowActionProvider: (() -> [RowAction])? { get }
     var rowType: RowType { get }
     var dynamicHeight: ((CGFloat) -> CGFloat)? { get }
     func bindCell(cell: UITableViewCell, animated: Bool)
@@ -492,23 +478,19 @@ public struct Row<T: UITableViewCell>: RowProtocol {
     public let height: CGFloat
     public let separatorInset: UIEdgeInsets?
     public var autoDeselect: Bool
-    public var performsFirstActionWithFullSwipe: Bool
-    public var rowActions: [RowAction]
-    public var deleteRowAction: DeleteRowAction?
+    public var rowActionProvider: (() -> [RowAction])?
     public let rowType: RowType
     public var dynamicHeight: ((CGFloat) -> CGFloat)?
     var bind: ((T, Bool) -> ())?
     var action: ((T) -> ())?
 
-    public init(id: String, hash: String? = nil, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, performsFirstActionWithFullSwipe: Bool = true, rowActions: [RowAction] = [], deleteRowAction: DeleteRowAction? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, bind: ((T, Bool) -> ())? = nil, action: ((T) -> ())? = nil) {
+    public init(id: String, hash: String? = nil, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, rowActionProvider: (() -> [RowAction])? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, bind: ((T, Bool) -> ())? = nil, action: ((T) -> ())? = nil) {
         self.id = id
         self.hash = hash
         self.height = height ?? 44
         self.separatorInset = separatorInset
         self.autoDeselect = autoDeselect
-        self.performsFirstActionWithFullSwipe = performsFirstActionWithFullSwipe
-        self.rowActions = rowActions
-        self.deleteRowAction = deleteRowAction
+        self.rowActionProvider = rowActionProvider
         rowType = .dynamic(reuseIdentifier: String(describing: T.self))
         self.dynamicHeight = dynamicHeight
         self.bind = bind
@@ -547,9 +529,7 @@ public class StaticRow: RowProtocol {
     public let height: CGFloat
     public let separatorInset: UIEdgeInsets?
     public var autoDeselect: Bool
-    public var performsFirstActionWithFullSwipe: Bool
-    public var rowActions: [RowAction]
-    public var deleteRowAction: DeleteRowAction?
+    public var rowActionProvider: (() -> [RowAction])?
     public let rowType: RowType
     public var dynamicHeight: ((CGFloat) -> CGFloat)?
     public var onReady: (() -> ())?
@@ -557,14 +537,12 @@ public class StaticRow: RowProtocol {
 
     private var readyReported = false
 
-    public init(cell: UITableViewCell, id: String, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, performsFirstActionWithFullSwipe: Bool = true, rowActions: [RowAction] = [], deleteRowAction: DeleteRowAction? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, action: (() -> ())? = nil, onReady: (() -> ())? = nil) {
+    public init(cell: UITableViewCell, id: String, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, rowActionProvider: (() -> [RowAction])? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, action: (() -> ())? = nil, onReady: (() -> ())? = nil) {
         self.id = id
         self.height = height ?? 44
         self.separatorInset = separatorInset
         self.autoDeselect = autoDeselect
-        self.performsFirstActionWithFullSwipe = performsFirstActionWithFullSwipe
-        self.rowActions = rowActions
-        self.deleteRowAction = deleteRowAction
+        self.rowActionProvider = rowActionProvider
         rowType = .static(cell: cell)
         self.dynamicHeight = dynamicHeight
         self.action = action
@@ -600,17 +578,6 @@ public struct RowAction {
     public enum Pattern {
         case text(title: String, color: UIColor, icon: UIImage?)
         case icon(image: UIImage?, background: UIColor)
-    }
-
-}
-
-public struct DeleteRowAction {
-    let title: String
-    var action: () -> ()
-
-    public init(title: String, action: @escaping () -> ()) {
-        self.title = title
-        self.action = action
     }
 
 }
