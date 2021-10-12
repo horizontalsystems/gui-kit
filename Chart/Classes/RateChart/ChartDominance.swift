@@ -55,7 +55,7 @@ class ChartDominance {
         return self
     }
 
-    func set(values: [CGPoint]?, diff: [CGPoint]?, animated: Bool) {
+    func set(values: [CGPoint]?, animated: Bool) {
         dominance.set(points: values ?? [], animated: animated)
     }
 
@@ -70,8 +70,8 @@ class ChartDominance {
             diffText.textColor = diff < 0 ? configuration.dominanceDiffNegativeColor : configuration.dominanceDiffPositiveColor
         }
 
-        let correctedDominance = value.flatMap { format(percentValue: $0) }
-        let correctedDiff = diff.flatMap { format(percentValue: $0, signed: true) }
+        let correctedDominance = value.flatMap { format(percentValue: $0, signed: false) }
+        let correctedDiff = diff.flatMap { format(percentValue: $0) }
 
         let dominanceText = ([configuration?.dominanceTextPrefix, correctedDominance].compactMap { $0 }).joined(separator: " ")
         valueText.set(text: dominanceText)

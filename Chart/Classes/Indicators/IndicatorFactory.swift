@@ -18,7 +18,6 @@ public enum ChartIndicatorName: String {
     case macdHistogram = "macd_histogram"
     case rsi = "rsi"
     case dominance = "dominance"
-    case dominanceDiff = "dominance_diff"
 }
 
 public protocol IIndicatorFactory {

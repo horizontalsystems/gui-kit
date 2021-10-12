@@ -115,9 +115,9 @@ public class RateChartView: UIView {
         chartMacd.set(macd: converted[.macd], macdHistogram: converted[.macdHistogram], macdSignal: converted[.macdSignal], animated: animated)
         chartRsi.set(points: converted[.rsi], animated: true)
 
-        chartDominance.set(values: converted[.dominance], diff: converted[.dominanceDiff], animated: animated)
-        if let lastDominance = chartData.items.last?.indicators[.dominance], let lastDominanceDiff = chartData.items.last?.indicators[.dominanceDiff] {
-            chartDominance.setLast(value: lastDominance, diff: lastDominanceDiff)
+        chartDominance.set(values: converted[.dominance], animated: animated)
+        if let firstDominance = chartData.items.first?.indicators[.dominance], let lastDominance = chartData.items.last?.indicators[.dominance] {
+            chartDominance.setLast(value: lastDominance, diff: (lastDominance - firstDominance) / firstDominance * 100)
         }
     }
 
