@@ -162,7 +162,7 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
             }
             if !deleteRowsIndexPaths.isEmpty {
 //                LogHelper.instance.log(self, "Delete Rows: \(deleteRowsIndexPaths.map { "\($0.section):\($0.row)" }.joined(separator: ", "))")
-                deleteRows(at: deleteRowsIndexPaths, with: .none)
+                deleteRows(at: deleteRowsIndexPaths, with: .fade)
                 deleteRowsIndexPaths.forEach { triggerBottomReachedIfRequired(indexPath: $0) }
             }
             endUpdates()
@@ -191,9 +191,9 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
         switch row.rowType {
         case .dynamic(let reuseIdentifier):
             return tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) ?? {
-                    print("Can't dequeue cell, did you forget to register cell?")
-                    return UITableViewCell(style: .default, reuseIdentifier: "")
-                }()
+                print("Can't dequeue cell, did you forget to register cell?")
+                return UITableViewCell(style: .default, reuseIdentifier: "")
+            }()
         case .static(let cell):
             return cell
         }
@@ -371,6 +371,8 @@ public enum ViewState<T: UITableViewHeaderFooterView>: Equatable {
         switch (lhs, rhs) {
         case let (.margin(heightA), .margin(heightB)):
             return heightA == heightB
+        case let (.marginColor(heightA, colorA), .marginColor(heightB, colorB)):
+            return heightA == heightB && colorA == colorB
         case let (.cellType(hashA, _, _), .cellType(hashB, _, _)):
             return hashA == hashB
         case let (.text(textA, topMarginA, bottomMarginA), .text(textB, topMarginB, bottomMarginB)):
