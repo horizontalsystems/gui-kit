@@ -63,7 +63,7 @@ class RelativeConverter {
         }
         // range for RSI : 0 to 100
         ranges[.rsi] = ChartRange(min: 0, max: 100)
-        ranges[.dominance] = ChartRange(min: 0, max: 100)
+        ranges[.dominance] = ranges[.dominance] ?? ChartRange(min: 0, max: 100)
 
         return ranges
     }
