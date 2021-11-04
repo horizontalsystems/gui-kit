@@ -1,7 +1,7 @@
 import UIKit
 
 public class ChartConfiguration {
-    private static let oneDp = 1 / UIScreen.main.scale
+    private static let onePixel = 1 / UIScreen.main.scale
 
     public var showBorders = true
     public var showIndicators = true
@@ -17,12 +17,12 @@ public class ChartConfiguration {
     public var animationDuration: TimeInterval = 0.35
     public var timingFunction: CAMediaTimingFunctionName = .easeInEaseOut
 
-    public var borderWidth: CGFloat = oneDp
+    public var borderWidth: CGFloat = 1
     public var borderColor: UIColor = UIColor.clear.withAlphaComponent(0.5)
 
     public var backgroundColor: UIColor = .clear
 
-    public var curveWidth: CGFloat = oneDp
+    public var curveWidth: CGFloat = onePixel
     public var curvePadding: UIEdgeInsets = UIEdgeInsets(top: 18, left: 0, bottom: 18, right: 0)
 
     public var trendUpColor = UIColor.green
@@ -37,7 +37,7 @@ public class ChartConfiguration {
 
     public var gradientAlphas: [CGFloat] = [0.05, 0.5]
 
-    public var limitLinesWidth: CGFloat = oneDp
+    public var limitLinesWidth: CGFloat = onePixel
     public var limitLinesDashPattern: [NSNumber]? = [2, 2]
     public var limitLinesColor: UIColor = UIColor.white.withAlphaComponent(0.5)
     public var limitLinesPadding: UIEdgeInsets = UIEdgeInsets(top: 18, left: 0, bottom: 18, right: 0)
@@ -49,7 +49,7 @@ public class ChartConfiguration {
     public var lowLimitTextInsets: UIEdgeInsets = UIEdgeInsets(top: -1, left: 16, bottom: 4, right: 32)
     public var lowLimitTextSize: CGSize = CGSize(width: 0, height: 14)
 
-    public var verticalLinesWidth: CGFloat = oneDp
+    public var verticalLinesWidth: CGFloat = onePixel
     public var verticalLinesColor: UIColor = UIColor.gray.withAlphaComponent(0.5)
     public var verticalInvisibleIndent: CGFloat? = 5
 
@@ -61,7 +61,7 @@ public class ChartConfiguration {
     public var timelineFont: UIFont = .systemFont(ofSize: 12)
     public var timelineInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 0, right: 0)
 
-    public var touchLineWidth: CGFloat = oneDp
+    public var touchLineWidth: CGFloat = onePixel
     public var touchCircleRadius: CGFloat = 3.5
     public var touchLineColor: UIColor = UIColor.white
     public var touchCircleColor: UIColor = UIColor.white
