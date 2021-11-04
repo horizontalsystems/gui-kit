@@ -48,8 +48,15 @@ class ChartBorder: IChartObject {
 
     func path() -> CGPath {
         let offset: CGFloat = LayerFrameHelper.offset(lineWidth: lineWidth)
-        let size = CGSize(width: borderLayer.bounds.width - 2 * offset, height: borderLayer.bounds.height - 1 / UIScreen.main.scale)
-        return UIBezierPath(roundedRect: CGRect(origin: CGPoint(x: offset, y: offset), size: size), cornerRadius: 0).cgPath
+
+//        let size = CGSize(width: borderLayer.bounds.width - 2 * offset, height: borderLayer.bounds.height)// - 1 / UIScreen.main.scale)
+//        return UIBezierPath(roundedRect: CGRect(origin: CGPoint(x: offset, y: offset), size: size), cornerRadius: 0).cgPath
+
+//      only bottom chart border
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: 0, y: borderLayer.bounds.height - offset))
+        path.addLine(to: CGPoint(x: borderLayer.bounds.width - 2 * offset, y: borderLayer.bounds.height - offset))
+        return path.cgPath
     }
 
     func updateFrame(in bounds: CGRect, duration: CFTimeInterval?, timingFunction: CAMediaTimingFunction?) {
