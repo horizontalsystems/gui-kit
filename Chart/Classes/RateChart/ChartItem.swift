@@ -9,8 +9,10 @@ public class ChartItem: Comparable {
         self.timestamp = timestamp
     }
 
-    public func add(name: ChartIndicatorName, value: Decimal) {
+    @discardableResult public func added(name: ChartIndicatorName, value: Decimal) -> Self {
         indicators[name] = value
+
+        return self
     }
 
     static public func <(lhs: ChartItem, rhs: ChartItem) -> Bool {
