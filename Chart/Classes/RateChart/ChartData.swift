@@ -15,7 +15,7 @@ public class ChartData {
         let start = items.count - values.count
 
         for i in 0..<values.count {
-            items[i + start].add(name: name, value: values[i])
+            items[i + start].added(name: name, value: values[i])
         }
     }
 

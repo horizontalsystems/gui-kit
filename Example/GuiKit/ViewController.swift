@@ -106,8 +106,8 @@ class ViewController: UIViewController {
         var items = [ChartItem]()
         for index in 0..<pointCount {
             let chartItem = ChartItem(timestamp: startInterval + TimeInterval(index) * deltaInterval)
-            chartItem.add(name: .rate, value: randomValue(start: minValue, end: maxValue, powScale: powScale))
-            chartItem.add(name: .volume, value: randomValue(start: minValue, end: maxValue, powScale: powScale))
+            chartItem.added(name: .rate, value: randomValue(start: minValue, end: maxValue, powScale: powScale))
+            chartItem.added(name: .volume, value: randomValue(start: minValue, end: maxValue, powScale: powScale))
 
             items.append(chartItem)
         }
