@@ -189,11 +189,14 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
 
         let row = sections[indexPath.section].rows[indexPath.row]
         switch row.rowType {
-        case .dynamic(let reuseIdentifier):
-            return tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) ?? {
+        case .dynamic(let reuseIdentifier, let prepare):
+            if let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) {
+                prepare(cell)
+                return cell
+            } else {
                 print("Can't dequeue cell, did you forget to register cell?")
                 return UITableViewCell(style: .default, reuseIdentifier: "")
-            }()
+            }
         case .static(let cell):
             return cell
         }
@@ -331,7 +334,7 @@ open class SectionsTableView: UITableView, UITableViewDelegate, UITableViewDataS
 }
 
 public enum RowType {
-    case dynamic(reuseIdentifier: String)
+    case dynamic(reuseIdentifier: String, prepare: (UITableViewCell) -> ())
     case `static`(cell: UITableViewCell)
 }
 
@@ -486,14 +489,14 @@ public struct Row<T: UITableViewCell>: RowProtocol {
     var bind: ((T, Bool) -> ())?
     var action: ((T) -> ())?
 
-    public init(id: String, hash: String? = nil, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, rowActionProvider: (() -> [RowAction])? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, bind: ((T, Bool) -> ())? = nil, action: ((T) -> ())? = nil) {
+    public init(id: String, hash: String? = nil, height: CGFloat? = nil, separatorInset: UIEdgeInsets? = nil, autoDeselect: Bool = false, rowActionProvider: (() -> [RowAction])? = nil, rowType: RowType? = nil, dynamicHeight: ((CGFloat) -> CGFloat)? = nil, bind: ((T, Bool) -> ())? = nil, action: ((T) -> ())? = nil) {
         self.id = id
         self.hash = hash
         self.height = height ?? 44
         self.separatorInset = separatorInset
         self.autoDeselect = autoDeselect
         self.rowActionProvider = rowActionProvider
-        rowType = .dynamic(reuseIdentifier: String(describing: T.self))
+        self.rowType = rowType ?? .dynamic(reuseIdentifier: String(describing: T.self), prepare: { _ in })
         self.dynamicHeight = dynamicHeight
         self.bind = bind
         self.action = action
@@ -516,7 +519,7 @@ public struct Row<T: UITableViewCell>: RowProtocol {
     }
 
     static public func empty(id: String, height: CGFloat, backgroundColor: UIColor? = nil) -> RowProtocol {
-        return Row<SectionEmptyCell>(id: id, height: height, bind: { cell, _ in
+        Row<SectionEmptyCell>(id: id, height: height, bind: { cell, _ in
             if let backgroundColor = backgroundColor {
                 cell.backgroundColor = backgroundColor
             }
