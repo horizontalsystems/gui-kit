@@ -7,7 +7,7 @@ public class ChartConfiguration {
     public var showIndicators = true
     public var showDominance = false
     public var showLimits = true
-    public var showVericalLines = true
+    public var showVerticalLines = true
     public var isInteractive = true
 
     public var mainHeight: CGFloat = 160
