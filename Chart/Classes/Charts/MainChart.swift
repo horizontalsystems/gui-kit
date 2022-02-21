@@ -62,7 +62,7 @@ class MainChart: Chart {
             lowLimitText.size = configuration.lowLimitTextSize
         }
 
-        if configuration.showVericalLines {
+        if configuration.showVerticalLines {
             verticalLines.gridType = .vertical
             verticalLines.lineDirection = .top
             verticalLines.lineWidth = configuration.verticalLinesWidth
