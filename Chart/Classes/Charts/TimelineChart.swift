@@ -17,12 +17,14 @@ class TimelineChart: Chart {
 
     private var timelineTexts = [String]()
     private var timelinePositions = [CGPoint]()
-
+    private let horizontalLines = ChartGridLines()
 
     private var configuration: ChartConfiguration?
 
     init(configuration: ChartConfiguration? = nil) {
         super.init(frame: .zero)
+
+        add(horizontalLines)
 
         apply(configuration: configuration)
     }
@@ -33,6 +35,13 @@ class TimelineChart: Chart {
 
     @discardableResult func apply(configuration: ChartConfiguration?) -> Self {
         self.configuration = configuration
+
+        if let configuration = configuration {
+            horizontalLines.gridType = .horizontal
+            horizontalLines.lineWidth = configuration.borderWidth
+            horizontalLines.strokeColor = configuration.borderColor
+            horizontalLines.set(points: [CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 0)])
+        }
 
         return self
     }

@@ -46,29 +46,35 @@ public class RateChartView: UIView {
 
         backgroundColor = configuration.backgroundColor
 
-        mainChart.snp.makeConstraints { maker in
+        mainChart.snp.remakeConstraints { maker in
             maker.leading.top.trailing.equalToSuperview()
             maker.height.equalTo(configuration.mainHeight)
         }
         mainChart.apply(configuration: configuration)
 
-        indicatorChart.snp.makeConstraints { maker in
-            maker.bottom.equalTo(mainChart.snp.bottom)
-            maker.leading.trailing.equalToSuperview()
-            maker.height.equalTo(configuration.indicatorHeight)
+        var lastView: UIView = mainChart
+        if configuration.showIndicators {
+            indicatorChart.snp.remakeConstraints { maker in
+                maker.top.equalTo(mainChart.snp.bottom)
+                maker.leading.trailing.equalToSuperview()
+                maker.height.equalTo(configuration.indicatorHeight)
+            }
+            lastView = indicatorChart
+        } else {
+            indicatorChart.snp.removeConstraints()
         }
         indicatorChart.apply(configuration: configuration)
 
         timelineChart.snp.makeConstraints { maker in
-            maker.top.equalTo(indicatorChart.snp.bottom)
-            maker.leading.bottom.trailing.equalToSuperview()
+            maker.top.equalTo(lastView.snp.bottom)
+            maker.leading.trailing.equalToSuperview()
             maker.height.equalTo(configuration.timelineHeight)
         }
         timelineChart.apply(configuration: configuration)
 
         chartTouchArea.snp.makeConstraints { maker in
             maker.leading.top.trailing.equalToSuperview()
-            maker.bottom.equalTo(indicatorChart.snp.bottom)
+            maker.bottom.equalTo(timelineChart.snp.top)
         }
         chartTouchArea.apply(configuration: configuration)
         if configuration.isInteractive {
@@ -76,6 +82,7 @@ public class RateChartView: UIView {
         }
 
         if configuration.showIndicators {
+            indicatorChart.isHidden = false
             chartEma.add(to: mainChart).apply(configuration: configuration)
             chartMacd.add(to: indicatorChart).apply(configuration: configuration)
             chartRsi.add(to: indicatorChart).apply(configuration: configuration)
@@ -83,12 +90,13 @@ public class RateChartView: UIView {
             chartEma.set(hidden: true)
             chartMacd.set(hidden: true)
             chartRsi.set(hidden: true)
+        } else {
+            indicatorChart.isHidden = true
         }
 
         if configuration.showDominance {
             chartDominance.add(to: mainChart).apply(configuration: configuration)
         }
-
 
         layoutIfNeeded()
 
@@ -139,6 +147,7 @@ public class RateChartView: UIView {
         }
 
         mainChart.setVerticalLines(points: positions)
+        indicatorChart.setVerticalLines(points: positions)
 
         timelineChart.set(texts: timeline.map { $0.text }, positions: positions)
     }

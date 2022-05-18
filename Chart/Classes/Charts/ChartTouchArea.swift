@@ -41,7 +41,12 @@ class ChartTouchArea: Chart {
             verticalLine.retinaCorrected = false
 
             pointCircle.radius = configuration.touchCircleRadius
-            pointCircle.insets = configuration.curvePadding
+
+            var padding = configuration.curvePadding
+            if configuration.showIndicators {
+                padding.bottom += configuration.indicatorHeight
+            }
+            pointCircle.insets = padding
 
             updateUI()
         }

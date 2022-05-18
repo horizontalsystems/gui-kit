@@ -10,8 +10,8 @@ public class ChartConfiguration {
     public var showVerticalLines = true
     public var isInteractive = true
 
-    public var mainHeight: CGFloat = 160
-    public var indicatorHeight: CGFloat = 56
+    public var mainHeight: CGFloat = 183
+    public var indicatorHeight: CGFloat = 47
     public var timelineHeight: CGFloat = 21
 
     public var animationDuration: TimeInterval = 0.35
