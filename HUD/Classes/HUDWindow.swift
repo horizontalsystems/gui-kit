@@ -11,6 +11,7 @@ class HUDWindow: ThemeWindow {
         }
     }
 
+    var transparent: Bool = false
     init(frame: CGRect, rootController: UIViewController, level: UIWindow.Level = UIWindow.Level.normal, cornerRadius: CGFloat = 0) {
         super.init(frame: frame)
 
@@ -27,6 +28,14 @@ class HUDWindow: ThemeWindow {
 
     deinit {
 //        print("deinit HUDWindow \(self)")
+    }
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if transparent {
+            return nil
+        }
+
+        return super.hitTest(point, with: event)
     }
 
 }

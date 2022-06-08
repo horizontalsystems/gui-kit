@@ -7,27 +7,31 @@ class HUDViewPresenter: HUDViewPresenterInterface, HUDViewInteractorDelegate, Co
 
     weak var view: HUDViewInterface?
 
-    var coverView: CoverViewInterface?
+    var coverView: CoverViewInterface
     var containerView: HUDContainerInterface
     public let config: HUDConfig
 
     private var timers = [Timer]()
 
-    init(interactor: HUDViewInteractorInterface, router: HUDViewRouterInterface, coverView: CoverViewInterface?, containerView: HUDContainerInterface, config: HUDConfig) {
+    init(interactor: HUDViewInteractorInterface, router: HUDViewRouterInterface, coverView: CoverViewInterface, containerView: HUDContainerInterface, config: HUDConfig) {
         self.interactor = interactor
         self.router = router
         self.coverView = coverView
         self.containerView = containerView
         self.config = config
 
-        self.coverView?.delegate = self
+        self.coverView.delegate = self
     }
 
     func viewDidLoad() {
     }
 
-    func showCover() {
-        coverView?.show(animated: true)
+    func updateCover() {
+        if coverView.transparent {
+            coverView.hide(animated: true, completion: nil)
+        } else {
+            coverView.show(animated: true)
+        }
     }
 
     func showContainerView(animated: Bool = true, completion: (() -> ())? = nil) {
@@ -35,7 +39,7 @@ class HUDViewPresenter: HUDViewPresenterInterface, HUDViewInteractorDelegate, Co
         if case .banner(let bannerStyle) = config.style {
             style = bannerStyle
         }
-        let correctedOffset = containerView.outScreenOffset(for: config.absoluteInsetsValue ? config.hudInset : view?.safeCorrectedOffset(for: config.hudInset, style: style, relativeWindow: config.userInteractionEnabled) ?? .zero, style: style)
+        let correctedOffset = containerView.outScreenOffset(for: config.absoluteInsetsValue ? config.hudInset : view?.safeCorrectedOffset(for: config.hudInset, style: style, relativeWindow: true) ?? .zero, style: style)
         containerView.show(animated: true, appearStyle: config.appearStyle, offset: correctedOffset, completion: completion)
     }
 
@@ -43,7 +47,7 @@ class HUDViewPresenter: HUDViewPresenterInterface, HUDViewInteractorDelegate, Co
         if let hapticType = config.hapticType {
             feedbackGenerator?.notification(hapticType)
         }
-        showCover()
+        updateCover()
         showContainerView(animated: animated, completion: completion)
     }
 
@@ -54,17 +58,17 @@ class HUDViewPresenter: HUDViewPresenterInterface, HUDViewInteractorDelegate, Co
         if case .banner(let bannerStyle) = config.style {
             style = bannerStyle
         }
-        let correctedOffset = containerView.outScreenOffset(for: config.absoluteInsetsValue ? config.hudInset : view?.safeCorrectedOffset(for: config.hudInset, style: style, relativeWindow: config.userInteractionEnabled) ?? .zero, style: style)
+        let correctedOffset = containerView.outScreenOffset(for: config.absoluteInsetsValue ? config.hudInset : view?.safeCorrectedOffset(for: config.hudInset, style: style, relativeWindow: true) ?? .zero, style: style)
         containerView.hide(animated: animated, appearStyle: config.appearStyle, offset: correctedOffset, completion: { [weak self] in
             self?.completeDismiss(completion: completion)
         })
-        coverView?.hide(animated: animated, completion: { [weak self] in
+        coverView.hide(animated: animated, completion: { [weak self] in
             self?.completeDismiss(completion: completion)
         })
     }
 
     func completeDismiss(completion: (() -> ())? = nil) {
-        if !(containerView.isVisible || (coverView?.isVisible ?? false)) {
+        if !(containerView.isVisible || (coverView.isVisible ?? false)) {
 
             router.view?.window = nil
             router.view = nil

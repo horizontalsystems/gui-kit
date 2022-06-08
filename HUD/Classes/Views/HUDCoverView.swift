@@ -2,6 +2,7 @@ import UIKit
 
 open class HUDCoverView: UIView, CoverViewInterface {
     public weak var delegate: CoverViewDelegate?
+    public var transparent: Bool = false
     public var coverBackgroundColor: UIColor? = nil
 
     public var onTapCover: (() -> ())? = nil
@@ -14,6 +15,7 @@ open class HUDCoverView: UIView, CoverViewInterface {
 
 public protocol CoverViewInterface {
     var delegate: CoverViewDelegate? { get set }
+    var transparent: Bool { get set }
 
     var onTapCover: (() -> ())? { get set }
     var coverBackgroundColor: UIColor? { get set }

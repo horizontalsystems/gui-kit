@@ -12,18 +12,45 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let hudButton = UIButton()
-        view.addSubview(hudButton)
+        let someText = UILabel()
+        view.addSubview(someText)
 
-        hudButton.snp.makeConstraints { maker in
-            maker.top.equalToSuperview().offset(50)
+        someText.snp.makeConstraints { maker in
+            maker.top.equalToSuperview()
+            maker.leading.trailing.equalToSuperview()
+        }
+
+        someText.numberOfLines = 0
+        someText.font = UIFont.body.with(traits: .traitBold)
+        someText.textColor = .themeSteelLight
+        someText.backgroundColor = .themeDark
+        someText.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum dignissim urna a odio auctor, eget semper felis eleifend. Nulla eget libero ipsum. Nullam nec dolor ut quam ornare sodales nec non ex. Morbi suscipit varius ipsum eget pretium. Vivamus imperdiet vel orci id mollis. Aenean ornare mollis rhoncus. Suspendisse potenti. Vestibulum eu sem neque. Sed at neque at urna ullamcorper ultricies sed vel quam. Nunc est est, lacinia eu tempor at, iaculis mattis magna."
+
+        let addWalletButton = UIButton()
+        view.addSubview(addWalletButton)
+
+        addWalletButton.snp.makeConstraints { maker in
+            maker.top.equalToSuperview().offset(250)
             maker.centerX.equalToSuperview()
             maker.height.equalTo(30)
         }
 
-        hudButton.setTitleColor(.black, for: .normal)
-        hudButton.setTitle("Show HUD", for: .normal)
-        hudButton.addTarget(self, action: #selector(showHud), for: .touchUpInside)
+        addWalletButton.setTitleColor(.black, for: .normal)
+        addWalletButton.setTitle("Show success HUD", for: .normal)
+        addWalletButton.addTarget(self, action: #selector(showTopHud), for: .touchUpInside)
+
+        let disconnectingButton = UIButton()
+        view.addSubview(disconnectingButton)
+
+        disconnectingButton.snp.makeConstraints { maker in
+            maker.top.equalTo(addWalletButton.snp.bottom).offset(20)
+            maker.centerX.equalToSuperview()
+            maker.height.equalTo(30)
+        }
+
+        disconnectingButton.setTitleColor(.black, for: .normal)
+        disconnectingButton.setTitle("Show loading HUD", for: .normal)
+        disconnectingButton.addTarget(self, action: #selector(showLoadingHud), for: .touchUpInside)
 
         let bottomSheetButton = UIButton()
         view.addSubview(bottomSheetButton)
@@ -32,7 +59,7 @@ class ViewController: UIViewController {
         view.addSubview(alertButton)
 
         bottomSheetButton.snp.makeConstraints { maker in
-            maker.top.equalTo(hudButton.snp.bottom).offset(20)
+            maker.top.equalTo(disconnectingButton.snp.bottom).offset(20)
             maker.leading.equalToSuperview().offset(32)
             maker.trailing.equalTo(alertButton.snp.leading).offset(16)
             maker.height.equalTo(30)
@@ -44,7 +71,7 @@ class ViewController: UIViewController {
 
 
         alertButton.snp.makeConstraints { maker in
-            maker.top.equalTo(hudButton.snp.bottom).offset(20)
+            maker.top.equalTo(disconnectingButton.snp.bottom).offset(20)
             maker.trailing.equalToSuperview().inset(32)
             maker.height.equalTo(30)
             maker.width.equalTo(bottomSheetButton.snp.width)
@@ -77,10 +104,40 @@ class ViewController: UIViewController {
         }
 
         chartView.backgroundColor = .gray
+
     }
 
-    @objc func showHud() {
-        show(title: "Hello World")
+    @objc func showTopHud() {
+        HUD.instance.show(config: bannerConfig(isUserInteractionEnabled: true), viewItem: HudMode.addedToWallet.viewItem, forced: true)
+    }
+
+    @objc func showLoadingHud() {
+        let viewItem = HudMode.disconnecting.viewItem
+        HUD.instance.show(config: bannerConfig(isUserInteractionEnabled: false), viewItem: viewItem, forced: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [unowned self] in
+            let viewItem = HudMode.disconnected.viewItem
+            HUD.instance.show(config: self.bannerConfig(isUserInteractionEnabled: true), viewItem: viewItem, forced: false)
+        }
+    }
+
+    private func bannerConfig(isUserInteractionEnabled: Bool) -> HUDConfig {
+        var config = HUDConfig()
+
+        config.style = .banner(.top)
+        config.appearStyle = .moveOut
+        config.userInteractionEnabled = isUserInteractionEnabled
+        config.preferredSize = CGSize(width: 114, height: 56)
+
+        config.coverBlurEffectStyle = nil
+        config.coverBlurEffectIntensity = nil
+        config.coverBackgroundColor = .themeBlack50
+
+        config.blurEffectStyle = .themeHud
+        config.backgroundColor = .themeAndy
+        config.blurEffectIntensity = 0.4
+
+        config.cornerRadius = 28
+        return config
     }
 
     @objc func showBottomSheet() {

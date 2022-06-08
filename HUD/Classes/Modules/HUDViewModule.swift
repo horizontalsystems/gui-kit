@@ -22,6 +22,7 @@ protocol HUDViewPresenterInterface: class {
 
     func viewDidLoad()
     func addActionTimers(_ timeActions: [HUDTimeAction])
+    func updateCover()
     func show(animated: Bool, completion: (() -> ())?)
     func dismiss(animated: Bool, completion: (() -> ())?)
 }
@@ -31,7 +32,7 @@ protocol HUDViewInteractorInterface: class {
 }
 
 protocol HUDViewInteractorDelegate: class {
-    func showCover()
+    func updateCover()
     func showContainerView(animated: Bool, completion: (() -> ())?)
     func dismiss(animated: Bool, completion: (() -> ())?)
 }
