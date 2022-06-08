@@ -27,7 +27,7 @@ extension HUDTappableViewInterface {
 
 }
 
-public protocol HUDContainerInterface: class {
+public protocol HUDContainerInterface: AnyObject {
 
     var isVisible: Bool { get }
 
@@ -171,7 +171,7 @@ open class HUDContainerView: CustomIntensityVisualEffectView, HUDContainerInterf
             completion?()
             return
         }
-        let animateBlock: (() -> ())
+        let animateBlock: () -> ()
         switch appearStyle {
             case .alphaAppear:
                 animateBlock = {

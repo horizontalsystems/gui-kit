@@ -4,12 +4,12 @@ open class DimCoverView: HUDCoverView {
     private let model: HUDCoverModel
 
     override public var isVisible: Bool {
-        return !isHidden
+        !isHidden
     }
 
     override public var coverBackgroundColor: UIColor? {
         get {
-            return dimBackgroundView.backgroundColor
+            dimBackgroundView.backgroundColor
         }
         set {
             dimBackgroundView.backgroundColor = newValue
@@ -20,7 +20,7 @@ open class DimCoverView: HUDCoverView {
 
     public init(withModel model: HUDCoverModel, backgroundView: UIView? = nil) {
         self.model = model
-        self.dimBackgroundView = backgroundView ?? UIView()
+        dimBackgroundView = backgroundView ?? UIView()
         super.init(frame: .zero)
 
         commonInit()

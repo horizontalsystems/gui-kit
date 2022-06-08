@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol RespondViewDelegate: class {
+public protocol RespondViewDelegate: AnyObject {
     var touchTransparent: Bool { get }
     func touchBegan()
     func touchEnd()

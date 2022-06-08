@@ -5,9 +5,9 @@ class HUDView: UIViewController, HUDViewInterface {
     let presenter: HUDViewPresenterInterface
     var config: HUDViewModel
     var window: UIWindow?
-    var holderView: UIView? { config.userInteractionEnabled ? window : containerView }
+    var backgroundWindow: BackgroundHUDWindow
+    var holderView: UIView? { window }
 
-    let coverView: UIView?
     let containerView: HUDContainerView
 
     var keyboardNotificationHandler: HUDKeyboardHelper? {
@@ -20,10 +20,10 @@ class HUDView: UIViewController, HUDViewInterface {
     public var showCompletion: (() -> ())?
     public var dismissCompletion: (() -> ())?
 
-    init(presenter: HUDViewPresenterInterface, config: HUDViewModel, coverView: UIView?, containerView: HUDContainerView) {
+    init(presenter: HUDViewPresenterInterface, config: HUDViewModel, backgroundWindow: BackgroundHUDWindow, containerView: HUDContainerView) {
         self.presenter = presenter
         self.config = config
-        self.coverView = coverView
+        self.backgroundWindow = backgroundWindow
         self.containerView = containerView
 
         super.init(nibName: nil, bundle: Bundle(for: HUDView.self))
@@ -36,14 +36,7 @@ class HUDView: UIViewController, HUDViewInterface {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let coverView = coverView {
-            view.addSubview(coverView)
-        }
         view.addSubview(containerView)
-
-        coverView?.frame = view.bounds
-        coverView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
         presenter.viewDidLoad()
     }
 
@@ -65,6 +58,9 @@ class HUDView: UIViewController, HUDViewInterface {
 
     func set(config: HUDConfig) {
         self.config = config
+
+        backgroundWindow.set(transparent: config.userInteractionEnabled)
+        presenter.updateCover()
     }
 
     func adjustPlace() {
@@ -85,7 +81,7 @@ class HUDView: UIViewController, HUDViewInterface {
 
     func adjustViewCenter(for view: UIView?, style: HUDBannerStyle? = nil) {
         guard let style = style else {
-            set(CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2), for: holderView, useConstraints: !config.userInteractionEnabled)
+            set(CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2), for: holderView, useConstraints: false)
             return
         }
 
@@ -107,7 +103,7 @@ class HUDView: UIViewController, HUDViewInterface {
                 viewCenter = CGPoint(x: UIScreen.main.bounds.width - contentCenter.x + centerOffset.x, y: screenCenter.y + centerOffset.y)
         }
 
-        set(viewCenter, for: holderView, useConstraints: !config.userInteractionEnabled)
+        set(viewCenter, for: holderView, useConstraints: false)
     }
 
     func set(_ center: CGPoint,for view: UIView?, useConstraints: Bool) {
@@ -152,6 +148,14 @@ class HUDView: UIViewController, HUDViewInterface {
 
     deinit {
 //        print("deinit viewController \(self)")
+    }
+
+}
+
+extension HUDView {
+
+    func hide(animated: Bool, completion: (() -> ())? = nil) {
+        presenter.dismiss(animated: animated, completion: completion)
     }
 
 }

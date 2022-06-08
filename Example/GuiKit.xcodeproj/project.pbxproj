@@ -14,6 +14,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		76D5263AF1858FE5746258B9 /* libPods-GuiKitExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA4ADA2281384B8FD335667 /* libPods-GuiKitExample.a */; };
+		ABC9A16028112A81F0C8B78B /* HudMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC9A8741682473E74466024 /* HudMode.swift */; };
 		D36AAB5323A7590E0065B32B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D36AAB5223A7590E0065B32B /* LaunchScreen.xib */; };
 		E356C57220C1B3D7068E4A81 /* libPods-GuiKitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE902E196908618CE222FFD7 /* libPods-GuiKitTests.a */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,7 @@
 		9C0AE42BD1B6588C3BDF60F0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		A01CD8D42BDCA0824446C0AB /* Pods-GuiKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GuiKitTests.release.xcconfig"; path = "Target Support Files/Pods-GuiKitTests/Pods-GuiKitTests.release.xcconfig"; sourceTree = "<group>"; };
 		A1AA91322D03D1213A7F9457 /* Pods-GuiKitExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GuiKitExample.debug.xcconfig"; path = "Target Support Files/Pods-GuiKitExample/Pods-GuiKitExample.debug.xcconfig"; sourceTree = "<group>"; };
+		ABC9A8741682473E74466024 /* HudMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudMode.swift; sourceTree = "<group>"; };
 		AE902E196908618CE222FFD7 /* libPods-GuiKitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GuiKitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5201CDEFA67922B883CB9F4 /* Pods-GuiKitExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GuiKitExample.release.xcconfig"; path = "Target Support Files/Pods-GuiKitExample/Pods-GuiKitExample.release.xcconfig"; sourceTree = "<group>"; };
 		BFA4ADA2281384B8FD335667 /* libPods-GuiKitExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GuiKitExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,6 +135,7 @@
 				D36AAB5223A7590E0065B32B /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 				58AAA9DD84C8CC4D9B4A83C4 /* NewSheet */,
+				ABC9ADA510FA5D7A671B2E05 /* NewHUD */,
 			);
 			name = "Example for GuiKit";
 			path = GuiKit;
@@ -175,6 +178,14 @@
 				9C0AE42BD1B6588C3BDF60F0 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		ABC9ADA510FA5D7A671B2E05 /* NewHUD */ = {
+			isa = PBXGroup;
+			children = (
+				ABC9A8741682473E74466024 /* HudMode.swift */,
+			);
+			path = NewHUD;
 			sourceTree = "<group>";
 		};
 		C3D91F2CFC3598F814C4E437 /* Frameworks */ = {
@@ -384,6 +395,7 @@
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				58AAAA1E5FB16989C33D5E0F /* ContentViewController.swift in Sources */,
 				58AAA560FFE6F3E69F372180 /* SectionsViewController.swift in Sources */,
+				ABC9A16028112A81F0C8B78B /* HudMode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
