@@ -29,6 +29,12 @@ class ChartLineBottomGradient: ChartPointsObject {
         }
     }
 
+    public var gradientLocations: [NSNumber]? = nil {
+        didSet {
+            gradientLayer.locations = gradientLocations
+        }
+    }
+
     override init() {
         super.init()
 
@@ -41,8 +47,8 @@ class ChartLineBottomGradient: ChartPointsObject {
 
         gradientLayer.backgroundColor = UIColor.clear.cgColor
         gradientLayer.mask = maskLayer
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 1)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 0)
     }
 
     override func appearingAnimation(new: [CGPoint], duration: CFTimeInterval, timingFunction: CAMediaTimingFunction?) -> CAAnimation? {

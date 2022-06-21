@@ -35,6 +35,8 @@ public class ChartConfiguration {
     public var pressedGradient = [UIColor.lightGray, UIColor.lightGray]
     public var neutralGradient = [UIColor.gray, UIColor.gray]
 
+    public var gradientPositions: [CGFloat] = [0, 1]
+    public var gradientLocations: [NSNumber]? = nil
     public var gradientAlphas: [CGFloat] = [0.05, 0.5]
 
     public var limitLinesWidth: CGFloat = onePixel
