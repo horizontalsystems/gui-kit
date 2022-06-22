@@ -35,7 +35,7 @@ class TopHUDContentView: UIView {
         }
 
         titleLabel.font = .subhead1
-        titleLabel.textColor = .themeSteelLight//.themeLeah
+        titleLabel.textColor = .themeLeah
         titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 
