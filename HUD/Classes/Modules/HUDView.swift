@@ -7,6 +7,7 @@ class HUDView: UIViewController, HUDViewInterface {
     var window: UIWindow?
     var backgroundWindow: BackgroundHUDWindow
     var holderView: UIView? { window }
+    let statusBarStyle: UIStatusBarStyle?
 
     let containerView: HUDContainerView
 
@@ -20,11 +21,12 @@ class HUDView: UIViewController, HUDViewInterface {
     public var showCompletion: (() -> ())?
     public var dismissCompletion: (() -> ())?
 
-    init(presenter: HUDViewPresenterInterface, config: HUDViewModel, backgroundWindow: BackgroundHUDWindow, containerView: HUDContainerView) {
+    init(presenter: HUDViewPresenterInterface, config: HUDViewModel, backgroundWindow: BackgroundHUDWindow, containerView: HUDContainerView, statusBarStyle: UIStatusBarStyle? = nil) {
         self.presenter = presenter
         self.config = config
         self.backgroundWindow = backgroundWindow
         self.containerView = containerView
+        self.statusBarStyle = statusBarStyle
 
         super.init(nibName: nil, bundle: Bundle(for: HUDView.self))
     }
@@ -171,10 +173,14 @@ extension HUDView {
     }
 
     internal override var preferredStatusBarStyle: UIStatusBarStyle {
+        if let style = statusBarStyle {
+            return style
+        }
+
         if let rootViewController = UIApplication.shared.delegate?.window??.rootViewController {
             return rootViewController.preferredStatusBarStyle
         }
-        return self.presentingViewController?.preferredStatusBarStyle ?? UIApplication.shared.statusBarStyle
+        return presentingViewController?.preferredStatusBarStyle ?? UIApplication.shared.statusBarStyle
     }
 
     internal override var prefersStatusBarHidden: Bool {

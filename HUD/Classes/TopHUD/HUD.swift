@@ -32,7 +32,7 @@ public class HUD {
         })
     }
 
-    public func showHUD(_ content: UIView & HUDContentViewInterface, animated: Bool = true, showCompletion: (() -> ())? = nil, dismissCompletion: (() -> ())? = nil, onTapCoverView: ((HUD) -> ())? = nil, onTapHUD: ((HUD) -> ())? = nil) {
+    public func showHUD(_ content: UIView & HUDContentViewInterface, statusBarStyle: UIStatusBarStyle? = nil, animated: Bool = true, showCompletion: (() -> ())? = nil, dismissCompletion: (() -> ())? = nil, onTapCoverView: ((HUD) -> ())? = nil, onTapHUD: ((HUD) -> ())? = nil) {
         self.animated = animated
 
         let maxSize = CGSize(width: UIScreen.main.bounds.width * config.allowedMaximumSize.width, height: UIScreen.main.bounds.height * config.allowedMaximumSize.height)
@@ -61,7 +61,7 @@ public class HUD {
             containerView.isHidden = true
             containerView.setContent(content: content, preferredSize: config.preferredSize, maxSize: maxSize, exact: config.exactSize)
 
-            view = HUD.create(config: config, router: self, backgroundWindow: coverWindow, containerView: containerView)
+            view = HUD.create(config: config, router: self, backgroundWindow: coverWindow, containerView: containerView, statusBarStyle: statusBarStyle)
             view?.keyboardNotificationHandler = keyboardNotificationHandler
 
             if content.actions.firstIndex(where: { $0.type == .show }) == nil {
@@ -77,11 +77,11 @@ public class HUD {
 
 extension HUD: HUDViewRouterInterface {
 
-    class func create(config: HUDConfig, router: HUDViewRouterInterface, backgroundWindow: BackgroundHUDWindow, containerView: HUDContainerView) -> HUDView {
+    class func create(config: HUDConfig, router: HUDViewRouterInterface, backgroundWindow: BackgroundHUDWindow, containerView: HUDContainerView, statusBarStyle: UIStatusBarStyle? = nil) -> HUDView {
 
         let interactor: HUDViewInteractorInterface = HUDViewInteractor()
         let presenter: HUDViewPresenterInterface & HUDViewInteractorDelegate = HUDViewPresenter(interactor: interactor, router: router, coverView: backgroundWindow.coverView, containerView: containerView, config: config)
-        let view = HUDView(presenter: presenter, config: config, backgroundWindow: backgroundWindow, containerView: containerView)
+        let view = HUDView(presenter: presenter, config: config, backgroundWindow: backgroundWindow, containerView: containerView, statusBarStyle: statusBarStyle)
 
         presenter.feedbackGenerator = HapticGenerator.instance
         presenter.view = view
@@ -95,7 +95,7 @@ extension HUD: HUDViewRouterInterface {
         return view
     }
 
-    public func show(config: HUDConfig, viewItem: ViewItem, forced: Bool = false) {
+    public func show(config: HUDConfig, viewItem: ViewItem, statusBarStyle: UIStatusBarStyle? = nil, forced: Bool = false) {
         self.config = config
         let showBlock = { [weak self] in
             let contentView = TopHUDContentView()
@@ -108,7 +108,7 @@ extension HUD: HUDViewRouterInterface {
                 contentView.actions.append(HUDTimeAction(type: .dismiss, interval: showingTime))
             }
 
-            self?.showHUD(contentView, onTapHUD: { hud in
+            self?.showHUD(contentView, statusBarStyle: statusBarStyle, onTapHUD: { hud in
                 hud.hide()
             })
         }
