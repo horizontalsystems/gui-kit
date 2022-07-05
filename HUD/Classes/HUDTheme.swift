@@ -18,9 +18,10 @@ class HUDTheme {
     static let disappearDuration: TimeInterval = 0.35
     static let animationCurve: UIView.AnimationOptions = .curveEaseOut
 
-    static let blurEffectStyle: UIBlurEffect.Style = .extraLight
-    static let blurEffectIntensity: CGFloat? = nil
-    static let backgroundColor: UIColor = UIColor(white: 0.8, alpha: 0.36)
+    static let blurEffectStyle: UIBlurEffect.Style = .systemUltraThinMaterial
+
+    static let blurEffectIntensity: CGFloat? = 0.4
+    static let backgroundColor: UIColor = UIColor(hex: 0x73798c, alpha: 0.2)
     static let cornerRadius: CGFloat = 9
 
     static let shadowRadius: CGFloat = 0
