@@ -64,14 +64,14 @@ public struct HUDConfig: HUDViewModel, HUDCoverModel, HUDContainerModel {
     public var exactSize: Bool = HUDTheme.exactSize
     public var preferredSize: CGSize = HUDTheme.preferredSize
     public var allowedMaximumSize: CGSize = HUDTheme.allowedSizeInPercentOfScreen // maximum HUD size limitation in percent by screen size
-    public var hudInset: CGPoint = CGPoint(x: 0, y: 0)
+    public var hudInset: CGPoint = CGPoint(x: 0, y: -8)
     public var absoluteInsetsValue = false
 
     public var coverInAnimationDuration: TimeInterval = HUDTheme.coverAppearDuration
     public var coverOutAnimationDuration: TimeInterval = HUDTheme.coverDisappearDuration
     public var coverAnimationCurve: UIView.AnimationOptions = HUDTheme.coverAnimationCurve
     public var coverBackgroundColor: UIColor = HUDTheme.coverBackgroundColor
-    public var coverBlurEffectStyle: UIBlurEffect.Style? = HUDTheme.blurEffectStyle
+    public var coverBlurEffectStyle: UIBlurEffect.Style? = nil
     public var coverBlurEffectIntensity: CGFloat? = HUDTheme.coverBlurEffectIntensity
 
     public var userInteractionEnabled: Bool = true
