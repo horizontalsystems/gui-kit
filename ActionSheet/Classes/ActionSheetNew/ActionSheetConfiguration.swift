@@ -23,7 +23,7 @@ public struct ActionSheetConfiguration {
         case .alert:
             sideMargin = 52
         case .sheet:
-            sideMargin = 10
+            sideMargin = 0
         }
     }
 
