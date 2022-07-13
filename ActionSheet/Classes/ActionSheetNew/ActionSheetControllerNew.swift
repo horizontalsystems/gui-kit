@@ -169,7 +169,7 @@ extension ActionSheetControllerNew {
             maker.leading.trailing.equalToSuperview().inset(configuration.sideMargin)
             if configuration.style == .sheet {      // content controller from bottom of superview
                 maker.top.equalToSuperview()
-                maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(configuration.sideMargin + keyboardHeightRelay.value).priority(.required)
+                maker.bottom.equalToSuperview().inset(configuration.sideMargin + keyboardHeightRelay.value).priority(.required)
             } else {                                // content controller by center of superview
                 maker.centerX.equalToSuperview()
                 maker.centerY.equalToSuperview().priority(.low)
