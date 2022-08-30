@@ -66,6 +66,7 @@ class ActionSheetPresentationController: UIPresentationController {
 
     override func dismissalTransitionWillBegin() {
         super.dismissalTransitionWillBegin()
+        delegate?.presentationControllerWillDismiss?(self)
 
         alongsideTransition { [weak self] in
             self?.tapView.alpha = 0
@@ -76,6 +77,7 @@ class ActionSheetPresentationController: UIPresentationController {
         super.dismissalTransitionDidEnd(completed)
 
         if completed {
+            delegate?.presentationControllerDidDismiss?(self)
             self.tapView.removeFromSuperview()
         }
     }

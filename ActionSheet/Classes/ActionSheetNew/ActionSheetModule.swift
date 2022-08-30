@@ -6,6 +6,8 @@ public protocol ActionSheetView: class {
 public protocol ActionSheetViewDelegate: class {
     var actionSheetView: ActionSheetView? { get set }
     var height: CGFloat? { get }
+
+    func didInteractiveDismissed()
 }
 
 extension ActionSheetViewDelegate {
@@ -19,4 +21,5 @@ extension ActionSheetViewDelegate {
         nil
     }
 
+    public func didInteractiveDismissed() {}
 }

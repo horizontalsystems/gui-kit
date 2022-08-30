@@ -30,7 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		090440A512A2FC3D03BB37F0 /* ActionSheet.swift.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.podspec; name = ActionSheet.swift.podspec; path = ../ActionSheet.swift.podspec; sourceTree = "<group>"; };
+		090440A512A2FC3D03BB37F0 /* ActionSheet.swift.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.podspec; name = ActionSheet.swift.podspec; path = ../ActionSheet.swift.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		0B2AC1664568613852352A75 /* Pods-GuiKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GuiKit_Tests.release.xcconfig"; path = "Target Support Files/Pods-GuiKit_Tests/Pods-GuiKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		3A9A777D23A8F19000E24161 /* Chart.swift.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = Chart.swift.podspec; path = ../Chart.swift.podspec; sourceTree = "<group>"; };
 		58AAA0D8BB9DD311DF200972 /* SectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionsViewController.swift; sourceTree = "<group>"; };
@@ -54,8 +54,8 @@
 		BFA4ADA2281384B8FD335667 /* libPods-GuiKitExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GuiKitExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C985CEE4D187B6AFB5061AF0 /* Pods-GuiKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GuiKit_Tests.debug.xcconfig"; path = "Target Support Files/Pods-GuiKit_Tests/Pods-GuiKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		D36AAB5223A7590E0065B32B /* LaunchScreen.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
-		D36AAB5423A75B760065B32B /* SectionsTableView.swift.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = SectionsTableView.swift.podspec; path = ../SectionsTableView.swift.podspec; sourceTree = "<group>"; };
-		D36AAB5523A75B760065B32B /* UIExtensions.swift.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = UIExtensions.swift.podspec; path = ../UIExtensions.swift.podspec; sourceTree = "<group>"; };
+		D36AAB5423A75B760065B32B /* SectionsTableView.swift.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = SectionsTableView.swift.podspec; path = ../SectionsTableView.swift.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		D36AAB5523A75B760065B32B /* UIExtensions.swift.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = UIExtensions.swift.podspec; path = ../UIExtensions.swift.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		D36AAB5623A75B760065B32B /* HUD.swift.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = HUD.swift.podspec; path = ../HUD.swift.podspec; sourceTree = "<group>"; };
 		D4B2A4D6F4E6536E89BB37D7 /* Pods-GuiKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GuiKit_Example.debug.xcconfig"; path = "Target Support Files/Pods-GuiKit_Example/Pods-GuiKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F6BA9632A3A9E144A599DF52 /* Pods-GuiKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GuiKit_Example.release.xcconfig"; path = "Target Support Files/Pods-GuiKit_Example/Pods-GuiKit_Example.release.xcconfig"; sourceTree = "<group>"; };
