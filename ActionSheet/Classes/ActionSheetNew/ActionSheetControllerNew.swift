@@ -14,6 +14,7 @@ public class ActionSheetControllerNew: UIViewController {
 
     private var keyboardHeightRelay = BehaviorRelay<CGFloat>(value: 0)
     private var didAppear = false
+    private var dismissing = false
 
     private var animator: ActionSheetAnimator?
     private var ignoreByInteractivePresentingBreak = false
@@ -39,6 +40,7 @@ public class ActionSheetControllerNew: UIViewController {
         self.animator = animator
         transitioningDelegate = animator
         animator.interactiveTransitionDelegate = self
+        content.presentationController?.delegate = self
 
         if let interactiveTransitionDelegate = content as? InteractiveTransitionDelegate {
             self.interactiveTransitionDelegate = interactiveTransitionDelegate
@@ -161,7 +163,7 @@ extension ActionSheetControllerNew {
     }
 
     func setContentViewPosition(animated: Bool) {
-        guard content.view.superview != nil else {
+        guard !dismissing, content.view.superview != nil else {
             return
         }
 
@@ -210,6 +212,7 @@ extension ActionSheetControllerNew: InteractiveTransitionDelegate {
 
     public func start(direction: TransitionDirection) {
         interactiveTransitionDelegate?.start(direction: direction)
+        dismissing = direction == .dismiss
     }
 
     public func move(direction: TransitionDirection, percent: CGFloat) {
@@ -217,6 +220,10 @@ extension ActionSheetControllerNew: InteractiveTransitionDelegate {
     }
 
     public func end(direction: TransitionDirection, cancelled: Bool) {
+        if direction == .dismiss, cancelled {
+            dismissing = false
+        }
+
         interactiveTransitionDelegate?.end(direction: direction, cancelled: cancelled)
         guard configuration.ignoreInteractiveFalseMoving else {
             return
@@ -225,6 +232,7 @@ extension ActionSheetControllerNew: InteractiveTransitionDelegate {
             ignoreByInteractivePresentingBreak = true
         } else {
             content.beginAppearanceTransition(false, animated: true)
+            viewDelegate?.didInteractiveDismissed()
         }
     }
 
@@ -244,4 +252,23 @@ extension ActionSheetControllerNew {
         content
     }
 
+}
+
+@available(iOS 13.0, *)
+extension ActionSheetControllerNew: UIAdaptivePresentationControllerDelegate {
+    public func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+        self.presentationController?.delegate?.presentationControllerShouldDismiss?(presentationController) ?? false
+    }
+
+    public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        self.presentationController?.delegate?.presentationControllerWillDismiss?(presentationController)
+    }
+
+    public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        self.presentationController?.delegate?.presentationControllerDidDismiss?(presentationController)
+    }
+
+    public func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+        self.presentationController?.delegate?.presentationControllerDidAttemptToDismiss?(presentationController)
+    }
 }

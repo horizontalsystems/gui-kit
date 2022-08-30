@@ -67,19 +67,19 @@ CHECKOUT OPTIONS:
     :git: https://github.com/horizontalsystems/component-kit-ios/
 
 SPEC CHECKSUMS:
-  ActionSheet.swift: fcfca3360d0855247bdb0fcdac27f4a7a4d7d593
+  ActionSheet.swift: 9ff4cc1292f0b612ad7e7eb1908f54b349aae044
   Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
-  Chart.swift: 523ce3685ad997cbb902c5b61a3dbd5e9d33c993
+  Chart.swift: 301ce1b3d7c1b418ad4783873ebbd5b591dd224e
   HUD.swift: 28fe655f5946e0f12fe3d24be54a57716d983c69
   Kingfisher: 2457be2121734e69e54a2312ecc0150eb9ae70b3
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 1e2e1f9570186967f617e49128ed26ccf1bafc8e
-  SectionsTableView.swift: 1541226d2cff974a131cfc2df3b8908d4902d703
+  SectionsTableView.swift: 4f2b98be10ba5a556b619fc6e04dff5335a5a893
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   ThemeKit.swift: 26260ac44437a1ae8ceecaf03e55e4a61bb9ddac
-  UIExtensions.swift: 3ed084c0343ddd0f86c7c558d37759e1fd7d5778
+  UIExtensions.swift: 01a3433bf371558fb6bdcfdff9fc27ec79ce8489
 
 PODFILE CHECKSUM: 7d2391d4e59a916ec05f8bffd87168c10de9c77c
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
