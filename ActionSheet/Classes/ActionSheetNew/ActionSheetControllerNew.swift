@@ -7,7 +7,7 @@ public class ActionSheetControllerNew: UIViewController {
     private var disposeBag = DisposeBag()
 
     private let content: UIViewController
-    private var viewDelegate: ActionSheetViewDelegate?
+    private weak var viewDelegate: ActionSheetViewDelegate?
     weak var interactiveTransitionDelegate: InteractiveTransitionDelegate?
 
     private let configuration: ActionSheetConfiguration
@@ -40,7 +40,7 @@ public class ActionSheetControllerNew: UIViewController {
         self.animator = animator
         transitioningDelegate = animator
         animator.interactiveTransitionDelegate = self
-        content.presentationController?.delegate = self
+        viewDelegate?.actionSheetView = self
 
         if let interactiveTransitionDelegate = content as? InteractiveTransitionDelegate {
             self.interactiveTransitionDelegate = interactiveTransitionDelegate
@@ -67,13 +67,13 @@ public class ActionSheetControllerNew: UIViewController {
                 maker.edges.equalToSuperview()
             }
             tapView.handleTap = { [weak self] in
+                self?.dismissing = true
                 self?.dismiss(animated: true)
             }
         }
 
         // add and setup content as child view controller
         addChildController()
-        viewDelegate?.actionSheetView = self
     }
 
     // lifecycle
@@ -82,6 +82,7 @@ public class ActionSheetControllerNew: UIViewController {
             view.superview?.addConstraints(savedConstraints)
         }
 
+        dismissing = false
         super.viewWillAppear(animated)
 
         if !ignoreByInteractivePresentingBreak {
@@ -104,11 +105,11 @@ public class ActionSheetControllerNew: UIViewController {
             content.endAppearanceTransition()
         }
         ignoreByInteractivePresentingBreak = false
-
         didAppear = true
     }
 
     public override func viewWillDisappear(_ animated: Bool) {
+        dismissing = true
         savedConstraints = view.superview?.constraints
 
         let interactiveTransitionStarted = animator?.interactiveTransitionStarted ?? false
@@ -196,6 +197,10 @@ extension ActionSheetControllerNew {
 
 extension ActionSheetControllerNew: ActionSheetView {
 
+    public func contentWillDismissed() {
+        dismissing = true
+    }
+
     public func dismissView(animated: Bool) {
         DispatchQueue.main.async {
             self.dismiss(animated: animated)
@@ -261,10 +266,12 @@ extension ActionSheetControllerNew: UIAdaptivePresentationControllerDelegate {
     }
 
     public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        dismissing = true
         self.presentationController?.delegate?.presentationControllerWillDismiss?(presentationController)
     }
 
     public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        dismissing = false
         self.presentationController?.delegate?.presentationControllerDidDismiss?(presentationController)
     }
 

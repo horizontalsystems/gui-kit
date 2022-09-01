@@ -1,4 +1,5 @@
 public protocol ActionSheetView: class {
+    func contentWillDismissed()             //child viewController will start dismissing programmatically
     func dismissView(animated: Bool)       // child viewController can't get access to parentVC from iOS 5.*
     func didChangeHeight()               // Change height flicker for .sheet
 }
